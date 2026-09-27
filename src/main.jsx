@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import App from './App.jsx';
+import PreviewChrome from './components/PreviewChrome.jsx';
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/components.css';
@@ -12,6 +13,7 @@ const root = document.getElementById('root');
 const app = (
   <StrictMode>
     <Router>
+      {import.meta.env.VITE_PREVIEW && <PreviewChrome />}
       <App />
     </Router>
   </StrictMode>
