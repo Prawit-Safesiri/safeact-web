@@ -40,7 +40,21 @@ npm run preview
 ### ตัวตรวจอัตโนมัติตอน build (build ล้มเหลวถ้าไม่ผ่าน)
 placeholder ใน `index.html` ครบ · ทุกหน้ามี `<h1>` เดียว title description canonical · JSON-LD parse ได้ `@id` อ้างถึงกันครบ ไม่มีค่าว่าง · ราคาใน JSON-LD ตรงกับที่แสดงบนหน้าราคา · ไม่มีโดเมนอื่นนอกจาก `safeact.com` / `member.safeact.com` · ไม่มี `www.safeact.com` และ `hreflang` · ทุกไฟล์ใน `dist/` อ่านได้ (สิทธิ์ 644)
 
-## Deploy (Cloudflare Pages)
+## Deploy
+
+### แบบที่ใช้อยู่: เซิร์ฟเวอร์ Node หลัง Cloudflare
+```bash
+git pull && npm install && npm start     # build แล้วเสิร์ฟ dist/ ด้วย server.cjs (พอร์ตจากตัวแปร PORT ค่าเริ่มต้น 8125)
+```
+`server.cjs` ทำสิ่งต่อไปนี้เอง ไม่ต้องตั้งกฎเพิ่มที่ Cloudflare
+- `www.safeact.com` → `safeact.com` และ `http` → `https` (301) — อ่านโปรโตคอลจากส่วนหัว `CF-Visitor` ของ Cloudflare
+- `/pricing` → `/pricing/` (301) · URL ที่ไม่มีอยู่ตอบ 404
+- ส่งต่อ URL ของเว็บเดิมตาม `public/_redirects`
+- แคช: `/build/*` ถาวร · `/assets/*` 30 วัน · HTML ตรวจกับเซิร์ฟเวอร์ทุกครั้ง (บน localhost ไม่แคช)
+
+โดเมนหลักอ่านจาก `dist/robots.txt` ที่ build สร้างจาก `SITE_URL` — หลังแก้โค้ดต้อง build และเริ่มเซิร์ฟเวอร์ใหม่ทุกครั้ง
+
+### ทางเลือก: Cloudflare Pages
 | ค่า | ตั้งเป็น |
 |---|---|
 | Build command | `npm run build` |
