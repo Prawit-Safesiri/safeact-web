@@ -164,6 +164,13 @@
   .frow{grid-template-columns:1fr;gap:32px}.frow--flip .frow__media{order:0}
   .frow+.frow{margin-top:72px}
 }
+/* มือถือ: ภาพมือถือในมือใหญ่ขึ้น และเลื่อนให้ "ตัวเครื่อง" อยู่กลางจอ (กึ่งกลางตัวเครื่อง = 34.55% ของความกว้างภาพ)
+   มือล้นออกขอบขวาของจอ — section ตัดส่วนที่ล้น (.section--clip) จึงไม่เกิดการเลื่อนแนวนอน */
+@media (max-width:734px){
+  .section--clip{overflow:hidden;overflow:clip}
+  .section--clip .frow{grid-template-columns:minmax(0,1fr)}   /* คอลัมน์กว้างเท่ากล่องเนื้อหาเสมอ ไม่ยืดตามภาพที่ล้น */
+  .frow__media .phone{--pw:min(136vw,600px);width:var(--pw);max-width:none;margin-left:calc(50% - var(--pw)*.3455);margin-right:0}
+}
 
 .checks{list-style:none;display:grid;gap:12px}
 .checks li{position:relative;padding-inline-start:30px}
@@ -367,62 +374,62 @@
 /* STAGGERED FADE-IN: ไม่มีกฎซ่อนเนื้อหาใน CSS — src/staggered.js ซ่อนเฉพาะกล่องใต้จอหลังผู้ใช้เลื่อนจริง (เนื้อหามองเห็นเป็นค่าเริ่มต้น) */
 
 /* ═══════ AI MOTION — โมชั่นพรีเซนต์ AI ผู้ช่วยกฎหมาย (src/components/AiMotion.jsx)
-   ฉากวน 17 วินาที · ขนาดทุกอย่างเป็น cqw ให้สเกลตามกล่อง · ไม่มี [data-play] = เฟรมคำตอบนิ่ง
+   ฉากวน 17 วินาที · ขนาดทุกอย่างเป็นหน่วย --u (1% ของความกว้างกล่อง · มือถือใหญ่ขึ้น) · ไม่มี [data-play] = เฟรมคำตอบนิ่ง
    ไทม์ไลน์ (วินาที): ถาม 0–2.4 · ค้น 2.6–5.6 · คำตอบ 5.6–11.3 · สโลแกน 9.4–11.3 · เฟดออก 11.3–12
                     ฉากจบติดตั้งแอป 12–16.4 (ไอคอน → หัวเรื่อง → ปุ่ม รับ → แตะ → โหลด → เปิด) · เฟดออก 16.4–17
    keyframe เขียนเป็น % ของ 17s (1% = 0.17 วินาที) ═══════ */
-.aim{--t:17s;--ac:#2997ff;position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;container-type:inline-size;
+.aim{--t:17s;--u:1cqw;--ac:#2997ff;position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;container-type:inline-size;
   background:#161617;color:#f5f5f7;font-family:var(--font-text)}
 .aim__glow{position:absolute;inset:-20%;background:radial-gradient(45% 40% at 50% 42%,rgba(41,151,255,.22),transparent 70%)}
-.aim > *:not(.aim__glow){position:absolute;left:8cqw;right:8cqw}
+.aim > *:not(.aim__glow){position:absolute;left:calc(var(--u)*8);right:calc(var(--u)*8)}
 
 /* ช่องถาม */
-.aim__ask{top:9cqw;display:flex;align-items:center;gap:2.6cqw;padding:2.8cqw 2.8cqw 2.8cqw 3.6cqw;border-radius:99cqw;
+.aim__ask{top:calc(var(--u)*9);display:flex;align-items:center;gap:calc(var(--u)*2.6);padding:calc(var(--u)*2.8) calc(var(--u)*2.8) calc(var(--u)*2.8) calc(var(--u)*3.6);border-radius:calc(var(--u)*99);
   background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
-.aim__spark{width:4.4cqw;height:4.4cqw;flex:none;color:var(--ac)}
-.aim__type{position:relative;flex:0 1 auto;min-width:0;font-size:3.9cqw;line-height:1.4;white-space:nowrap}
+.aim__spark{width:calc(var(--u)*4.4);height:calc(var(--u)*4.4);flex:none;color:var(--ac)}
+.aim__type{position:relative;flex:0 1 auto;min-width:0;font-size:calc(var(--u)*3.9);line-height:1.4;white-space:nowrap}
 .aim__caret{position:absolute;top:12%;bottom:12%;left:100%;width:2px;background:var(--ac);opacity:0}
-.aim__send{flex:none;margin-left:auto;display:grid;place-items:center;width:7.4cqw;height:7.4cqw;border-radius:50%;background:var(--ac);color:#fff}
-.aim__send svg{width:3.6cqw;height:3.6cqw}
+.aim__send{flex:none;margin-left:auto;display:grid;place-items:center;width:calc(var(--u)*7.4);height:calc(var(--u)*7.4);border-radius:50%;background:var(--ac);color:#fff}
+.aim__send svg{width:calc(var(--u)*3.6);height:calc(var(--u)*3.6)}
 
 /* พื้นที่กลาง: ค้น และ คำตอบ ซ้อนกัน */
-.aim__stage{top:27cqw;bottom:20cqw}
+.aim__stage{top:calc(var(--u)*27);bottom:calc(var(--u)*20)}
 .aim__stage > *{position:absolute;inset:0}
 .aim__search{opacity:0}
-.aim .aim__status{display:flex;align-items:center;gap:2cqw;font-size:3cqw;color:#a1a1a6;margin-bottom:3cqw}
-.aim__spin{width:3.2cqw;height:3.2cqw;border-radius:50%;border:.5cqw solid rgba(41,151,255,.25);border-top-color:var(--ac)}
-.aim__win{--h:8.4cqw;height:calc(var(--h) * 5);overflow:hidden;
+.aim .aim__status{display:flex;align-items:center;gap:calc(var(--u)*2);font-size:calc(var(--u)*3);color:#a1a1a6;margin-bottom:calc(var(--u)*3)}
+.aim__spin{width:calc(var(--u)*3.2);height:calc(var(--u)*3.2);border-radius:50%;border:calc(var(--u)*.5) solid rgba(41,151,255,.25);border-top-color:var(--ac)}
+.aim__win{--h:calc(var(--u)*8.4);height:calc(var(--h) * 5);overflow:hidden;
   -webkit-mask:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
 .aim__list{list-style:none;transform:translateY(calc(var(--h) * -5))}
-.aim__list li{height:var(--h);display:flex;align-items:center;padding-inline:3cqw;border-radius:2.4cqw;font-size:2.9cqw;
+.aim__list li{height:var(--h);display:flex;align-items:center;padding-inline:calc(var(--u)*3);border-radius:calc(var(--u)*2.4);font-size:calc(var(--u)*2.9);
   color:#86868b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .aim__hit{color:#f5f5f7!important;background:rgba(41,151,255,.18);box-shadow:inset 0 0 0 1px rgba(41,151,255,.6)}
 
-.aim__answer{display:flex;flex-direction:column;justify-content:center;gap:3.2cqw;padding:5cqw;border-radius:4.4cqw;
+.aim__answer{display:flex;flex-direction:column;justify-content:center;gap:calc(var(--u)*3.2);padding:calc(var(--u)*5);border-radius:calc(var(--u)*4.4);
   background:linear-gradient(180deg,#232326,#1b1b1d);border:1px solid rgba(255,255,255,.1)}
-.aim .aim__label{font-size:2.8cqw;font-weight:600;color:var(--ac)}
-.aim .aim__text{color:#f5f5f7;font-family:var(--font-display);font-size:4.6cqw;line-height:var(--lh-24);font-weight:600;letter-spacing:var(--ls-24)}
+.aim .aim__label{font-size:calc(var(--u)*2.8);font-weight:600;color:var(--ac)}
+.aim .aim__text{color:#f5f5f7;font-family:var(--font-display);font-size:calc(var(--u)*4.6);line-height:var(--lh-24);font-weight:600;letter-spacing:var(--ls-24)}
 .aim__text b{color:#fff;background:linear-gradient(transparent 62%,rgba(41,151,255,.45) 62%)}
-.aim__cite,.aim__ok{display:flex;align-items:center;gap:1.8cqw;font-size:2.8cqw;line-height:1.35}
-.aim .aim__cite{align-self:flex-start;max-width:100%;padding:1.6cqw 2.6cqw;border-radius:99cqw;background:rgba(41,151,255,.14);color:#cfe6ff;font-size:2.5cqw;white-space:nowrap}
+.aim__cite,.aim__ok{display:flex;align-items:center;gap:calc(var(--u)*1.8);font-size:calc(var(--u)*2.8);line-height:1.35}
+.aim .aim__cite{align-self:flex-start;max-width:100%;padding:calc(var(--u)*1.6) calc(var(--u)*2.6);border-radius:calc(var(--u)*99);background:rgba(41,151,255,.14);color:#cfe6ff;font-size:calc(var(--u)*2.5);white-space:nowrap}
 .aim .aim__ok{color:#30d158}
-.aim__cite svg,.aim__ok svg{width:3.4cqw;height:3.4cqw;flex:none}
+.aim__cite svg,.aim__ok svg{width:calc(var(--u)*3.4);height:calc(var(--u)*3.4);flex:none}
 
-.aim .aim__tag{color:#f5f5f7;bottom:8cqw;text-align:center;font-family:var(--font-display);font-size:5.6cqw;line-height:1.3;font-weight:600;letter-spacing:var(--ls-28)}
+.aim .aim__tag{color:#f5f5f7;bottom:calc(var(--u)*8);text-align:center;font-family:var(--font-display);font-size:calc(var(--u)*5.6);line-height:1.3;font-weight:600;letter-spacing:var(--ls-28)}
 .aim__tag span{color:var(--ac)}
 
 /* ── ฉากจบ: ติดตั้งแอป ── */
 .aim .aim__end{top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0}
-.aim__icon{width:24cqw;height:24cqw;filter:drop-shadow(0 2.4cqw 4cqw rgba(0,113,227,.45))}
-.aim .aim__app{margin-top:3cqw;font-size:3cqw;font-weight:600;color:#f5f5f7}
-.aim__app span{display:block;margin-top:.4cqw;font-weight:400;font-size:2.5cqw;color:#86868b}
-.aim .aim__head{margin-top:4.4cqw;font-family:var(--font-display);font-size:6.4cqw;line-height:var(--lh-32);font-weight:600;letter-spacing:var(--ls-32);color:#f5f5f7}
-.aim .aim__sub{margin-top:2cqw;font-size:2.9cqw;line-height:1.4;color:#a1a1a6}
-.aim__get{position:relative;margin-top:5cqw;width:20cqw;height:7.4cqw;border-radius:99cqw;background:var(--ac)}
+.aim__icon{width:calc(var(--u)*24);height:calc(var(--u)*24);filter:drop-shadow(0 calc(var(--u)*2.4) calc(var(--u)*4) rgba(0,113,227,.45))}
+.aim .aim__app{margin-top:calc(var(--u)*3);font-size:calc(var(--u)*3);font-weight:600;color:#f5f5f7}
+.aim__app span{display:block;margin-top:calc(var(--u)*.4);font-weight:400;font-size:calc(var(--u)*2.5);color:#86868b}
+.aim .aim__head{margin-top:calc(var(--u)*4.4);font-family:var(--font-display);font-size:calc(var(--u)*6.4);line-height:var(--lh-32);font-weight:600;letter-spacing:var(--ls-32);color:#f5f5f7}
+.aim .aim__sub{margin-top:calc(var(--u)*2);font-size:calc(var(--u)*2.9);line-height:1.4;color:#a1a1a6}
+.aim__get{position:relative;margin-top:calc(var(--u)*5);width:calc(var(--u)*20);height:calc(var(--u)*7.4);border-radius:calc(var(--u)*99);background:var(--ac)}
 .aim__get > *{position:absolute;left:50%;top:50%;translate:-50% -50%}
-.aim__get-lbl,.aim__open{font-size:3.2cqw;line-height:1;font-weight:600;color:#fff;white-space:nowrap}
+.aim__get-lbl,.aim__open{font-size:calc(var(--u)*3.2);line-height:1;font-weight:600;color:#fff;white-space:nowrap}
 .aim__open{opacity:0}
-.aim__ring{width:6.4cqw;height:6.4cqw;opacity:0;overflow:visible;filter:drop-shadow(0 0 1.4cqw rgba(41,151,255,.55))}
+.aim__ring{width:calc(var(--u)*6.4);height:calc(var(--u)*6.4);opacity:0;overflow:visible;filter:drop-shadow(0 0 calc(var(--u)*1.4) rgba(41,151,255,.55))}
 .aim__ring circle{fill:none;stroke-width:3.2}
 .aim__ring .aim__ring-track{stroke:rgba(41,151,255,.22)}
 .aim__arc circle{stroke:url(#aim-grad);stroke-dasharray:28 72;stroke-linecap:round}
@@ -431,7 +438,7 @@
   transform:rotate(-90deg);transform-origin:18px 18px;opacity:0}
 .aim__stop{fill:#2997ff;opacity:0;transform-origin:18px 18px}
 .aim__check{fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100}
-.aim__tap{width:9cqw;height:9cqw;border-radius:50%;background:rgba(255,255,255,.35);opacity:0;pointer-events:none}
+.aim__tap{width:calc(var(--u)*9);height:calc(var(--u)*9);border-radius:50%;background:rgba(255,255,255,.35);opacity:0;pointer-events:none}
 
 /* ── เล่น ── */
 .aim[data-play] *{animation-duration:var(--t);animation-iteration-count:infinite;animation-fill-mode:both}
@@ -465,36 +472,36 @@
 .aim[data-play] .aim__tap{animation-name:aim-tap}
 
 /* ฉากถาม–ตอบ (0–12s) */
-@keyframes aim-frame{0%{opacity:0;transform:translateY(3cqw)}3.53%,66.35%{opacity:1;transform:none}70.59%,100%{opacity:0}}
+@keyframes aim-frame{0%{opacity:0;transform:translateY(calc(var(--u)*3))}3.53%,66.35%{opacity:1;transform:none}70.59%,100%{opacity:0}}
 @keyframes aim-type{0%,4.24%{clip-path:inset(0 100% 0 0);animation-timing-function:steps(24)}14.12%,100%{clip-path:inset(0 0 0 0)}}
 @keyframes aim-caret{0%,3.53%{opacity:0;left:0}4.24%{opacity:1;left:0;animation-timing-function:steps(24)}14.12%{opacity:1;left:100%}14.82%,100%{opacity:0;left:100%}}
 @keyframes aim-send{0%,14.12%{transform:scale(1)}15.18%{transform:scale(.82)}16.24%,100%{transform:scale(1)}}
-@keyframes aim-search{0%,15.53%{opacity:0;transform:translateY(3cqw)}17.65%,31.06%{opacity:1;transform:none}33.18%,100%{opacity:0;transform:translateY(-3cqw)}}
+@keyframes aim-search{0%,15.53%{opacity:0;transform:translateY(calc(var(--u)*3))}17.65%,31.06%{opacity:1;transform:none}33.18%,100%{opacity:0;transform:translateY(calc(var(--u)*-3))}}
 @keyframes aim-scroll{0%,17.65%{transform:translateY(calc(var(--h) * 1.5));animation-timing-function:cubic-bezier(.3,0,.2,1)}27.53%,100%{transform:translateY(calc(var(--h) * -5))}}
 @keyframes aim-hit{0%,27.53%{background:transparent;box-shadow:none;color:#86868b}28.94%,100%{background:rgba(41,151,255,.18);box-shadow:inset 0 0 0 1px rgba(41,151,255,.6);color:#f5f5f7}}
 @keyframes aim-spin{to{transform:rotate(1turn)}}
-@keyframes aim-answer{0%,33.18%{opacity:0;transform:translateY(4cqw) scale(.98)}36%,66.35%{opacity:1;transform:none}70.59%,100%{opacity:0}}
+@keyframes aim-answer{0%,33.18%{opacity:0;transform:translateY(calc(var(--u)*4)) scale(.98)}36%,66.35%{opacity:1;transform:none}70.59%,100%{opacity:0}}
 @keyframes aim-reveal{0%,35.29%{clip-path:inset(0 0 100% 0)}40.94%,100%{clip-path:inset(0 0 -20% 0)}}
 @keyframes aim-cite{0%,41.65%{opacity:0;transform:scale(.9)}43.76%,100%{opacity:1;transform:none}}
-@keyframes aim-ok{0%,45.88%{opacity:0;transform:translateX(-2cqw)}48%,100%{opacity:1;transform:none}}
-@keyframes aim-tag{0%,55.06%{opacity:0;transform:translateY(2cqw)}57.88%,66.35%{opacity:1;transform:none}70.59%,100%{opacity:0}}
+@keyframes aim-ok{0%,45.88%{opacity:0;transform:translateX(calc(var(--u)*-2))}48%,100%{opacity:1;transform:none}}
+@keyframes aim-tag{0%,55.06%{opacity:0;transform:translateY(calc(var(--u)*2))}57.88%,66.35%{opacity:1;transform:none}70.59%,100%{opacity:0}}
 
 /* ฉากจบติดตั้งแอป (12–17s) */
 @keyframes aim-end{0%,70%{opacity:0}71.8%,97.6%{opacity:1}100%{opacity:0}}
-@keyframes aim-icon{0%,70.6%{opacity:0;transform:translateY(6cqw) scale(.6)}74.1%{opacity:1;transform:scale(1.06)}76.5%,100%{opacity:1;transform:none}}
-@keyframes aim-rise1{0%,74.1%{opacity:0;transform:translateY(2cqw)}77%,100%{opacity:1;transform:none}}
-@keyframes aim-rise2{0%,75.3%{opacity:0;transform:translateY(3cqw)}78.8%,100%{opacity:1;transform:none}}
-@keyframes aim-rise3{0%,77%{opacity:0;transform:translateY(2cqw)}80%,100%{opacity:1;transform:none}}
+@keyframes aim-icon{0%,70.6%{opacity:0;transform:translateY(calc(var(--u)*6)) scale(.6)}74.1%{opacity:1;transform:scale(1.06)}76.5%,100%{opacity:1;transform:none}}
+@keyframes aim-rise1{0%,74.1%{opacity:0;transform:translateY(calc(var(--u)*2))}77%,100%{opacity:1;transform:none}}
+@keyframes aim-rise2{0%,75.3%{opacity:0;transform:translateY(calc(var(--u)*3))}78.8%,100%{opacity:1;transform:none}}
+@keyframes aim-rise3{0%,77%{opacity:0;transform:translateY(calc(var(--u)*2))}80%,100%{opacity:1;transform:none}}
 /* ปุ่มติดตั้ง: 13.9 แตะ → 14.15–14.4 หดเป็นวงกลม → 14.35–14.85 รอ (ส่วนโค้งหมุน) → 14.85–15.75 โหลด (วงไล่สีเติมเต็ม)
    → 15.75–16.0 เครื่องหมายถูก → 16.0–16.3 ขยายกลับเป็น "เปิด" · ค้างถึง 16.6 แล้วเฟดออก */
-@keyframes aim-get{0%,78.8%{opacity:0;transform:scale(.9);width:20cqw;background-color:var(--ac)}
-  80.6%,81.8%{opacity:1;transform:none;width:20cqw;background-color:var(--ac)}
-  82.4%{transform:scale(.92);width:20cqw}
-  83.2%{transform:none;width:20cqw;background-color:var(--ac);animation-timing-function:cubic-bezier(.32,.72,0,1)}
-  84.7%,92.6%{transform:none;width:7.4cqw;background-color:rgba(41,151,255,.14)}
-  93.2%{background-color:var(--ac);width:7.4cqw;transform:scale(1.08)}
-  94.1%{width:7.4cqw;transform:none;background-color:var(--ac);animation-timing-function:cubic-bezier(.32,.72,0,1)}
-  95.9%,100%{opacity:1;transform:none;width:20cqw;background-color:var(--ac)}}
+@keyframes aim-get{0%,78.8%{opacity:0;transform:scale(.9);width:calc(var(--u)*20);background-color:var(--ac)}
+  80.6%,81.8%{opacity:1;transform:none;width:calc(var(--u)*20);background-color:var(--ac)}
+  82.4%{transform:scale(.92);width:calc(var(--u)*20)}
+  83.2%{transform:none;width:calc(var(--u)*20);background-color:var(--ac);animation-timing-function:cubic-bezier(.32,.72,0,1)}
+  84.7%,92.6%{transform:none;width:calc(var(--u)*7.4);background-color:rgba(41,151,255,.14)}
+  93.2%{background-color:var(--ac);width:calc(var(--u)*7.4);transform:scale(1.08)}
+  94.1%{width:calc(var(--u)*7.4);transform:none;background-color:var(--ac);animation-timing-function:cubic-bezier(.32,.72,0,1)}
+  95.9%,100%{opacity:1;transform:none;width:calc(var(--u)*20);background-color:var(--ac)}}
 @keyframes aim-get-lbl{0%,82.9%{opacity:1;transform:none}83.8%,100%{opacity:0;transform:scale(.8)}}
 @keyframes aim-ring{0%,84.1%{opacity:0;transform:scale(.5);animation-timing-function:cubic-bezier(.32,.72,0,1)}85.3%,93.8%{opacity:1;transform:none}95%,100%{opacity:0;transform:scale(.7)}}
 @keyframes aim-arc{0%,84.1%{opacity:1}87.1%{opacity:1}87.6%,100%{opacity:0}}
@@ -503,6 +510,43 @@
 @keyframes aim-check{0%,92.6%{stroke-dashoffset:100;animation-timing-function:ease-out}94.1%,100%{stroke-dashoffset:0}}
 @keyframes aim-open{0%,94.7%{opacity:0;transform:scale(.8);animation-timing-function:cubic-bezier(.32,.72,0,1)}95.9%,100%{opacity:1;transform:none}}
 @keyframes aim-tap{0%,81.8%{opacity:0;transform:scale(.3)}82.4%{opacity:1;transform:scale(.6)}84.1%,100%{opacity:0;transform:scale(1.6)}}
+
+/* มือถือ: กล่องแนวตั้ง 3:4 · หน่วย --u ใหญ่ขึ้น 25% (ข้อความหลัก ≥ 13px บนจอกว้าง 375px) · ขอบซ้ายขวาแคบลงให้ข้อความมีที่มากขึ้น
+   กล่องกว้าง 80u สูง ≈ 106.7u · จอที่กว้างกว่ามือถือ (481–734px) กล่องกว้างไม่เกิน 480px อยู่กลาง */
+@media (max-width:734px){
+  .aim{aspect-ratio:3/4;--u:1.25cqw;max-width:480px;margin-inline:auto}
+  .aim > *:not(.aim__glow){left:calc(var(--u)*5);right:calc(var(--u)*5)}
+  .aim__ask{top:calc(var(--u)*8);gap:calc(var(--u)*2);padding:calc(var(--u)*2.6) calc(var(--u)*2.6) calc(var(--u)*2.6) calc(var(--u)*3.2)}
+  .aim__type{font-size:calc(var(--u)*3.7)}
+  .aim__stage{top:calc(var(--u)*27);bottom:calc(var(--u)*21)}
+  .aim__win{--h:calc(var(--u)*9.4)}
+  .aim__list li{display:block;line-height:var(--h);font-size:calc(var(--u)*3);padding-inline:calc(var(--u)*2.4)}   /* block: ชื่อที่ยาวเกินแสดง … */
+  .aim .aim__status{font-size:calc(var(--u)*3.2)}
+  .aim__answer{padding:calc(var(--u)*4.6);gap:calc(var(--u)*3)}
+  .aim .aim__label{font-size:calc(var(--u)*3)}
+  .aim .aim__text{font-size:calc(var(--u)*4.3)}
+  .aim__text span,.aim__text b,.aim__cite-t span,.aim__sub span{white-space:nowrap}
+  .aim .aim__cite{white-space:normal;border-radius:calc(var(--u)*3);font-size:calc(var(--u)*2.9);padding:calc(var(--u)*1.6) calc(var(--u)*2.4)}
+  .aim .aim__ok{font-size:calc(var(--u)*3)}
+  .aim .aim__tag{bottom:calc(var(--u)*7.5)}
+  .aim .aim__app{font-size:calc(var(--u)*3.4)}
+  .aim__app span{font-size:calc(var(--u)*3)}
+  .aim .aim__sub{font-size:calc(var(--u)*3.2)}
+  .aim__sub span{display:block}
+  .aim__get{margin-top:calc(var(--u)*5.5);width:calc(var(--u)*24);height:calc(var(--u)*8.6)}
+  .aim__get-lbl,.aim__open{font-size:calc(var(--u)*3.6)}
+  .aim__ring{width:calc(var(--u)*7.4);height:calc(var(--u)*7.4)}
+  .aim[data-play] .aim__get{animation-name:aim-get-m}
+}
+/* ปุ่มติดตั้งบนมือถือ: จังหวะเดียวกับ aim-get แต่ปุ่มกว้าง 24u และหดเหลือวงกลม 8.6u */
+@keyframes aim-get-m{0%,78.8%{opacity:0;transform:scale(.9);width:calc(var(--u)*24);background-color:var(--ac)}
+  80.6%,81.8%{opacity:1;transform:none;width:calc(var(--u)*24);background-color:var(--ac)}
+  82.4%{transform:scale(.92);width:calc(var(--u)*24)}
+  83.2%{transform:none;width:calc(var(--u)*24);background-color:var(--ac);animation-timing-function:cubic-bezier(.32,.72,0,1)}
+  84.7%,92.6%{transform:none;width:calc(var(--u)*8.6);background-color:rgba(41,151,255,.14)}
+  93.2%{background-color:var(--ac);width:calc(var(--u)*8.6);transform:scale(1.08)}
+  94.1%{width:calc(var(--u)*8.6);transform:none;background-color:var(--ac);animation-timing-function:cubic-bezier(.32,.72,0,1)}
+  95.9%,100%{opacity:1;transform:none;width:calc(var(--u)*24);background-color:var(--ac)}}
 
 /* ═══════ ประกายเคลื่อนไหว — ไอคอนไทล์ AI (IconSparkAnim) ═══════
    ดาวใหญ่หายใจช้า ๆ · ดาวเล็กกับดาวจิ๋วกะพริบสลับกัน · แสงเรือง ฟ้าเต้นตาม  (Reduce Motion: base.css หยุดให้เอง) */
@@ -569,7 +613,7 @@
   background:rgba(255,255,255,.86);box-shadow:0 0 0 1px rgba(0,0,0,.06),0 calc(var(--u)*.4) calc(var(--u)*1.4) rgba(0,0,0,.05);
   display:grid;grid-template-rows:auto 1fr auto;gap:calc(var(--u)*.3)}
 .hm__tag{justify-self:start;padding:calc(var(--u)*.1) calc(var(--u)*.7);border-radius:99px;background:#eef5ff;color:var(--ac);font-size:calc(var(--u)*1);font-weight:600}
-.hm__ctitle{font-size:calc(var(--u)*1.3);line-height:1.35;font-weight:600;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.hm__ctitle{align-self:start;font-size:calc(var(--u)*1.3);line-height:1.35;font-weight:600;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .hm__cyear{font-size:calc(var(--u)*1);color:var(--ink-3)}
 .hm__beam{position:absolute;top:-10%;bottom:-10%;left:-12%;width:10%;opacity:0;
   background:linear-gradient(90deg,transparent,rgba(41,151,255,.28),rgba(41,151,255,.55),rgba(41,151,255,.28),transparent)}
@@ -701,6 +745,7 @@
 .hm__tagline{margin-top:calc(var(--u)*2.2)!important;font-family:var(--font-display);font-size:calc(var(--u)*4.6);line-height:1.2;font-weight:700;letter-spacing:-.015em}
 .hm__tagline span{background:linear-gradient(90deg,var(--ac),#5e5ce6);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hm__endsub{margin-top:calc(var(--u)*.8)!important;font-size:calc(var(--u)*1.9);color:var(--ink-2)}
+.hm__endsub i{font-style:normal}
 .hm .hm__cta{position:relative;overflow:hidden;margin-top:calc(var(--u)*2.2)!important;padding:calc(var(--u)*1) calc(var(--u)*2.6);border-radius:99px;
   background:var(--ac);color:#fff;font-size:calc(var(--u)*1.85);font-weight:600;box-shadow:0 calc(var(--u)*.6) calc(var(--u)*2) rgba(0,113,227,.35)}
 .hm__cta::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:30%;transform:skewX(-20deg);
@@ -799,27 +844,60 @@
 @keyframes hm-up3{0%,88%{opacity:0;transform:translateY(calc(var(--u)*1.5)) scale(.94)}90.5%,100%{opacity:1;transform:none}}
 @keyframes hm-up4{0%,89.5%{opacity:0}92%,100%{opacity:1}}
 
-/* มือถือ: กล่องสูงขึ้น ตัวใหญ่ขึ้น ผลลัพธ์เป็นคอลัมน์เดียว */
+/* มือถือ: กล่องแนวตั้ง 5:7 · หน่วย --u ใหญ่ขึ้น (ข้อความหลัก ≥ 13px บนจอกว้าง 375px) · แต่ละฉากจัดใหม่ให้เต็มความสูงกล่อง
+   กล่องกว้าง ≈ 37.7u สูง ≈ 52.8u · จอที่กว้างกว่ามือถือ (481–734px) กล่องกว้างไม่เกิน 480px อยู่กลางจอ */
 @media (max-width:734px){
-  .hm{aspect-ratio:4/5;--u:2.3cqw}
-  .hm__search{left:5%!important;right:5%!important}
-  .hm__wall{top:calc(var(--u)*13)}
-  .hm__result{grid-template-columns:1fr;left:5%!important;right:5%!important}
-  .hm__cites li:nth-child(n+2){display:none}
-  .hm__feat{gap:calc(var(--u)*1.6)}
-  .hm__feat ul{grid-template-columns:repeat(2,calc(var(--u)*18));gap:calc(var(--u)*1)}
-  .hm__tile{padding:calc(var(--u)*1)}
-  .hm-art{zoom:.8}
-  .hm__tile b{margin-top:calc(var(--u)*.5)}
-  .hm__row--1{transform:translateX(calc(var(--u)*-25.7))}
+  .hm{aspect-ratio:5/7;--u:2.65cqw;max-width:480px;margin-inline:auto}
+  /* ฉาก 1: ตัวเลขใหญ่อยู่บน คำอธิบายอยู่บรรทัดถัดไป · การ์ดกฎหมายใหญ่ขึ้น 3 แถวเต็มกล่อง */
+  .hm .hm__libhead{top:calc(var(--u)*3);flex-direction:column;align-items:center;gap:0;font-size:calc(var(--u)*1.9);line-height:1.3}
+  .hm__count{font-size:calc(var(--u)*5.6)}
+  .hm__wall{top:calc(var(--u)*14.6);gap:calc(var(--u)*1.3)}
+  .hm__row{gap:calc(var(--u)*1.3)}
+  .hm__card{width:calc(var(--u)*20);height:calc(var(--u)*10.6);padding:calc(var(--u)*1.1) calc(var(--u)*1.3)}
+  .hm__tag,.hm__cyear{font-size:calc(var(--u)*1.2)}
+  .hm__ctitle{font-size:calc(var(--u)*1.45)}
+  .hm__row--1{transform:translateX(calc(var(--u)*-33.7))}
   .hm[data-play] .hm__row--1{animation-name:hm-row1m}
+  /* ฉาก 2: ช่องค้นหาเกือบเต็มความกว้าง */
+  .hm__search{left:4%!important;right:4%!important;top:calc(var(--u)*3.4)!important;height:calc(var(--u)*6.2);gap:calc(var(--u)*.7);
+    padding:0 calc(var(--u)*.7) 0 calc(var(--u)*1.3)}
+  .hm__spark{width:calc(var(--u)*2);height:calc(var(--u)*2)}
+  .hm__type{font-size:calc(var(--u)*1.7)}
+  .hm__go{width:calc(var(--u)*4.8);height:calc(var(--u)*4.8)}
+  .hm__go svg{width:calc(var(--u)*2);height:calc(var(--u)*2)}
   .hm__status{display:none}
-  .hm .hm__libhead{font-size:calc(var(--u)*1.75);gap:calc(var(--u)*.6)}
-  .hm__count{font-size:calc(var(--u)*3.4)}
-  .hm__type{font-size:calc(var(--u)*1.8)}
+  /* ฉาก 3: คำตอบคอลัมน์เดียว + แหล่งอ้างอิงที่ตรงที่สุด 1 ใบ */
+  .hm__result{grid-template-columns:1fr;grid-template-rows:1fr auto;left:4%!important;right:4%!important;
+    top:calc(var(--u)*11.6)!important;bottom:calc(var(--u)*2.2)!important;gap:calc(var(--u)*1.3)}
+  .hm__answer{padding:calc(var(--u)*2) calc(var(--u)*2);gap:calc(var(--u)*1.2)}
+  .hm__label{font-size:calc(var(--u)*1.55)}
+  .hm__answer ul{gap:calc(var(--u)*1.2)}
+  .hm__answer li{font-size:calc(var(--u)*1.75);line-height:1.45;text-wrap:balance}
+  .hm__ok{font-size:calc(var(--u)*1.45)}
+  .hm__cites li{padding:calc(var(--u)*1.1) calc(var(--u)*1.8)}
+  .hm__cites li:nth-child(n+2){display:none}
+  .hm__cites b{font-size:calc(var(--u)*1.6)}
+  .hm__cites small{font-size:calc(var(--u)*1.3)}
+  .hm__cites em{font-size:calc(var(--u)*2.8)}
+  /* ฉาก 4: ไทล์ฟีเจอร์ 2 คอลัมน์ 3 แถว */
+  .hm__feat{gap:calc(var(--u)*1.5)}
+  .hm__fhead{font-size:calc(var(--u)*3.3);line-height:1.2}
+  .hm__feat ul{grid-template-columns:repeat(2,calc(var(--u)*17.2));gap:calc(var(--u)*1)}
+  .hm__tile{padding:calc(var(--u)*.9);gap:calc(var(--u)*.25)}
+  .hm-art{zoom:.86}
+  .hm__tile > b{margin-top:calc(var(--u)*.5);font-size:calc(var(--u)*1.55)}
+  .hm__tile > small{font-size:calc(var(--u)*1.15);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* ฉาก 5: ฉากจบ */
+  .hm__icon{width:calc(var(--u)*11.5);height:calc(var(--u)*11.5)}
+  .hm__tagline{font-size:calc(var(--u)*4.9)}
+  .hm__endsub{font-size:calc(var(--u)*2);line-height:1.4}
+  .hm__endsub span{display:block}
+  .hm__endsub i{display:none}
+  .hm .hm__cta{margin-top:calc(var(--u)*2.6)!important;padding:calc(var(--u)*1.2) calc(var(--u)*3);font-size:calc(var(--u)*2.1)}
+  .hm__today{margin-top:calc(var(--u)*1.3)!important;font-size:calc(var(--u)*1.55)}
 }
-/* มือถือ: กล่องกว้าง ≈ 43.5u → ให้การ์ดที่ตรง (ใบกลาง index 2) หยุดกลางจอ */
-@keyframes hm-row1m{0%{transform:translateX(calc(var(--u)*-70));animation-timing-function:cubic-bezier(.3,.1,.3,1)}30%,100%{transform:translateX(calc(var(--u)*-25.7))}}
+/* มือถือ: การ์ดกว้าง 20u ช่องไฟ 1.3u → ให้การ์ดที่ตรง (ใบกลาง index 2) หยุดกลางกล่อง (กึ่งกลาง ≈ 18.9u) */
+@keyframes hm-row1m{0%{transform:translateX(calc(var(--u)*-80));animation-timing-function:cubic-bezier(.3,.1,.3,1)}30%,100%{transform:translateX(calc(var(--u)*-33.7))}}
 
 /* ข้อความไล่สี (background-clip:text) ระบายสีได้แค่ในกรอบของ element — สระ/วรรณยุกต์ที่ห้อยล่าง (ู ุ ฺ) หรือลอยบนจะขาด
    เพิ่มพื้นที่บน-ล่างให้กรอบ แล้วหักคืนด้วย margin ติดลบ เลย์เอาต์จึงไม่ขยับ */

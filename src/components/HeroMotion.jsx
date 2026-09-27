@@ -221,7 +221,7 @@ export default function HeroMotion() {
       <div className="hm__end" aria-hidden="true">
         <img className="hm__icon" src="/assets/app-icon-352.webp" width="352" height="352" alt="" loading="lazy" decoding="async" />
         <p className="hm__tagline">แอปเดียว <span>เอาอยู่</span></p>
-        <p className="hm__endsub">กฎหมาย · ระบบงานความปลอดภัย · AI ผู้ช่วย ครบในที่เดียว</p>
+        <p className="hm__endsub"><span>กฎหมาย · ระบบงานความปลอดภัย</span><i> · </i><span>AI ผู้ช่วย ครบในที่เดียว</span></p>
         <p className="hm__cta"><span>ทดลองใช้ฟรี 30 วัน</span></p>
         <p className="hm__today">เริ่มได้แล้ววันนี้ · ยกเลิกได้ทุกเมื่อ</p>
       </div>

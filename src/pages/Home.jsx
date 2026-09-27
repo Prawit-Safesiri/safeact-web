@@ -201,7 +201,7 @@ export default function Home() {
       </section>
 
       {/* ─── ANYWHERE ─── */}
-      <section className="section section--alt" aria-labelledby="app-title">
+      <section className="section section--alt section--clip" aria-labelledby="app-title">
         <div className="container">
           <div className="frow frow--flip">
             <div className="frow__media">

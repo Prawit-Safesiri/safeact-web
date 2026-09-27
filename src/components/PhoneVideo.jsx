@@ -60,7 +60,7 @@ export default function PhoneVideo() {
   return (
     <div className="phone">
       <img className="phone__img" src="/assets/app-iphone-hand.webp" srcSet="/assets/app-iphone-hand-640.webp 640w, /assets/app-iphone-hand.webp 1000w"
-        sizes="(min-width: 1376px) 640px, (min-width: 1069px) calc(50vw - 48px), (min-width: 735px) calc(50vw - 36px), (min-width: 503px) 440px, 88vw" width="1000" height="1288" loading="lazy" decoding="async"
+        sizes="(min-width: 1376px) 640px, (min-width: 1069px) calc(50vw - 48px), (min-width: 735px) calc(50vw - 36px), (min-width: 442px) 600px, 136vw" width="1000" height="1288" loading="lazy" decoding="async"
         alt="มือถือ iPhone เปิดแอป SafeAct Club ขณะเลือกกิจกรรมเสี่ยงของกิจการ แล้ว AI คัดกฎหมายที่เกี่ยวข้องให้" />
       <div ref={box} className="phone__screen">
         <video ref={vid} src="/assets/app-screen-720.mp4" poster="/assets/app-screen-720-poster.webp"

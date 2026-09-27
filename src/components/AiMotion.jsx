@@ -55,10 +55,11 @@ export default function AiMotion() {
 
         <div className="aim__answer">
           <p className="aim__label">คำตอบ</p>
-          <p className="aim__text">ลูกจ้างทุกคนต้องฝึกซ้อมดับเพลิงและอพยพหนีไฟพร้อมกัน <b>อย่างน้อยปีละ 1 ครั้ง</b></p>
+          {/* span = กลุ่มคำที่ไม่ควรถูกตัดกลางบนจอมือถือ (จอใหญ่ไม่มีผล) */}
+          <p className="aim__text"><span>ลูกจ้างทุกคนต้องฝึกซ้อมดับเพลิง</span><wbr /><span>และอพยพหนีไฟพร้อมกัน</span> <b>อย่างน้อยปีละ 1 ครั้ง</b></p>
           <p className="aim__cite">
             <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7zM14 3v5h5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /></svg>
-            กฎกระทรวงฯ ป้องกันและระงับอัคคีภัย พ.ศ. 2555 · ข้อ 30
+            <span className="aim__cite-t"><span>กฎกระทรวงฯ ป้องกันและระงับอัคคีภัย</span> <span>พ.ศ. 2555 · ข้อ 30</span></span>
           </p>
           <p className="aim__ok">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" /><path d="M7.5 12.4l3 3 6-6.4" fill="none" stroke="#161617" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -73,7 +74,7 @@ export default function AiMotion() {
         <img className="aim__icon" src="/assets/app-icon-352.webp" width="352" height="352" alt="" loading="lazy" decoding="async" />
         <p className="aim__app">SafeAct Club <span>ผู้ช่วยกฎหมายความปลอดภัย</span></p>
         <p className="aim__head">ทุกคำถามกฎหมาย<br />มีคำตอบในมือคุณ</p>
-        <p className="aim__sub">ติดตั้งแอป SafeAct Club บน iPhone ถามได้ทุกที่ แม้อยู่หน้างาน</p>
+        <p className="aim__sub"><span>ติดตั้งแอป SafeAct Club บน iPhone</span> <span>ถามได้ทุกที่ แม้อยู่หน้างาน</span></p>
         <span className="aim__get">
           <span className="aim__get-lbl">รับ</span>
           <svg className="aim__ring" viewBox="0 0 36 36">
