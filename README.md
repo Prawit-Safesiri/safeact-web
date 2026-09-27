@@ -77,6 +77,8 @@ curl -sI https://safeact.com/pdpa/               # 301 → /privacy/
 curl -s  https://safeact.com/robots.txt
 curl -s  https://safeact.com/sitemap.xml
 ```
+การยืนยันความเป็นเจ้าของกับ Google มี 2 ทาง ใส่ไว้ทั้งคู่ ห้ามลบ: แท็ก `google-site-verification` ใน `index.html` (อยู่ในทุกหน้า) และไฟล์ `public/googleb2f3797a2c209172.html`
+
 จากนั้นที่ Google Search Console: ยืนยันแบบ Domain (DNS) · ส่ง `https://safeact.com/sitemap.xml` · ลบ sitemap ของเว็บเดิม · ตรวจหน้าแรกและหน้าราคาด้วย URL Inspection · ตรวจ JSON-LD ด้วย Rich Results Test (หน้าแรกและ `/features/` จะรายงานรายการ Software App ว่าขาด `offers` และ `aggregateRating`/`review` — เป็นไปตามที่ตั้งใจ เพราะยังไม่มีรีวิวจริงบนหน้าเว็บ ไม่กระทบการเก็บหน้าลงดัชนี และห้ามใส่คะแนนที่ไม่มีอยู่จริง)
 
 ## มาตรฐานที่วางไว้
