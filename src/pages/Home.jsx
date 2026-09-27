@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
-import Media from '../components/Media.jsx';
+import AiMotion from '../components/AiMotion.jsx';
+import PhoneVideo from '../components/PhoneVideo.jsx';
+import HeroMotion from '../components/HeroMotion.jsx';
 import Faq from '../components/Faq.jsx';
 import { PlansWithSwitch } from '../components/Plans.jsx';
 import { FAQ_GENERAL } from '../data/faq.js';
 import { checkoutLink, COMPANY } from '../data/company.js';
-import {
-  IconScale, IconBell, IconDoc, IconChart, IconCap, IconCheck, IconEar, IconSpark, IconUsers,
-  IconShield, IconReceipt, IconLock,
-} from '../components/Icons.jsx';
+import { IconScale, IconBell, IconDoc, IconChart, IconCap, IconCheck, IconEar, IconUsers, IconShield, IconReceipt, IconLock, IconSparkAnim } from '../components/Icons.jsx';
 
 export const LAW_CATEGORIES = [
   'ความปลอดภัยในการทำงาน', 'อาชีวอนามัย', 'สิ่งแวดล้อม', 'วิศวกรรม', 'จราจรและขนส่ง', 'กฎหมายท้องถิ่น',
@@ -23,6 +22,10 @@ export default function Home() {
           <h1 id="hero-title" className="t-hero" style={{ marginTop: 12 }}>
             ทุกกฎหมายความปลอดภัย<br />ที่ธุรกิจต้องรู้ ในที่เดียว
           </h1>
+          <span className="hero__icon-wrap">
+            <span className="hero__icon-shadow" aria-hidden="true" />
+            <img className="hero__icon" src="/assets/app-icon-lg.webp" width="1024" height="1024" alt="ไอคอนแอป SafeAct" fetchPriority="high" />
+          </span>
           <p className="t-sub">
             ติดตาม สรุป และแจ้งเตือนกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน
             พร้อมระบบงานที่ช่วยให้ทีม จป. ทำตามกฎหมายได้ครบ ตรวจสอบได้ ทุกวัน
@@ -31,10 +34,10 @@ export default function Home() {
             <a className="btn" href={checkoutLink('free')}>ทดลองใช้ฟรี 30 วัน</a>
             <Link className="more" to="/pricing/">ดูแผนและราคา</Link>
           </div>
-          <p className="hero__note">เริ่มต้นเพียง ฿100 ต่อเดือน · ยกเลิกได้ทุกเมื่อ · คืนเงินได้ภายใน 14 วัน</p>
+          <p className="hero__note">เริ่มต้นเพียง ฿200 ต่อเดือน · ยกเลิกได้ทุกเมื่อ · คืนเงินได้ภายใน 7 วัน</p>
         </div>
         <div className="container--wide hero__media">
-          <Media kind="video" label="ภาพรวมระบบ SafeAct บน Mac และ iPhone" spec="MP4/H.264 · 2560×1440 · ≤ 20 วินาที · ไม่มีเสียง" ratio="21/9" />
+          <HeroMotion />
         </div>
       </section>
 
@@ -70,11 +73,12 @@ export default function Home() {
         <div className="container">
           <div className="frow">
             <div className="frow__media">
-              <Media label="หน้ารายการอัปเดตกฎหมายรายเดือน" spec="PNG/WebP · 1600×1200" ratio="4/3" />
+              <img className="frow__photo" src="/assets/laws-macbook.jpg" width="1422" height="1024" loading="lazy" decoding="async"
+                alt="เจ้าหน้าที่ความปลอดภัยสวมหมวกนิรภัยเปิดหน้าหมวดกฎหมายไทยของ SafeAct บน MacBook Air" />
             </div>
             <div className="frow__text">
               <p className="t-eyebrow" style={{ marginBottom: 8 }}>อัปเดตกฎหมาย</p>
-              <h2 id="laws-title" className="t-h3">กฎหมาย 6 หมวด<br />จัดเรียงตามงานที่คุณรับผิดชอบ</h2>
+              <h2 id="laws-title" className="t-h3">กฎหมายทุกหมวดหมู่<br />จัดเรียงตามงานที่คุณรับผิดชอบ</h2>
               <p>ค้นหาตามหมวด เดือนที่ประกาศ หรือคำสำคัญ กดติดตามฉบับที่เกี่ยวข้องกับสถานประกอบการ แล้วดูภาพรวมได้จากหน้าเดียว</p>
               <ul className="chips" aria-label="หมวดกฎหมาย">
                 {LAW_CATEGORIES.map((c) => <li key={c}>{c}</li>)}
@@ -99,7 +103,8 @@ export default function Home() {
                 <h3 className="t-h4">วางแผนงานความปลอดภัยทั้งปี</h3>
                 <p>กำหนดกิจกรรม ผู้รับผิดชอบ รายสัปดาห์ และแนบหลักฐาน พร้อมอ้างอิงกฎหมายในแต่ละแถว ส่งออกเป็น CSV ได้</p>
               </div>
-              <Media label="ตาราง Action Plan รายปี" spec="1600×900" ratio="16/9" />
+              <img className="tile__img" src="/assets/action-plan.jpg" width="1500" height="880" loading="lazy" decoding="async"
+                alt="หน้าแผนงานความปลอดภัยรายปี (Safety Action Plan) แสดงสรุปสถานะงานและตาราง 12 เดือน × 4 สัปดาห์" />
             </li>
             <li className="tile tile--wide tile--dark">
               <div className="tile__body">
@@ -107,13 +112,15 @@ export default function Home() {
                 <h3 className="t-h4">เห็นสถานะการปฏิบัติตามกฎหมายทันที</h3>
                 <p>ภาพรวมทั้งองค์กรในหน้าเดียว รู้ว่าเรื่องไหนเสร็จ เรื่องไหนใกล้ครบกำหนด</p>
               </div>
-              <Media dark label="Dashboard Compliance" spec="1600×900" ratio="16/9" />
+              <img className="tile__img" src="/assets/training-dashboard.jpg" width="1500" height="880" loading="lazy" decoding="async"
+                alt="แดชบอร์ดบันทึกการฝึกอบรม แสดงจำนวนพนักงานที่ผ่าน รอ และใกล้หมดอายุการอบรม พร้อมสรุปรายหลักสูตรและการแจ้งเตือน" />
             </li>
             <li className="tile">
               <div className="tile__body">
                 <IconCap className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
                 <h3 className="t-h4">การอบรมพนักงาน</h3>
                 <p>Training Matrix ดูช่องว่างการอบรม แจ้งเตือนใบรับรองใกล้หมดอายุ ส่งออก Excel</p>
+                <Link className="more tile__more" to="/features/#training">เรียนรู้เพิ่มเติม</Link>
               </div>
             </li>
             <li className="tile">
@@ -121,6 +128,7 @@ export default function Home() {
                 <IconCheck className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
                 <h3 className="t-h4">บันทึกงานตรวจรับรอง</h3>
                 <p>เก็บประวัติการตรวจสอบตามกฎหมาย และรับการแจ้งเตือนก่อนถึงรอบตรวจครั้งถัดไป</p>
+                <Link className="more tile__more" to="/features/#inspection">เรียนรู้เพิ่มเติม</Link>
               </div>
             </li>
             <li className="tile">
@@ -128,6 +136,7 @@ export default function Home() {
                 <IconEar className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
                 <h3 className="t-h4">โปรแกรมอนุรักษ์การได้ยิน</h3>
                 <p>แผนที่จุดตรวจวัดเสียง ข้อมูลพนักงาน การทบทวน และรายงานในที่เดียว</p>
+                <Link className="more tile__more" to="/features/#hearing">เรียนรู้เพิ่มเติม</Link>
               </div>
             </li>
             <li className="tile">
@@ -135,6 +144,7 @@ export default function Home() {
                 <IconDoc className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
                 <h3 className="t-h4">คลังเอกสาร WI/SDS</h3>
                 <p>ไฟล์เอกสาร สื่อ ภาพ VDO และสไลด์พรีเซนเทชั่นด้านความปลอดภัย พร้อมใช้งาน</p>
+                <Link className="more tile__more" to="/features/#documents">เรียนรู้เพิ่มเติม</Link>
               </div>
             </li>
             <li className="tile">
@@ -142,6 +152,7 @@ export default function Home() {
                 <IconUsers className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
                 <h3 className="t-h4">ผู้รับเหมาและสมาชิกทีม</h3>
                 <p>จัดการผู้รับเหมา เพิ่มผู้ใช้งานหลายคน และกำหนดสิทธิ์ตามบทบาท</p>
+                <Link className="more tile__more" to="/features/#inspection">เรียนรู้เพิ่มเติม</Link>
               </div>
             </li>
             <li className="tile">
@@ -149,18 +160,19 @@ export default function Home() {
                 <IconChart className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
                 <h3 className="t-h4">Workflow Audit</h3>
                 <p>ติดตามงานตรวจประเมินภายในเป็นขั้นตอน พร้อมบันทึกหลักฐานให้ตรวจสอบย้อนหลังได้</p>
+                <Link className="more tile__more" to="/features/#audit">เรียนรู้เพิ่มเติม</Link>
               </div>
             </li>
             <li className="tile tile--full tile--dark">
               <div className="frow" style={{ gap: 0 }}>
                 <div className="tile__body" style={{ padding: 'clamp(28px,5vw,64px)' }}>
-                  <IconSpark className="props__icon" style={{ margin: '0 0 20px', width: 44, height: 44, color: '#f5f5f7' }} />
+                  <IconSparkAnim className="props__icon" style={{ margin: '0 0 20px', width: 44, height: 44, color: '#f5f5f7', overflow: 'visible' }} />
                   <p className="tile__kicker">AI ผู้ช่วยกฎหมาย</p>
-                  <h3 className="t-h3">ถามเป็นภาษาคน<br />ได้คำตอบพร้อมมาตราอ้างอิง</h3>
-                  <p style={{ marginTop: 12 }}>ถามคำถามเกี่ยวกับกฎหมายความปลอดภัย แนบไฟล์ให้ช่วยสรุป และให้ AI ช่วยร่างแผนงาน โดยทุกคำตอบลิงก์กลับไปยังตัวบทกฎหมาย</p>
+                  <h3 className="t-h3"><span className="ai-lead">ไม่ใช่ AI ทั่วไป</span>รู้จริงเรื่องกฎหมายความปลอดภัย</h3>
+                  <p style={{ marginTop: 12 }}>ฝึกมาเฉพาะด้านความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน และค้นคำตอบจากคลังกฎหมายของ SafeAct โดยตรง ไม่ใช่จากข้อมูลทั่วไปบนอินเทอร์เน็ต ทุกคำตอบระบุมาตราและลิงก์กลับไปยังตัวบท ตรวจสอบได้ทันที ใช้อ้างอิงในงานได้อย่างมั่นใจ</p>
                   <Link className="more" style={{ marginTop: 20 }} to="/features/#ai">เรียนรู้เพิ่มเติม</Link>
                 </div>
-                <Media dark className="ph--flat" label="AI ผู้ช่วยกฎหมาย บน iPhone" spec="1200×1200" ratio="1/1" />
+                <AiMotion />
               </div>
             </li>
           </ul>
@@ -175,7 +187,7 @@ export default function Home() {
         <div className="container">
           <div className="frow frow--flip">
             <div className="frow__media">
-              <Media label="แอป SafeAct Club บน iPhone" spec="PNG โปร่งใส · 1200×1500" ratio="4/5" />
+              <PhoneVideo />
             </div>
             <div className="frow__text">
               <p className="t-eyebrow" style={{ marginBottom: 8 }}>เว็บ + iPhone</p>
@@ -199,7 +211,7 @@ export default function Home() {
           </header>
           <ul className="stats">
             <li><strong>30 วัน</strong><span>ทดลองใช้ฟรี</span></li>
-            <li><strong>14 วัน</strong><span>รับประกันคืนเงิน</span></li>
+            <li><strong>7 วัน</strong><span>รับประกันคืนเงิน</span></li>
             <li><strong>6 หมวด</strong><span>กฎหมายที่ติดตาม</span></li>
             <li><strong>8 ช่องทาง</strong><span>ชำระเงิน</span></li>
           </ul>

@@ -1,16 +1,16 @@
-// แผนบริการ — คัดลอกตรงจากระบบสมาชิกจริง
-// safeact-connect-hub/src/lib/plans.ts (ชุดเดียวกับตาราง plans ใน Supabase ที่แอป iOS ดึงไปแสดง)
-// ราคาเป็นเงินบาท ยังไม่รวม VAT 7% (ตามข้อกำหนดการใช้งาน ข้อ 3 และ CheckoutView.swift)
+// แผนบริการ — ซิงก์จากตาราง plans ใน Supabase ของระบบสมาชิกจริง (แหล่งข้อมูลที่หน้าราคา/ชำระเงินของแอปใช้ผ่าน usePlans)
+// ⚠ safeact-connect-hub/src/lib/plans.ts เป็นแค่ค่าสำรอง (fallback) ไม่ใช่ราคาจริง — ราคาจริงแก้ได้ที่ /admin/plans ในแอป
+// ซิงก์ล่าสุด: 27 ก.ย. 2569 · ราคาเป็นเงินบาท ยังไม่รวม VAT 7%
 export const VAT_RATE = 0.07;
 
 export const PLANS = [
   {
     key: 'free',
     name: 'Free',
-    subtitle: 'ทดลองใช้งาน 30 วัน',
+    subtitle: 'ครบ 30 วันบัญชีจะถูกระงับ',
     monthly: 0,
     yearly: 0,
-    features: ['อัปเดตกฎหมาย', 'รายการกฎหมายที่ติดตาม', 'ใช้งานเมนูพื้นฐาน', 'หลังครบ 30 วันบัญชีจะถูกระงับ'],
+    features: ['อัปเดตกฎหมาย', 'อัปเดตมาตรฐานสากล', 'รายการกฎหมายที่ติดตาม', 'ใช้งานเมนูพื้นฐาน'],
     badge: 'ทดลองฟรี',
     cta: 'เริ่มทดลองฟรี',
   },
@@ -18,9 +18,9 @@ export const PLANS = [
     key: 'student',
     name: 'Student',
     subtitle: 'เฉพาะนิสิต และ นักศึกษา',
-    monthly: 100,
-    yearly: 1000,
-    features: ['อัปเดตกฎหมาย', 'คลังเอกสารความปลอดภัย', 'ส่วนลดสินค้าและบริการ', 'โมบายแอพแจ้งเตือน'],
+    monthly: 200,
+    yearly: 1900,
+    features: ['อัปเดตกฎหมาย', 'อัปเดตมาตรฐานสากล', 'คลังดาวน์โหลดเอกสาร', 'Mobile app แจ้งเตือน'],
     cta: 'เลือกแผนนี้',
   },
   {
@@ -28,17 +28,17 @@ export const PLANS = [
     name: 'Basic',
     subtitle: 'สำหรับบุคคลและทีมเล็ก',
     monthly: 250,
-    yearly: 2500,
-    features: ['ทุกอย่างใน Student', 'ระบบบันทึกการฝึกอบรม', 'ระบบจัดการผู้รับเหมา', 'แจ้งเตือน'],
+    yearly: 3500,
+    features: ['ทุกอย่างใน Student', 'ระบบ Report record', 'ระบบ Action plan', 'การตั้งค่าขั้นสูง', 'ส่วนลด ร้านค้าที่ร่วมรายการบนแพลตฟอร์ม'],
     cta: 'เลือกแผนนี้',
   },
   {
     key: 'business',
     name: 'Business',
-    subtitle: 'สำหรับ SME และ โรงงาน',
+    subtitle: 'สำหรับ SME และ โรงงานอุตสาหกรรม',
     monthly: 400,
-    yearly: 4000,
-    features: ['ทุกอย่างใน Basic', 'Dashboard Compliance', 'รองรับผู้ใช้งานหลายคน', 'Workflow Audit', 'AI ผู้ช่วยกฎหมาย'],
+    yearly: 5500,
+    features: ['ทุกอย่างใน Basic', 'Dashboard มืออาชีพ', 'ระบบ สุขภาพพนักงาน', 'ระบบ ผู้รับเหมา', 'ระบบ Work Permit', 'Workflow Audit', 'AI ผู้ช่วยกฎหมาย', 'แจ้งเตือนรองรับแบบทีม'],
     featured: true,
     badge: 'ได้รับความนิยม',
     cta: 'เลือกแผนนี้',
@@ -49,37 +49,43 @@ export const PLANS = [
     subtitle: 'สำหรับองค์กรหลายสาขา',
     monthly: null,
     yearly: null,
-    features: ['ทุกอย่างใน Business', 'รองรับหลายสาขา', 'เชื่อมต่อ HR / LMS', 'ที่ปรึกษาเฉพาะองค์กร', 'SLA การตอบสนอง'],
+    features: ['ทุกอย่างใน Business', 'รองรับหลายสาขา', 'รองรับการทำงานแบบทีม', 'เชื่อมต่อ HR / LMS', 'ที่ปรึกษาเฉพาะองค์กร', 'เชื่อมต่อ API', 'ฝ่าย Support ส่วนตัว'],
     cta: 'ติดต่อทีมขาย',
   },
 ];
 
-// ตารางเปรียบเทียบ: แต่ละแถวระบุแผนแรกที่ได้สิทธิ์ (สิทธิ์สะสมขึ้นไปตามลำดับแผน)
+// ตารางเปรียบเทียบ: แต่ละแถวระบุแผนแรกที่ได้สิทธิ์ (สิทธิ์สะสมขึ้นไปตามลำดับแผน) — สร้างจาก features ของแต่ละแผนด้านบน
 const ORDER = PLANS.map((p) => p.key);
 export const COMPARE = [
-  { group: 'กฎหมาย', rows: [
+  { group: 'กฎหมายและมาตรฐาน', rows: [
     ['อัปเดตกฎหมาย', 'free'],
+    ['อัปเดตมาตรฐานสากล', 'free'],
     ['รายการกฎหมายที่ติดตาม', 'free'],
-    ['โมบายแอพแจ้งเตือน', 'student'],
-    ['ระบบแจ้งเตือน', 'basic'],
+    ['Mobile app แจ้งเตือน', 'student'],
     ['AI ผู้ช่วยกฎหมาย', 'business'],
+    ['แจ้งเตือนรองรับแบบทีม', 'business'],
   ]},
   { group: 'เอกสารและสิทธิพิเศษ', rows: [
-    ['คลังเอกสารความปลอดภัย', 'student'],
-    ['ส่วนลดสินค้าและบริการ', 'student'],
+    ['คลังดาวน์โหลดเอกสาร', 'student'],
+    ['ส่วนลด ร้านค้าที่ร่วมรายการบนแพลตฟอร์ม', 'basic'],
   ]},
   { group: 'ระบบงานความปลอดภัย', rows: [
-    ['ระบบบันทึกการฝึกอบรม', 'basic'],
-    ['ระบบจัดการผู้รับเหมา', 'basic'],
-    ['Dashboard Compliance', 'business'],
+    ['ระบบ Report record', 'basic'],
+    ['ระบบ Action plan', 'basic'],
+    ['การตั้งค่าขั้นสูง', 'basic'],
+    ['Dashboard มืออาชีพ', 'business'],
+    ['ระบบ สุขภาพพนักงาน', 'business'],
+    ['ระบบ ผู้รับเหมา', 'business'],
+    ['ระบบ Work Permit', 'business'],
     ['Workflow Audit', 'business'],
   ]},
   { group: 'องค์กร', rows: [
-    ['รองรับผู้ใช้งานหลายคน', 'business'],
     ['รองรับหลายสาขา', 'enterprise'],
+    ['รองรับการทำงานแบบทีม', 'enterprise'],
     ['เชื่อมต่อ HR / LMS', 'enterprise'],
     ['ที่ปรึกษาเฉพาะองค์กร', 'enterprise'],
-    ['SLA การตอบสนอง', 'enterprise'],
+    ['เชื่อมต่อ API', 'enterprise'],
+    ['ฝ่าย Support ส่วนตัว', 'enterprise'],
   ]},
 ];
 export const hasFeature = (planKey, fromKey) => ORDER.indexOf(planKey) >= ORDER.indexOf(fromKey);

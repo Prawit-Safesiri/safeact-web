@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { COMPANY, fullAddress, appLink } from '../data/company.js';
 import { metaFor } from '../seo.js';
 import LocalNav from './LocalNav.jsx';
+import { initStaggered } from '../staggered.js';
 
 const NAV = [
   ['/features/', 'ฟีเจอร์'],
@@ -96,7 +97,7 @@ function Footer({ pathname }) {
           <ol>
             <li>ราคาทั้งหมดเป็นเงินบาท ยังไม่รวมภาษีมูลค่าเพิ่ม 7% ยอดชำระคำนวณจากราคาแผนในระบบ ณ เวลาทำรายการ</li>
             <li>แผน Free ทดลองใช้ได้ 30 วัน อาจต้องยืนยันบัตรโดยไม่มีการเรียกเก็บเงิน เมื่อครบกำหนดบัญชีจะถูกจำกัดการใช้งานจนกว่าจะเลือกแผนแบบชำระเงิน</li>
-            <li>ขอคืนเงินเต็มจำนวนได้ภายใน 14 วันนับจากวันชำระเงินครั้งแรก ตามเงื่อนไขใน <Link to="/refund-policy/">นโยบายการยกเลิกและการคืนเงิน</Link></li>
+            <li>ขอคืนเงินเต็มจำนวนได้ภายใน 7 วันนับจากวันชำระเงินครั้งแรก ตามเงื่อนไขใน <Link to="/refund-policy/">นโยบายการยกเลิกและการคืนเงิน</Link></li>
             <li>ข้อมูลกฎหมายบน SafeAct เป็นสรุปเพื่อความสะดวก โปรดตรวจสอบกับแหล่งต้นทางอย่างเป็นทางการที่แนบไว้ก่อนนำไปใช้อ้างอิงทางกฎหมาย</li>
           </ol>
         </div>
@@ -172,6 +173,8 @@ export default function Layout() {
     if (hash) document.getElementById(hash.slice(1))?.scrollIntoView();
     else window.scrollTo(0, 0);
   }, [pathname, hash]);
+  // กล่องใน section ทยอยเฟดขึ้นตอนเลื่อนถึง แบบ StaggeredFadeIn ของ apple.com
+  useEffect(() => initStaggered(), [pathname]);
 
   return (
     <>

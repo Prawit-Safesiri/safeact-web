@@ -3,14 +3,14 @@
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--ln-h) + 12px)}
 body{
   margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
-  font-size:var(--t-body);line-height:var(--lh-body);font-weight:400;
+  font-size:var(--t-body);line-height:var(--lh-body);font-weight:400;letter-spacing:0;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   font-synthesis:none;text-rendering:optimizeLegibility;
 }
 img,svg,video{max-width:100%;display:block}
 ul,ol{margin:0;padding:0}
 p,h1,h2,h3,h4,h5,figure,dl,dd{margin:0}
-h1,h2,h3,h4,h5{font-weight:600;color:var(--ink);text-wrap:balance}
+h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:600;color:var(--ink);text-wrap:balance}
 p{text-wrap:pretty}
 a{color:var(--link);text-decoration:none}
 a:hover{text-decoration:underline}
@@ -28,22 +28,23 @@ table{border-collapse:collapse}
 .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 
 /* ---------- ตัวอักษร ---------- */
-.t-hero{font-size:var(--t-hero);line-height:var(--lh-hero);letter-spacing:-.015em;font-weight:600}
-.t-h1{font-size:var(--t-h1);line-height:var(--lh-h1);letter-spacing:-.005em;font-weight:600}
-.t-h2{font-size:var(--t-h2);line-height:var(--lh-h2);letter-spacing:-.003em;font-weight:600}
-.t-h3{font-size:var(--t-h3);line-height:var(--lh-h3);letter-spacing:.004em;font-weight:600}
-.t-h4{font-size:var(--t-h4);line-height:var(--lh-h4);letter-spacing:.009em;font-weight:600}
-.t-sub{font-size:var(--t-sub);line-height:var(--lh-sub);letter-spacing:.007em;font-weight:400}
-.t-lead{font-size:var(--t-lead);line-height:var(--lh-lead);letter-spacing:.011em}
+.t-hero,.t-h1,.t-h2,.t-h3,.t-h4,.t-sub,.t-lead,.t-eyebrow{font-family:var(--font-display)}
+.t-hero{font-size:var(--t-hero);line-height:var(--lh-hero);letter-spacing:var(--ls-hero);font-weight:600}
+.t-h1{font-size:var(--t-h1);line-height:var(--lh-h1);letter-spacing:var(--ls-h1);font-weight:600}
+.t-h2{font-size:var(--t-h2);line-height:var(--lh-h2);letter-spacing:var(--ls-h2);font-weight:600}
+.t-h3{font-size:var(--t-h3);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);font-weight:600}
+.t-h4{font-size:var(--t-h4);line-height:var(--lh-h4);letter-spacing:var(--ls-h4);font-weight:600}
+.t-sub{font-size:var(--t-sub);line-height:var(--lh-sub);letter-spacing:var(--ls-sub);font-weight:400}
+.t-lead{font-size:var(--t-lead);line-height:var(--lh-lead);letter-spacing:var(--ls-lead)}
 .t-small{font-size:var(--t-small);line-height:var(--lh-small)}
-.t-eyebrow{font-size:var(--t-lead);line-height:1.2;font-weight:600;color:var(--ink-2)}
+.t-eyebrow{font-size:var(--t-lead);line-height:var(--lh-lead);letter-spacing:var(--ls-lead);font-weight:600;color:var(--ink-2)}
 .muted{color:var(--ink-2)}
 
-/* ---------- ปุ่ม (สเปก .button ของ Apple: pill 980px) ---------- */
+/* ---------- ปุ่ม (สเปก .button ของ Apple: pill 980px · 17px/1.17648/-0.022em คงเดิมในภาษาไทย) ---------- */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:6px;
   min-height:44px;padding:11px 22px;border-radius:var(--radius-pill);border:1px solid transparent;
-  font-size:17px;line-height:1.176;font-weight:400;letter-spacing:-.01em;white-space:nowrap;
+  font-size:17px;line-height:1.17648;font-weight:400;letter-spacing:-.022em;white-space:nowrap;
   background:var(--btn);color:#fff;transition:background-color .2s var(--ease);
 }
 .btn:hover{background:var(--btn-hover);text-decoration:none}
@@ -52,7 +53,7 @@ table{border-collapse:collapse}
 .btn--secondary:hover{background:var(--btn);color:#fff}
 .btn--dark{background:var(--ink)}
 .btn--dark:hover{background:#000}
-.btn--sm{min-height:28px;padding:4px 12px;font-size:12px;line-height:1.33}
+.btn--sm{min-height:32px;padding:6px 16px;font-size:14px;line-height:var(--lh-14);letter-spacing:0}
 .btn--block{width:100%}
 
 /* ลิงก์ลูกศร › แบบ Apple */

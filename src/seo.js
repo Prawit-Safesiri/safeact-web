@@ -107,8 +107,8 @@ export const ROUTES = {
     jsonLd: () => [org, crumbs([{ name: 'ฟีเจอร์', path: '/features/' }])],
   },
   '/pricing/': {
-    title: 'แผนและราคา — เริ่มต้น ฿100 ต่อเดือน | SafeAct',
-    description: 'เปรียบเทียบแผน SafeAct: Free ทดลอง 30 วัน, Student, Basic, Business และ Enterprise ชำระรายเดือนหรือรายปี ราคายังไม่รวม VAT 7% คืนเงินได้ภายใน 14 วัน',
+    title: 'แผนและราคา — เริ่มต้น ฿200 ต่อเดือน | SafeAct',
+    description: 'เปรียบเทียบแผน SafeAct: Free ทดลอง 30 วัน, Student, Basic, Business และ Enterprise ชำระรายเดือนหรือรายปี ราคายังไม่รวม VAT 7% คืนเงินได้ภายใน 7 วัน',
     priority: '0.9',
     jsonLd: () => [org, product, faqPage(FAQ_BILLING), crumbs([{ name: 'แผนและราคา', path: '/pricing/' }])],
   },

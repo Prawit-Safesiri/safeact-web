@@ -3,10 +3,32 @@
    (ชุด --sk-* / typography-* / viewport-content ที่ใช้ร่วมกันทุกหน้า apple.com
    รวมถึง business.apple.com) + สเกลตัวอักษรไทยที่วัดจาก apple.com/th ในโปรเจ็ค safesiri
    ========================================================= */
+/* ── ฟอนต์ไทย ──
+   apple.com ใช้ SF Pro TH ซึ่งเป็นเว็บฟอนต์เฉพาะ apple.com (สัญญาอนุญาตของ Apple ไม่ให้เว็บอื่นนำไปใช้)
+   จึงใช้ Sukhumvit Set — ฟอนต์ไทยของ Apple ที่ติดมากับ macOS / iOS / iPadOS ทุกเครื่อง
+   • Safari และทุกเบราว์เซอร์บน iPhone/iPad (เอนจิน WebKit + Core Text) → Sukhumvit Set
+   • Chrome/Edge/Firefox และ Windows/Android → Anuphan (เว็บฟอนต์)
+     เพราะ Chrome ไม่จัดตำแหน่งสระบนของ Sukhumvit Set (สระ ี ั ่ ทับหาง ป ฝ ฟ) — ทดสอบแล้วแก้ด้วย CSS ไม่ได้
+   ทั้งสองแบบจำกัด unicode-range เฉพาะไทย ให้อักษรละตินยังเป็น SF ของระบบ */
+@font-face{font-family:"Apple Thai";font-weight:100;src:local("Sukhumvit Set Thin"),local("SukhumvitSet-Thin");unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:"Apple Thai";font-weight:300;src:local("Sukhumvit Set Light"),local("SukhumvitSet-Light");unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:"Apple Thai";font-weight:400;src:local("Sukhumvit Set Text"),local("SukhumvitSet-Text");unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:"Apple Thai";font-weight:500;src:local("Sukhumvit Set Medium"),local("SukhumvitSet-Medium");unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:"Apple Thai";font-weight:600;src:local("Sukhumvit Set Semi Bold"),local("SukhumvitSet-SemiBold");unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{font-family:"Apple Thai";font-weight:700;src:local("Sukhumvit Set Bold"),local("SukhumvitSet-Bold");unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
+@font-face{
+  font-family:"SafeAct Thai";font-style:normal;font-weight:100 700;font-display:swap;
+  src:url(https://fonts.gstatic.com/s/anuphan/v6/2sDeZGxYgY7LkLT0mX4Dam--C70lZQ.woff2) format("woff2");
+  unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC;
+}
 :root{
-  /* ฟอนต์: SF Pro TH → Sukhumvit Set (ฟอนต์ไทยของระบบ Apple) → Noto Sans Thai */
-  --font:"SF Pro TH","SF Pro Text","Sukhumvit Set",-apple-system,BlinkMacSystemFont,
-         "Noto Sans Thai","Helvetica Neue",Helvetica,Arial,sans-serif;
+  /* ฟอนต์ — ลำดับเดียวกับ apple.com/th ([lang]:lang(th)) · Apple ใช้ "Text" กับขนาด ≤17px และ "Display" กับ ≥19px
+     ฟอนต์ไทยต้องมาก่อน system-ui เพราะ Chrome เติมอักษรไทยให้ system-ui เอง (Thonburi) */
+  --font-thai:"SafeAct Thai";
+  --font-fallback:var(--font-thai),-apple-system,BlinkMacSystemFont,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --font-text:"SF Pro TH","SF Pro Text","SF Pro Icons",var(--font-fallback);
+  --font-display:"SF Pro TH","SF Pro Display","SF Pro Icons",var(--font-fallback);
+  --font:var(--font-text);
 
   /* สี — ค่าเดียวกับ --sk-* ของ Apple */
   --ink:#1d1d1f;
@@ -34,17 +56,48 @@
   /* ระยะ section (Apple: 140 / 100 / 80) */
   --sec-pad:140px;
 
-  /* สเกลหัวเรื่อง */
-  --t-hero:80px;   --lh-hero:1.05;
-  --t-h1:56px;     --lh-h1:1.07;
-  --t-h2:48px;     --lh-h2:1.08;
-  --t-h3:32px;     --lh-h3:1.125;
-  --t-h4:24px;     --lh-h4:1.25;
-  --t-sub:28px;    --lh-sub:1.29;   /* hero subhead */
-  --t-lead:21px;   --lh-lead:1.38;
-  --t-body:17px;   --lh-body:1.53;  /* ภาษาไทยต้องการ line-height มากกว่าอังกฤษ (1.47) */
-  --t-small:14px;  --lh-small:1.43;
-  --t-foot:12px;   --lh-foot:1.5;
+  /* ── สเกลตัวอักษร: วัดจากคลาส typography-* ของ apple.com/th (ก.ย. 2026) ──
+     line-height = ค่า :lang(th) ของ Apple (ไทยสูงกว่าอังกฤษ)
+     letter-spacing: ขนาด Display (≥19px) ใช้ค่าเดียวกับอังกฤษ · ขนาด Text (≤17px) Apple ตั้งเป็น 0 สำหรับไทย
+     ขนาด  line-height(th)  letter-spacing
+       96     1.34375        -0.015em
+       80     1.35           -0.015em
+       64     1.34375        -0.009em
+       56     1.33929        -0.005em
+       48     1.33349        -0.003em
+       40     1.35            0
+       32     1.375           0.004em
+       28     1.39286         0.007em
+       24     1.375           0.009em
+       21     1.381           0.011em
+       19     1.36844         0.012em
+       17     1.35296         0
+       14     1.35718         0
+       12     1.33337         0          */
+  --lh-80:1.35;    --ls-80:-.015em;
+  --lh-64:1.34375; --ls-64:-.009em;
+  --lh-48:1.33349; --ls-48:-.003em;
+  --lh-40:1.35;    --ls-40:0;
+  --lh-32:1.375;   --ls-32:.004em;
+  --lh-28:1.39286; --ls-28:.007em;
+  --lh-24:1.375;   --ls-24:.009em;
+  --lh-21:1.381;   --ls-21:.011em;
+  --lh-19:1.36844; --ls-19:.012em;
+  --lh-17:1.35296;
+  --lh-14:1.35718;
+  --lh-12:1.33337;
+
+  /* บทบาท → คลาสของ Apple (ขนาดใหญ่ / ≤1068px / ≤734px) */
+  --t-hero:80px;  --lh-hero:var(--lh-80); --ls-hero:var(--ls-80);   /* typography-headline-super   80/64/48 */
+  --t-h1:64px;    --lh-h1:var(--lh-64);   --ls-h1:var(--ls-64);     /* typography-headline-elevated 64/48/40 */
+  --t-h2:48px;    --lh-h2:var(--lh-48);   --ls-h2:var(--ls-48);     /* typography-headline          48/40/32 */
+  --t-h3:32px;    --lh-h3:var(--lh-32);   --ls-h3:var(--ls-32);     /* typography-callout           32/28/24 */
+  --t-h4:24px;    --lh-h4:var(--lh-24);   --ls-h4:var(--ls-24);     /* typography-label             24/21/21 */
+  --t-sub:28px;   --lh-sub:var(--lh-28);  --ls-sub:var(--ls-28);    /* tile-subhead (400)           28/24/21 */
+  --t-lead:21px;  --lh-lead:var(--lh-21); --ls-lead:var(--ls-21);   /* typography-intro             21/21/19 */
+  --t-body:17px;  --lh-body:var(--lh-17);                           /* typography-body */
+  --t-small:14px; --lh-small:var(--lh-14);                          /* typography-body-reduced */
+  --t-foot:12px;  --lh-foot:var(--lh-12);                           /* typography-caption */
 
   --radius-tile:28px;
   --radius-card:18px;
@@ -55,17 +108,30 @@
 
   --ease:cubic-bezier(.4,0,.6,1);
 }
+/* Safari และทุกเบราว์เซอร์บน iPhone/iPad: ใช้ Sukhumvit Set ของ Apple (Chrome ไม่รองรับ -apple-system-body) */
+@supports (font:-apple-system-body){
+  :root{--font-thai:"Apple Thai","SafeAct Thai"}
+}
 @media (max-width:1068px){
   :root{
     --content:692px; --sec-pad:100px;
-    --t-hero:64px; --t-h1:48px; --t-h2:40px; --t-h3:28px; --t-sub:24px; --t-lead:19px;
+    --t-hero:64px; --lh-hero:var(--lh-64); --ls-hero:var(--ls-64);
+    --t-h1:48px;   --lh-h1:var(--lh-48);   --ls-h1:var(--ls-48);
+    --t-h2:40px;   --lh-h2:var(--lh-40);   --ls-h2:var(--ls-40);
+    --t-h3:28px;   --lh-h3:var(--lh-28);   --ls-h3:var(--ls-28);
+    --t-h4:21px;   --lh-h4:var(--lh-21);   --ls-h4:var(--ls-21);
+    --t-sub:24px;  --lh-sub:var(--lh-24);  --ls-sub:var(--ls-24);
   }
 }
 @media (max-width:734px){
   :root{
     --content:87.5vw; --sec-pad:80px; --gutter:16px;
-    --t-hero:44px; --lh-hero:1.1; --t-h1:36px; --lh-h1:1.11; --t-h2:32px; --t-h3:24px;
-    --t-h4:21px; --t-sub:21px; --t-lead:17px; --t-body:17px;
+    --t-hero:48px; --lh-hero:var(--lh-48); --ls-hero:var(--ls-48);
+    --t-h1:40px;   --lh-h1:var(--lh-40);   --ls-h1:var(--ls-40);
+    --t-h2:32px;   --lh-h2:var(--lh-32);   --ls-h2:var(--ls-32);
+    --t-h3:24px;   --lh-h3:var(--lh-24);   --ls-h3:var(--ls-24);
+    --t-sub:21px;  --lh-sub:var(--lh-21);  --ls-sub:var(--ls-21);
+    --t-lead:19px; --lh-lead:var(--lh-19); --ls-lead:var(--ls-19);
     --radius-tile:18px;
   }
 }

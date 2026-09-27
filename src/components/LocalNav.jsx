@@ -9,11 +9,11 @@ const ITEMS = [
   ['/contact/', 'ติดต่อทีมขาย'],
 ];
 
-export default function LocalNav({ title = 'SafeAct' }) {
+export default function LocalNav() {
   return (
     <nav className="ln" aria-label="เมนูบริการ SafeAct">
       <div className="container ln__inner">
-        <Link className="ln__title" to="/">{title}</Link>
+        <Link className="ln__title" to="/"><img className="ln__mark" src="/assets/safeact-mark.svg" alt="SafeAct หน้าแรก" width="832" height="928" /></Link>
         <div className="ln__right">
           <ul className="ln__menu">
             {ITEMS.map(([to, label]) => (

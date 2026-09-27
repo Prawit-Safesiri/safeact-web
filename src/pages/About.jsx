@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import Media from '../components/Media.jsx';
 import { COMPANY, fullAddress } from '../data/company.js';
 
 export default function About() {
@@ -11,7 +10,8 @@ export default function About() {
           <p className="t-sub">เราเชื่อว่าทุกสถานประกอบการควรเข้าถึงกฎหมายความปลอดภัยได้ง่าย ถูกต้อง และทันเวลา เพื่อให้คนทำงานกลับบ้านอย่างปลอดภัยทุกวัน</p>
         </div>
         <div className="container--wide hero__media">
-          <Media label="ทีมงาน SafeAct" spec="JPG/WebP · 2560×1097" ratio="21/9" />
+          <img className="about-hero" src="/assets/about-team.webp" width="1888" height="833" fetchPriority="high"
+            alt="เจ้าหน้าที่ความปลอดภัยสองคนสวมหมวกนิรภัยและแว่นตานิรภัย ดูข้อมูลบนแท็บเล็ตในโรงงาน" />
         </div>
       </section>
 
@@ -23,7 +23,7 @@ export default function About() {
               <p>{COMPANY.nameTh} จดทะเบียนจัดตั้งเมื่อวันที่ 6 สิงหาคม 2568 ประกอบกิจการฝึกอบรม ให้ความรู้ ให้คำปรึกษา และพัฒนาบุคลากรด้านความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน ทั้งภายในและภายนอกสถานประกอบการ</p>
               <p style={{ marginTop: 14 }}>SafeAct คือบริการสมาชิกออนไลน์ของเรา ที่รวบรวม สรุป และแจ้งข้อมูลกฎหมายพร้อมแหล่งอ้างอิงและวันมีผลใช้บังคับ เพื่อช่วยให้ลูกค้าติดตามกฎหมายที่เกี่ยวข้องได้อย่างต่อเนื่อง</p>
             </div>
-            <div className="frow__media"><Media label="สำนักงาน SafeAct" spec="1600×1200" ratio="4/3" /></div>
+            <div className="frow__media about-icon"><img src="/assets/app-icon-lg.webp" width="1024" height="1024" alt="ไอคอนแอป SafeAct" loading="lazy" decoding="async" /></div>
           </div>
         </div>
       </section>

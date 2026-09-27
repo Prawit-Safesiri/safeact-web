@@ -4,6 +4,9 @@ import { PLANS, COMPARE, hasFeature, baht, withVat, yearlySaving } from '../data
 import { checkoutLink } from '../data/company.js';
 import { Tick, Dash } from './Icons.jsx';
 
+// เปอร์เซ็นต์ประหยัดสูงสุดของรายปีเทียบรายเดือน×12 (คำนวณจากราคาจริง ไม่ใส่ตัวเลขตายตัว)
+const MAX_SAVE = Math.max(0, ...PLANS.filter((p) => p.monthly && p.yearly).map((p) => Math.floor((yearlySaving(p) / (p.monthly * 12)) * 100)));
+
 export function BillingSwitch({ cycle, onChange }) {
   const id = useId();
   return (
@@ -11,11 +14,11 @@ export function BillingSwitch({ cycle, onChange }) {
       <fieldset className="seg" style={{ border: 0, margin: 0 }}>
         <legend className="visually-hidden">รอบการชำระเงิน</legend>
         <input type="radio" id={`${id}-y`} name={`${id}-cycle`} checked={cycle === 'yearly'} onChange={() => onChange('yearly')} />
-        <label htmlFor={`${id}-y`}>รายปี<small>ประหยัดกว่า ~17%</small></label>
+        <label htmlFor={`${id}-y`}>รายปี<small>{MAX_SAVE > 0 ? `ประหยัดสูงสุด ${MAX_SAVE}%` : '\u00a0'}</small></label>
         <input type="radio" id={`${id}-m`} name={`${id}-cycle`} checked={cycle === 'monthly'} onChange={() => onChange('monthly')} />
         <label htmlFor={`${id}-m`}>รายเดือน<small>&nbsp;</small></label>
       </fieldset>
-      <p>ราคายังไม่รวม VAT 7% · ไม่ต่ออายุอัตโนมัติ · คืนเงินได้ภายใน 14 วัน</p>
+      <p>ราคายังไม่รวม VAT 7% · ไม่ต่ออายุอัตโนมัติ · คืนเงินได้ภายใน 7 วัน</p>
     </div>
   );
 }
@@ -55,7 +58,7 @@ function PlanCard({ plan, cycle, headingLevel: H = 'h3' }) {
         </a>
       )}
       <ul className="checks">
-        {plan.features.map((f) => <li key={f} className={f.startsWith('หลังครบ') ? 'is-warn' : ''}>{f}</li>)}
+        {plan.features.map((f) => <li key={f}>{f}</li>)}
       </ul>
     </li>
   );

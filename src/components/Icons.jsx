@@ -11,6 +11,16 @@ export const IconChart = (p) => <I {...p}><g {...P}><path d="M6 42h36M12 36V24M2
 export const IconCap = (p) => <I {...p}><g {...P}><path d="M4 18l20-9 20 9-20 9z"/><path d="M12 22v10c4 4 20 4 24 0V22M44 18v12"/></g></I>;
 export const IconEar = (p) => <I {...p}><g {...P}><path d="M16 20a10 10 0 0 1 20 0c0 7-7 8-7 15a6 6 0 0 1-11 2"/><path d="M22 20a4 4 0 0 1 8 0c0 3-3 4-3 6"/></g></I>;
 export const IconCheck = (p) => <I {...p}><g {...P}><rect x="8" y="6" width="32" height="38" rx="4"/><path d="M18 6v4h12V6M16 22l3 3 6-6M16 34l3 3 6-6M30 23h4M30 35h4"/></g></I>;
+// ประกายเคลื่อนไหว (ไทล์ AI) — แยกดาวเป็นชิ้นให้ CSS ขยับทีละดวง (.spark-anim ใน components.css)
+export const IconSparkAnim = ({ className = '', ...p }) => (
+  <I className={`spark-anim ${className}`} {...p}>
+    <g {...P}>
+      <path className="spark-anim__big" d="M24 6l3.5 10.5L38 20l-10.5 3.5L24 34l-3.5-10.5L10 20l10.5-3.5z" />
+      <path className="spark-anim__small" d="M38 32l1.5 4.5L44 38l-4.5 1.5L38 44l-1.5-4.5L32 38l4.5-1.5z" />
+      <path className="spark-anim__tiny" d="M10 35l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" />
+    </g>
+  </I>
+);
 export const IconSpark = (p) => <I {...p}><g {...P}><path d="M24 6l3.5 10.5L38 20l-10.5 3.5L24 34l-3.5-10.5L10 20l10.5-3.5zM38 32l1.5 4.5L44 38l-4.5 1.5L38 44l-1.5-4.5L32 38l4.5-1.5z"/></g></I>;
 export const IconUsers = (p) => <I {...p}><g {...P}><circle cx="18" cy="16" r="6"/><path d="M6 40c0-7 5-12 12-12s12 5 12 12"/><circle cx="34" cy="18" r="5"/><path d="M32 28c6 0 10 4 10 10"/></g></I>;
 export const IconPhone = (p) => <I {...p}><g {...P}><rect x="13" y="4" width="22" height="40" rx="5"/><path d="M21 8h6"/></g></I>;

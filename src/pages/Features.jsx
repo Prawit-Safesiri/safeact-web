@@ -1,7 +1,14 @@
 import { Link } from 'react-router-dom';
-import Media from '../components/Media.jsx';
+import AiMotion from '../components/AiMotion.jsx';
 import { checkoutLink } from '../data/company.js';
 import { LAW_CATEGORIES } from './Home.jsx';
+
+// ภาพหน้าจอจริงจากแอป SafeAct (safeact-connect-hub) · เรนเดอร์ 2x · public/assets/features/
+function Shot({ name, alt, hero = false }) {
+  return hero
+    ? <img className="shot shot--hero" src={`/assets/features/${name}.webp`} width="2880" height="1234" alt={alt} fetchPriority="high" />
+    : <img className="shot" src={`/assets/features/${name}.webp`} width="2320" height="1740" alt={alt} loading="lazy" decoding="async" />;
+}
 
 function Row({ id, eyebrow, title, body, points, media, flip, plan }) {
   return (
@@ -31,7 +38,7 @@ export default function Features() {
           </div>
         </div>
         <div className="container--wide hero__media">
-          <Media kind="video" label="สาธิตการใช้งานฟีเจอร์หลัก" spec="MP4/H.264 · 2560×1440" ratio="21/9" />
+          <Shot hero name="hero" alt="หน้า Hub กฎหมายของ SafeAct: ค้นหากฎหมายและมาตรฐาน พร้อมการ์ดกฎหมายใหม่แต่ละเดือน" />
         </div>
       </section>
 
@@ -45,7 +52,7 @@ export default function Features() {
             eyebrow="อัปเดตกฎหมาย" title="กฎหมายใหม่ทุกเดือน สรุปพร้อมอ้างอิง"
             body="ทีมงานติดตามจากราชกิจจานุเบกษาและหน่วยงานรัฐ สรุปสาระสำคัญเป็นภาษาที่อ่านง่าย ตรวจทานก่อนเผยแพร่ และแนบลิงก์ต้นฉบับทุกฉบับ"
             points={['จัดหมวด: ' + LAW_CATEGORIES.join(' · '), 'ดูรายการตามเดือนที่ประกาศ', 'แสดงวันประกาศและวันมีผลใช้บังคับ']}
-            media={<Media label="หน้ารายละเอียดกฎหมาย" spec="1600×1200" ratio="4/3" />}
+            media={<Shot name="laws" alt="รายการกฎหมายอัปเดตประจำเดือน พร้อมหน่วยงาน วันประกาศ วันมีผล และไฟล์สรุป Word Excel PowerPoint PDF" />}
             plan="Free ขึ้นไป"
           />
           <div style={{ height: 120 }} />
@@ -53,7 +60,7 @@ export default function Features() {
             eyebrow="กฎหมายที่ติดตาม · การแจ้งเตือน" title="เลือกเฉพาะที่เกี่ยวข้อง แล้วให้ระบบเตือนคุณ"
             body="กดติดตามกฎหมายที่ใช้กับสถานประกอบการ ตั้งค่าหมวดที่ต้องการรับข่าว และรับการแจ้งเตือนผ่านเว็บและแอป iPhone"
             points={['รายการกฎหมายที่ติดตามของฉัน', 'ตั้งค่าการแจ้งเตือนรายหมวด', 'Push Notification บน iPhone']}
-            media={<Media label="ตั้งค่าการแจ้งเตือนบน iPhone" spec="1200×1500" ratio="4/5" />}
+            media={<Shot name="notify" alt="หน้าตั้งค่าการแจ้งเตือนกฎหมาย เลือกหมวดและกฎหมายที่ต้องการติดตาม" />}
             plan="Student ขึ้นไป (แอปแจ้งเตือน)"
           />
         </div>
@@ -69,37 +76,38 @@ export default function Features() {
             eyebrow="Action Plan รายปี" title="แผนงานทั้งปี ผูกกับกฎหมายทุกกิจกรรม"
             body="สร้างแผนจากเทมเพลต กำหนดผู้รับผิดชอบและสัปดาห์ดำเนินการ แนบหลักฐานและบันทึก พร้อมอ้างอิงกฎหมายรายแถว ทำงานร่วมกันได้แบบเรียลไทม์"
             points={['เทมเพลตแผนงาน', 'แนบหลักฐานและบันทึกย่อ', 'ส่งออก CSV']}
-            media={<Media label="Action Plan รายปี" spec="1600×1200" ratio="4/3" />}
+            plan="Basic ขึ้นไป"
+            media={<Shot name="actionplan" alt="แผนงานความปลอดภัยรายปี สรุปจำนวนแผน ความคืบหน้า งานเกินกำหนด และตาราง 12 เดือนรายสัปดาห์" />}
           />
           <div style={{ height: 120 }} />
-          <Row flip
+          <Row flip id="training"
             eyebrow="การอบรมพนักงาน" title="Training Matrix ที่รู้ว่าใครยังขาดอะไร"
             body="บันทึกประวัติการอบรม ตั้งค่าหลักสูตรที่ต้องอบรมตามตำแหน่ง ดูช่องว่างการอบรม และรับการแจ้งเตือนเมื่อใบรับรองใกล้หมดอายุ"
             points={['ตาราง Matrix และ Gap', 'แจ้งเตือนหลักสูตรใกล้หมดอายุ', 'ส่งออก Excel / CSV']}
-            media={<Media label="Training Matrix" spec="1600×1200" ratio="4/3" />}
+            media={<Shot name="training" alt="ตาราง Training Matrix แสดงหลักสูตรที่พนักงานแต่ละคนผ่านแล้ว ใกล้หมดอายุ หรือยังขาด" />}
             plan="Basic ขึ้นไป"
           />
           <div style={{ height: 120 }} />
-          <Row
+          <Row id="inspection"
             eyebrow="งานตรวจรับรอง · ผู้รับเหมา" title="ประวัติการตรวจ และผู้รับเหมา อยู่ครบในที่เดียว"
             body="บันทึกงานตรวจรับรองตามกฎหมายพร้อมรอบการตรวจครั้งถัดไป และจัดการข้อมูลผู้รับเหมาที่เข้าทำงานในพื้นที่"
             points={['บันทึกงานตรวจรับรอง', 'ระบบจัดการผู้รับเหมา', 'แจ้งเตือนรอบตรวจ']}
-            media={<Media label="บันทึกงานตรวจรับรอง" spec="1600×1200" ratio="4/3" />}
-            plan="Basic ขึ้นไป"
+            media={<Shot name="inspection" alt="บันทึกงานตรวจรับรองปั้นจั่น ระบบไฟฟ้า หม้อน้ำ ลิฟต์ และถังแรงดัน พร้อมวันหมดอายุและสถานะ" />}
+            plan="Business ขึ้นไป (ระบบผู้รับเหมา)"
           />
           <div style={{ height: 120 }} />
-          <Row flip
+          <Row flip id="hearing"
             eyebrow="โปรแกรมอนุรักษ์การได้ยิน" title="จากแผนผังจุดเสียงดัง ถึงรายงานประจำปี"
             body="อัปโหลดแผนผังพื้นที่ วางจุดตรวจวัดระดับเสียง ผูกพนักงานกับพื้นที่ ติดตามผลทบทวน และสรุปเป็นรายงาน"
             points={['แผนที่จุดตรวจวัดเสียง', 'ข้อมูลพนักงานและหน้าที่', 'รายงานและการติดตามผล']}
-            media={<Media label="แผนที่จุดตรวจวัดเสียง" spec="1600×1200" ratio="4/3" />}
+            media={<Shot name="hearing" alt="แผนผังระดับเสียง (Noise Contour Map) แสดงจุดตรวจวัดและระดับ dB(A) ในอาคารผลิต" />}
           />
           <div style={{ height: 120 }} />
-          <Row
+          <Row id="audit"
             eyebrow="Dashboard Compliance · Workflow Audit" title="ผู้บริหารเห็นภาพรวม ทีมงานเห็นสิ่งที่ต้องทำ"
             body="สรุปสถานะการปฏิบัติตามกฎหมายทั้งองค์กร พร้อมขั้นตอนตรวจประเมินที่บันทึกหลักฐานตรวจสอบย้อนหลังได้ รองรับผู้ใช้งานหลายคน"
             points={['Dashboard Compliance', 'Workflow Audit', 'รองรับผู้ใช้งานหลายคน']}
-            media={<Media label="Dashboard Compliance" spec="1600×1200" ratio="4/3" />}
+            media={<Shot name="dashboard" alt="ภาพรวมสถานะการอบรม กราฟสรุป หลักสูตรทั้งหมด และการแจ้งเตือนใบรับรองใกล้หมดอายุ" />}
             plan="Business ขึ้นไป"
           />
         </div>
@@ -108,11 +116,11 @@ export default function Features() {
       <section className="section" aria-labelledby="library">
         <div className="container">
           <h2 id="library" className="visually-hidden">คลังเอกสาร</h2>
-          <Row
+          <Row id="documents"
             eyebrow="คลังเอกสาร" title="เอกสาร สื่อ และสไลด์ พร้อมใช้"
             body="ไฟล์เอกสาร WI/SDS สื่อ ภาพ และ VDO ด้านความปลอดภัย รวมถึงสไลด์พรีเซนเทชั่นสำหรับการอบรมและสื่อสารภายใน"
             points={['ไฟล์เอกสาร WI/SDS', 'สื่อ ภาพ และ VDO', 'สไลด์พรีเซนเทชั่น']}
-            media={<Media label="คลังเอกสารความปลอดภัย" spec="1600×1200" ratio="4/3" />}
+            media={<Shot name="documents" alt="คลังเอกสารความปลอดภัย แบบฟอร์ม Checklist SOP JSA และ Template 200 รายการ 22 หมวดหมู่" />}
             plan="Student ขึ้นไป"
           />
         </div>
@@ -124,7 +132,7 @@ export default function Features() {
             <h2 id="ai" className="t-h1" style={{ scrollMarginTop: 80 }}>AI ผู้ช่วยกฎหมาย</h2>
             <p className="t-lead">ถามเรื่องกฎหมายความปลอดภัยได้ทุกเมื่อ คำตอบมาพร้อมลิงก์ไปยังตัวบทกฎหมาย</p>
           </header>
-          <Media dark kind="video" label="สาธิต AI ผู้ช่วยกฎหมาย" spec="MP4 · 1920×1080" />
+          <div className="ai-demo"><AiMotion /></div>
           <ul className="props" style={{ marginTop: 64 }}>
             <li><h3 className="t-h4">ถาม-ตอบ พร้อมอ้างอิง</h3><p>ทุกคำตอบลิงก์กลับไปยังกฎหมายที่เกี่ยวข้องเพื่อให้ตรวจสอบได้</p></li>
             <li><h3 className="t-h4">แนบไฟล์ให้ช่วยสรุป</h3><p>แนบเอกสารแล้วให้ AI ช่วยสรุปประเด็นสำคัญ</p></li>
