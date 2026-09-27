@@ -293,12 +293,3 @@
   .gf__dir{grid-template-columns:1fr 1fr}
   .gf__legal{flex-direction:column}
 }
-
-/* ═══════ แถบ URL จำลอง — เฉพาะบิลด์ VITE_PREVIEW ═══════ */
-.pv-bar{display:flex;align-items:center;gap:4px;padding:8px 12px;background:#fff;border-bottom:1px solid #e0e0e5;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
-.pv-bar button{display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:8px;background:none;color:#5f6368;flex:none}
-.pv-bar button:hover{background:#f1f3f4}
-.pv-bar svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.pv-bar form{flex:1;min-width:0;display:flex;margin:0}
-.pv-bar input{width:100%;height:32px;padding:0 14px;border:1px solid #e0e0e5;border-radius:16px;background:#fff;font:inherit;font-size:14px;color:#1d1d1f;text-align:center}
-.pv-bar input:focus{text-align:start;outline:2px solid var(--focus);outline-offset:0}
