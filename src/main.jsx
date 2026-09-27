@@ -1,17 +1,19 @@
 import { StrictMode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import App from './App.jsx';
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/components.css';
 
+// VITE_PREVIEW: บิลด์ไฟล์เดียวสำหรับเปิดดูตัวอย่าง (ไม่มีเซิร์ฟเวอร์) → ใช้ MemoryRouter แทน URL จริง
+const Router = import.meta.env.VITE_PREVIEW ? MemoryRouter : BrowserRouter;
 const root = document.getElementById('root');
 const app = (
   <StrictMode>
-    <BrowserRouter>
+    <Router>
       <App />
-    </BrowserRouter>
+    </Router>
   </StrictMode>
 );
 // hydrate เฉพาะเมื่อ HTML ที่ prerender ตรงกับ URL จริง (หรือเป็นหน้า 404 ที่โฮสต์เสิร์ฟให้ทุก URL ที่ไม่มี)
