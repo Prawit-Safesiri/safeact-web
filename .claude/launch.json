@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "safeact-web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 5180
+    },
+    {
+      "name": "safeact-web-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["start"],
+      "port": 8125
+    }
+  ]
+}
