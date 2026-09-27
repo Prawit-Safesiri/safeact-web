@@ -4,7 +4,8 @@
 
 ```bash
 npm install
-npm run dev      # พัฒนา http://localhost:5173
+npm run dev      # พัฒนา http://localhost:5180
+npm start        # build + เซิร์ฟเวอร์ local http://localhost:8125
 npm run build    # dist/ = ไฟล์ static พร้อม deploy (มี sitemap.xml, robots.txt, 404.html)
 npm run preview
 ```
