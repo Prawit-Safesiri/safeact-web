@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
+import { LAW_LIBRARY, lawCountRounded } from '../data/service.js';
 
 // โมชั่นขายของหน้าแรก (21:9) — ฉากวน 24 วินาที ทำด้วย CSS (ไม่ใช่ไฟล์วิดีโอ: คมทุกขนาด โหลดเร็ว)
 // 1) คลังกฎหมายจำนวนมาก → 2) AI ค้นหา สแกนทั้งคลัง → 3) ผลลัพธ์แม่นยำพร้อมอ้างอิง
 // → 4) รวมฟีเจอร์ในแอปเดียว (รวมงานตรวจวิศวกรรม: ปั้นจั่น ระบบไฟฟ้า หม้อน้ำ ตามหน้าบันทึกงานตรวจรับรองของแอป) → 5) ฉากจบ ทดลองใช้ฟรี
 // เล่นเฉพาะตอนอยู่ในจอ · ไม่มี JS / ตั้ง Reduced Motion = แสดงฉากจบนิ่ง
 // ⚠ ตัวอย่างคำตอบอ้างกฎหมายจริง (สรุปแบบไม่ระบุเลขข้อ) — ถ้าแก้ข้อความ ต้องตรวจกับตัวบทก่อนเผยแพร่
-// 1,419 = จำนวนกฎหมายในหมวดอัปเดตกฎหมายของระบบสมาชิก ณ 27 ก.ย. 2569
+// จำนวนกฎหมายมาจาก LAW_LIBRARY (src/data/service.js) — แหล่งเดียวกับข้อความบนหน้าเว็บ
+// SEO: กล่องนี้เป็นภาพประกอบ (role="img") ใส่ data-nosnippet ไม่ให้ Google หยิบข้อความตัวอย่างไปเป็นคำอธิบายผลค้นหา
+//      HTML ที่ prerender แสดงตัวเลขจริงและการ์ดชุดเดียว · แถบตัวเลขหมุนและการ์ดชุดซ้ำ (สำหรับเลื่อนวน) เพิ่มหลัง mount
 
 const ROWS = [
   [
@@ -20,7 +23,7 @@ const ROWS = [
   [
     ['กฎกระทรวง', 'เกี่ยวกับเครื่องจักร ปั้นจั่น และหม้อน้ำ', 'พ.ศ. 2564'],
     ['กฎกระทรวง', 'กำหนดมาตรฐานความปลอดภัยฯ เกี่ยวกับที่อับอากาศ', 'พ.ศ. 2562', true],
-    ['ประกาศกรม', 'หลักสูตรการฝึกอบรมความปลอดภัยในการทำงานในที่อับอากาศ', 'ที่อับอากาศ', true],
+    ['ประกาศกรม', 'หลักสูตรการฝึกอบรมความปลอดภัยในการทำงานในที่อับอากาศ', 'พ.ศ. 2564', true],
     ['พ.ร.บ.', 'ความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน', 'พ.ศ. 2554', true],
     ['กฎกระทรวง', 'เกี่ยวกับสารเคมีอันตราย', 'พ.ศ. 2556'],
     ['ประกาศกรม', 'มาตรฐานระดับเสียงที่ยอมให้ลูกจ้างได้รับ', 'พ.ศ. 2561'],
@@ -49,7 +52,9 @@ function LawCard({ c: [type, title, year], hit }) {
 
 // ตัวเลขหมุนแบบ Apple (numeric roll): แต่ละหลักเป็นแถบ 0–9 เลื่อนแนวตั้ง
 // หลักขวาหมุนหลายรอบกว่าและหยุดทีหลัง (เหมือนมาตรวัด) · ระหว่างหมุนเบลอเล็กน้อย ขอบบน-ล่างจาง
-function Odometer({ value }) {
+function Odometer({ value, live }) {
+  const label = value.toLocaleString('en-US');
+  if (!live) return <span className="hm__count">{label}</span>;
   const digits = String(value).split('').map(Number);
   const n = digits.length;
   const cols = [];
@@ -58,12 +63,13 @@ function Odometer({ value }) {
     const seq = [...Array.from({ length: loops * 10 }, (_, k) => k % 10), ...Array.from({ length: d + 1 }, (_, k) => k)];
     cols.push(
       <span key={i} className={`hm-odo hm-odo--${i}`} style={{ '--to': seq.length - 1 }}>
-        <span className="hm-odo__strip">{seq.map((x, k) => <span key={k}>{x}</span>)}</span>
+        <span className="hm-odo__strip">{seq.map((x, k) => <span key={k} data-d={x} />)}</span>
       </span>,
     );
-    if ((n - 1 - i) % 3 === 0 && i < n - 1) cols.push(<span key={`c${i}`} className="hm-odo__sep">,</span>);
+    if ((n - 1 - i) % 3 === 0 && i < n - 1) cols.push(<span key={`c${i}`} className="hm-odo__sep" data-d="," />);
   });
-  return <span className="hm__count" aria-label={value.toLocaleString('th-TH')}>{cols}</span>;
+  // ตัวเลขในแถบหมุนวาดด้วย CSS (content:attr(data-d)) — ข้อความจริงใน HTML มีแค่ตัวเลขจริงชุดเดียว
+  return <span className="hm__count"><span className="visually-hidden">{label}</span>{cols}</span>;
 }
 
 const FEATURES = [
@@ -145,26 +151,28 @@ function FeatureArt({ k }) {
 export default function HeroMotion() {
   const ref = useRef(null);
   const [play, setPlay] = useState(false);
+  const [live, setLive] = useState(false); // true หลัง mount ในเบราว์เซอร์ที่เล่นแอนิเมชันได้
 
   useEffect(() => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    setLive(true);
     const io = new IntersectionObserver(([e]) => setPlay(e.isIntersecting), { threshold: 0.35 });
     io.observe(ref.current);
     return () => io.disconnect();
   }, []);
 
   return (
-    <div ref={ref} className="hm" data-play={play || undefined} role="img"
-      aria-label="ภาพเคลื่อนไหวแนะนำ SafeAct: คลังกฎหมายกว่า 1,400 ฉบับ AI ค้นหากฎหมายเรื่องที่อับอากาศและสรุปพร้อมอ้างอิงตัวบท รวมฟีเจอร์ Action Plan Training Matrix แผนผังระดับเสียง งานตรวจวิศวกรรม คลังเอกสาร และการแจ้งเตือนไว้ในแอปเดียว ทดลองใช้ฟรี 30 วัน">
+    <div ref={ref} className="hm" data-play={play || undefined} data-nosnippet="" role="img"
+      aria-label={`ภาพเคลื่อนไหวแนะนำ SafeAct: คลังกฎหมายกว่า ${lawCountRounded()} ฉบับ AI ค้นหากฎหมายเรื่องที่อับอากาศและสรุปพร้อมอ้างอิงตัวบท รวมฟีเจอร์ Action Plan Training Matrix แผนผังระดับเสียง งานตรวจวิศวกรรม คลังเอกสาร และการแจ้งเตือนไว้ในแอปเดียว ทดลองใช้ฟรี 30 วัน`}>
       <div className="hm__bg" aria-hidden="true"><i /><i /><i /></div>
 
       {/* ฉาก 1–2: คลังกฎหมาย + AI สแกน */}
       <div className="hm__lib" aria-hidden="true">
-        <p className="hm__libhead"><Odometer value={1419} /> <span>ฉบับในคลังกฎหมาย SafeAct</span></p>
+        <p className="hm__libhead"><Odometer value={LAW_LIBRARY.count} live={live} /> <span>ฉบับในคลังกฎหมาย SafeAct</span></p>
         <div className="hm__wall">
           {ROWS.map((row, r) => (
             <ul key={r} className={`hm__row hm__row--${r}`}>
-              {[...row, ...row].map((c, i) => <LawCard key={i} c={c} hit={i < row.length && c[3]} />)}
+              {(live ? [...row, ...row] : row).map((c, i) => <LawCard key={i} c={c} hit={i < row.length && c[3]} />)}
             </ul>
           ))}
           <i className="hm__beam" />
@@ -211,7 +219,7 @@ export default function HeroMotion() {
 
       {/* ฉาก 5: ฉากจบ */}
       <div className="hm__end" aria-hidden="true">
-        <img className="hm__icon" src="/assets/app-icon-lg.webp" width="1024" height="1024" alt="" decoding="async" />
+        <img className="hm__icon" src="/assets/app-icon-352.webp" width="352" height="352" alt="" loading="lazy" decoding="async" />
         <p className="hm__tagline">แอปเดียว <span>เอาอยู่</span></p>
         <p className="hm__endsub">กฎหมาย · ระบบงานความปลอดภัย · AI ผู้ช่วย ครบในที่เดียว</p>
         <p className="hm__cta"><span>ทดลองใช้ฟรี 30 วัน</span></p>

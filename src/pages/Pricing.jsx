@@ -21,12 +21,13 @@ export default function Pricing() {
       <section className="hero" aria-labelledby="p-title" style={{ paddingBottom: 72 }}>
         <div className="container">
           <h1 id="p-title" className="t-hero">แผนและราคา</h1>
-          <p className="t-sub">เลือกแผนที่เหมาะกับคุณ เริ่มทดลองฟรี 30 วัน<br />อัปเกรดหรือยกเลิกได้ตามต้องการ</p>
+          <p className="t-sub">แผนสมาชิก SafeAct แพลตฟอร์มติดตามกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบบริหารงานความปลอดภัยสำหรับ จป. เริ่มทดลองฟรี 30 วัน<br />อัปเกรดหรือยกเลิกได้ตามต้องการ</p>
         </div>
       </section>
 
-      <section aria-label="แผนบริการ" style={{ paddingBottom: 'var(--sec-pad)' }}>
+      <section aria-labelledby="plans-title" style={{ paddingBottom: 'var(--sec-pad)' }}>
         <div className="container--wide">
+          <h2 id="plans-title" className="visually-hidden">แผนสมาชิก SafeAct และราคา</h2>
           <PlansWithSwitch />
         </div>
       </section>
@@ -45,10 +46,10 @@ export default function Pricing() {
         <div className="container--wide">
           <header className="section-head">
             <h2 id="pay-title" className="t-h2">ชำระเงินได้ 8 ช่องทาง</h2>
-            <p className="t-lead">ทุกรายการดำเนินการผ่าน Omise ได้มาตรฐาน PCI-DSS Level 1 และออกใบเสร็จ/ใบกำกับภาษีอิเล็กทรอนิกส์ให้ทันที</p>
+            <p className="t-lead">การชำระเงินออนไลน์ดำเนินการผ่าน Omise ที่ได้มาตรฐาน PCI-DSS Level 1 นิติบุคคลโอนเงินตามใบแจ้งหนี้ได้ และออกใบเสร็จ/ใบกำกับภาษีอิเล็กทรอนิกส์ให้ทุกรายการ</p>
           </header>
           <ul className="pay">
-            {PAY.map(([t, s]) => <li key={t}><b>{t}</b><span className="muted">{s}</span></li>)}
+            {PAY.map(([t, s]) => <li key={t}><b>{t}</b>{' '}<span className="muted">{s}</span></li>)}
           </ul>
         </div>
       </section>
@@ -90,7 +91,7 @@ export default function Pricing() {
           <h2 id="ent-title" className="t-h1">องค์กรหลายสาขา?</h2>
           <p className="t-lead">แผน Enterprise ออกแบบตามจำนวนสาขาและผู้ใช้งาน เชื่อมต่อระบบ HR / LMS มีที่ปรึกษาเฉพาะองค์กรและ SLA การตอบสนอง</p>
           <div className="cta-row">
-            <Link className="btn" to="/contact/">ขอใบเสนอราคา</Link>
+            <Link className="btn" to="/contact/">ขอใบเสนอราคา</Link>{' '}
             <a className="more" href={`tel:${COMPANY.phoneE164}`}>โทร {COMPANY.phone}</a>
           </div>
         </div>

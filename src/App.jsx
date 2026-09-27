@@ -15,13 +15,13 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="features" element={<Features />} />
-        <Route path="pricing" element={<Pricing />} />
-        <Route path="refund-policy" element={<RefundPolicy />} />
-        <Route path="terms" element={<Terms />} />
-        <Route path="privacy" element={<Privacy />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
+        <Route path="features" caseSensitive element={<Features />} />
+        <Route path="pricing" caseSensitive element={<Pricing />} />
+        <Route path="refund-policy" caseSensitive element={<RefundPolicy />} />
+        <Route path="terms" caseSensitive element={<Terms />} />
+        <Route path="privacy" caseSensitive element={<Privacy />} />
+        <Route path="about" caseSensitive element={<About />} />
+        <Route path="contact" caseSensitive element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

@@ -1,0 +1,24 @@
+# Cloudflare Pages — ส่วนหัว HTTP
+# ไฟล์ที่มี hash ในชื่อ (JS/CSS จาก Vite) เปลี่ยนชื่อทุกครั้งที่เนื้อหาเปลี่ยน → แคชถาวรได้
+/build/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# ภาพ วิดีโอ ฟอนต์ (ชื่อไฟล์คงที่) → แคช 30 วัน
+/assets/*
+  Cache-Control: public, max-age=2592000
+
+# ฟอนต์ใช้ค่าแคชจาก /assets/* ข้างบน (Cloudflare รวมทุกกฎที่ตรงกัน — อย่าใส่ Cache-Control ซ้ำที่นี่)
+/assets/fonts/*
+  Access-Control-Allow-Origin: *
+
+# HTML → ตรวจกับเซิร์ฟเวอร์ทุกครั้ง เพื่อให้เห็นเนื้อหาใหม่ทันทีหลัง deploy
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# โดเมนตัวอย่างของ Cloudflare Pages ต้องไม่ถูกเก็บลงดัชนี (กันเนื้อหาซ้ำกับ safeact.com)
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex

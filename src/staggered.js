@@ -7,6 +7,7 @@
 //   • ค่าที่ใช้ทุก section บน apple.com/th/iphone/: delay .15 · opacity .9 · translate-y 30px · translate-y 1 .7
 //   • ระหว่างเล่น section มีคลาส staggered-start · จบแล้วเป็น staggered-end
 //   • ปิดเมื่อผู้ใช้ตั้ง Reduced Motion (Apple: IS_SUPPORTED = !html.reduced-motion)
+// ต่างจาก Apple จุดเดียว: ไม่ซ่อนเนื้อหาไว้ล่วงหน้า (ดูคำอธิบายที่ initStaggered) เพื่อให้ Google เห็นเนื้อหาครบ
 
 const DELAY = 0.15;
 const OPACITY_DURATION = 0.9;
@@ -19,7 +20,6 @@ const easeInOutQuad = (t) => (t < 0.5 ? 2 * t * t : (4 - 2 * t) * t - 1);
 const clamp01 = (t) => (t < 0 ? 0 : t > 1 ? 1 : t);
 
 // section ที่มีเอฟเฟกต์ และ "กล่อง" ในนั้นที่ทยอยแสดง (เรียงตามลำดับใน DOM)
-// ⚠ ถ้าแก้รายการนี้ ต้องแก้กฎ html.sfi ใน components.css ให้ตรงกันด้วย (ใช้ซ่อนก่อน JS โหลด กันกระพริบ)
 export const GROUP_SELECTOR = 'main .hero, main .section';
 export const ITEM_SELECTOR = [
   '.hero > .container > *', '.hero__media',
@@ -54,19 +54,28 @@ function play(group, items) {
 }
 
 // เรียกหลังหน้า render (ทุกครั้งที่เปลี่ยนหน้า) · คืนฟังก์ชันยกเลิก
+//
+// หลักการ: "มองเห็นเป็นค่าเริ่มต้น" — ไม่มีอะไรถูกซ่อนจนกว่าผู้ใช้จะเลื่อนหน้าจริงครั้งแรก
+//   • บอตค้นหาและเครื่องมือแชร์ลิงก์ไม่เลื่อนหน้า จึงเห็นเนื้อหาครบทุกส่วนเสมอ
+//   • ส่วนบนสุดของหน้า (รวม H1) ไม่ถูกซ่อน จึงแสดงได้ทันทีโดยไม่ต้องรอ JavaScript
+//   • เมื่อผู้ใช้เริ่มเลื่อน: section ที่ยังอยู่ใต้จอทั้งหมดจะถูกซ่อนไว้ แล้วทยอยเฟดขึ้นเมื่อเลื่อนถึง
 export function initStaggered() {
-  const html = document.documentElement;
-  window.__sfiReady = true;
-  if (!html.classList.contains('sfi') || matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    html.classList.remove('sfi');
-    return () => {};
-  }
-  const pending = [...document.querySelectorAll(GROUP_SELECTOR)]
-    .filter((g) => !g.classList.contains('staggered-start') && !g.classList.contains('staggered-end'))
-    .map((g) => ({ g, items: itemsOf(g) }))
-    .filter(({ g, items }) => items.length || (g.classList.add('staggered-end'), false));
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return () => {};
 
+  let pending = null;
   let raf = 0;
+
+  // ทำครั้งเดียวตอนเลื่อนครั้งแรก: เลือกเฉพาะ section ที่ขอบบนยังอยู่ใต้จอ
+  const arm = () => {
+    const vh = innerHeight;
+    pending = [...document.querySelectorAll(GROUP_SELECTOR)]
+      .filter((g) => !g.classList.contains('staggered-start') && !g.classList.contains('staggered-end'))
+      .filter((g) => g.getBoundingClientRect().top >= vh)
+      .map((g) => ({ g, items: itemsOf(g) }))
+      .filter(({ items }) => items.length);
+    pending.forEach(({ items }) => items.forEach((el) => { el.style.opacity = '0'; }));
+  };
+
   const check = () => {
     raf = 0;
     const line = innerHeight * START;
@@ -77,14 +86,25 @@ export function initStaggered() {
     }
     if (!pending.length) stop();
   };
-  const onScroll = () => { if (!raf) raf = requestAnimationFrame(check); };
-  const stop = () => {
+
+  const onScroll = () => {
+    if (!pending) {
+      if (scrollY <= 0) return;   // ยังไม่ได้เลื่อนจริง (เช่น resize หรือ scrollTo(0,0) ตอนเปลี่ยนหน้า)
+      arm();
+    }
+    if (!raf) raf = requestAnimationFrame(check);
+  };
+
+  function stop() {
     removeEventListener('scroll', onScroll);
     removeEventListener('resize', onScroll);
     if (raf) cancelAnimationFrame(raf);
-  };
+    // คืนค่าให้กล่องที่ยังไม่ได้เล่น (เช่น เปลี่ยนหน้ากลางคัน) — ไม่ทิ้งอะไรไว้ในสถานะซ่อน
+    pending?.forEach(({ items }) => items.forEach((el) => { el.style.opacity = ''; }));
+    pending = [];
+  }
+
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', onScroll, { passive: true });
-  onScroll();
   return stop;
 }

@@ -42,12 +42,16 @@
 .ln__inner.container{width:min(1024px, calc(100% - 44px))}
 @media (max-width:833px){.ln__inner.container{width:calc(100% - 32px)}}
 .ln__title{font-family:var(--font-display);font-size:21px;line-height:var(--lh-21);font-weight:600;letter-spacing:var(--ls-21);color:var(--ink);white-space:nowrap}
-.ln__title{display:inline-flex;align-items:center;gap:8px}
+.ln__title{display:inline-flex;align-items:center;gap:8px;min-width:44px;min-height:44px}
 .ln__mark{height:26px;width:auto}
 .ln__title:hover{text-decoration:none}
 .ln__menu{display:flex;align-items:center;gap:24px;list-style:none}
 .ln__menu a{font-size:14px;line-height:var(--lh-14);color:var(--ink);opacity:.88;white-space:nowrap}
 .ln__menu a:hover{color:var(--link);opacity:1;text-decoration:none}
+/* พื้นที่กดสูง 44px (HIG) โดยหน้าตาเท่าเดิม: ลิงก์สูงเต็มแถบ · ปุ่ม pill ขยายพื้นที่กดด้วย ::after */
+.ln__menu a{display:inline-flex;align-items:center;min-height:44px}
+.ln .btn--sm{position:relative}
+.ln .btn--sm::after{content:"";position:absolute;inset:-7px 0}
 .ln__menu a[aria-current="page"]{opacity:.56;cursor:default}
 .ln__menu a[aria-current="page"]:hover{color:var(--ink)}
 .ln__right{display:flex;align-items:center;gap:24px}
@@ -57,16 +61,20 @@
 }
 
 /* ═══════ BREADCRUMBS (ในฟุตเตอร์ แบบ Apple) ═══════ */
-.crumbs{display:flex;flex-wrap:wrap;align-items:center;list-style:none;font-size:var(--t-foot);color:var(--ink-2);gap:4px}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;list-style:none;font-size:14px;color:var(--ink-2);gap:4px}
 .crumbs li+li::before{content:"›";margin-inline:6px 8px;color:var(--ink-3)}
 .crumbs a{color:rgba(0,0,0,.8)}
-.crumbs img{height:11px;width:auto}
+.crumbs img{height:13px;width:auto}
 
 /* ═══════ HERO ═══════ */
 .hero{padding-top:88px;padding-bottom:0;text-align:center;overflow:hidden}
 .hero__eyebrow{display:flex;justify-content:center;margin-bottom:16px}
 .hero__eyebrow img{height:24px;width:auto}
 .hero .t-hero{max-width:900px;margin-inline:auto}
+/* บรรทัดรองใน H1 (บอกประเภทผลิตภัณฑ์) */
+.t-hero__sub{display:block;margin:8px 0 20px;font-size:var(--t-h2);line-height:var(--lh-h2);letter-spacing:var(--ls-h2);color:var(--ink-2)}
+.hero__note a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.hero__note a:hover{color:var(--link)}
 /* ไอคอนแอปใน hero — เงายาวเฉียงลงขวาล่างแบบไอคอน iCloud ของ Apple
    .hero__icon-shadow เบลอ · ::before คือรูปทรงเงา (สี่เหลี่ยมไอคอนลากไปทางขวาล่าง 1.2 เท่า) ไล่สีจางออก */
 .hero__icon-wrap{position:relative;display:block;width:176px;height:176px;margin:72px auto}
@@ -80,7 +88,7 @@
 .hero .t-sub,.hero .cta-row,.hero__note{position:relative;z-index:1}
 @media (max-width:734px){.hero__icon-wrap{width:128px;height:128px;margin:52px auto}}
 .hero .cta-row{margin-top:36px}
-.hero__note{margin-top:16px;font-size:var(--t-small);color:var(--ink-2)}
+.hero__note{margin-top:16px;font-size:var(--t-small);color:var(--ink-2);text-wrap:balance}
 .hero__media{margin-top:72px}
 @media (max-width:734px){.hero{padding-top:56px}.hero__media{margin-top:48px}}
 
@@ -142,6 +150,11 @@
 .im__btn:hover::after{background-color:var(--pp-icon-hover)}
 .im__btn:active{background-color:var(--pp-scrim-active);transform:scale(.95)}
 .im__btn:focus-visible{outline:none;box-shadow:0 0 0 3px #fff,0 0 0 5px #0071e3}
+/* หัวข้อรวม "ชื่อฟีเจอร์ + สโลแกน" ใน heading เดียว (หน้าตาเท่ากับ eyebrow + หัวข้อแบบเดิม) */
+.frow__head,.tile__head{font-size:inherit;line-height:inherit;letter-spacing:inherit}
+.frow__head > span,.tile__head > span{display:block}
+.frow__head .t-eyebrow{margin-bottom:8px}
+.tile__head .tile__kicker{font-family:var(--font);line-height:var(--lh-body)}
 .frow__text .t-h3{margin-bottom:16px}
 .frow__text > p{color:var(--ink-2)}
 .frow__text .checks{margin-top:24px}
@@ -160,6 +173,12 @@
 .chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin-top:24px}
 .chips li{padding:6px 14px;border-radius:var(--radius-pill);background:var(--bg-2);font-size:var(--t-small);color:var(--ink)}
 .section--alt .chips li{background:#fff}
+/* แถบลิงก์ไปแต่ละฟีเจอร์ (หน้า /features/) — พื้นที่กดสูง 44px */
+.fnav{position:relative;z-index:1;margin-top:40px}
+.fnav .chips{justify-content:center;margin-top:0}
+.fnav .chips li{padding:0}
+.fnav .chips a{display:flex;align-items:center;min-height:44px;padding:0 18px;border-radius:var(--radius-pill);color:var(--ink)}
+.fnav .chips a:hover{color:var(--link);text-decoration:none}
 
 /* ═══════ TILE GRID (bento) ═══════ */
 .tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:20px;list-style:none}
@@ -175,6 +194,9 @@
 .tile--dark .tile__kicker{color:#a1a1a6}
 .tile__body h3{margin-bottom:10px}
 .tile__body p{color:var(--ink-2)}
+/* ไทล์พื้นดำ: สีตัวอักษรและลิงก์ที่อ่านได้ชัด (คอนทราสต์ ≥ 4.5:1) */
+.tile--dark a{color:var(--link-dark)}
+.tile--dark .tile__body p{color:#a1a1a6}
 .tile__more{margin-top:16px}
 .tile .ph{border-radius:0;margin-top:auto}
 /* หัวเรื่องไทล์ AI: บรรทัดแรกขยายเป็นขนาด headline (48/40/32) */
@@ -321,8 +343,8 @@
 .flow li b{display:block}
 @media (max-width:1068px){.doc{grid-template-columns:1fr;gap:32px}.doc__toc{position:static}}
 
-/* ═══════ FOOTER — สเปก globalfooter ของ Apple: 12px · พื้น #f5f5f7 ═══════ */
-.gf{background:var(--bg-2);color:rgba(0,0,0,.56);font-size:var(--t-foot);line-height:var(--lh-foot)}
+/* ═══════ FOOTER — สเปก globalfooter ของ Apple: 14px · พื้น #f5f5f7 ═══════ */
+.gf{background:var(--bg-2);color:rgba(0,0,0,.56);font-size:14px;line-height:var(--lh-14)}
 .gf a{color:rgba(0,0,0,.8)}
 .gf__inner{width:min(980px, calc(100% - 44px));margin-inline:auto;padding-block:17px 21px}
 .gf__notes{padding-bottom:17px;border-bottom:1px solid var(--line)}
@@ -330,8 +352,8 @@
 .gf__notes ol{padding-inline-start:1.4em;display:grid;gap:6px}
 .gf__crumbs{padding-block:17px 0}
 .gf__dir{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-block:20px 16px}
-.gf__dir h2,.gf__dir h3{font-family:var(--font-text);font-size:12px;letter-spacing:0;font-weight:600;color:var(--ink);margin-bottom:10px}
-.gf__dir ul{list-style:none;display:grid;gap:9px}
+.gf__dir h2,.gf__dir h3{font-family:var(--font-text);font-size:14px;letter-spacing:0;font-weight:600;color:var(--ink);margin-bottom:10px}
+.gf__dir ul{list-style:none;display:grid;gap:10px}
 .gf__company{padding-block:16px;border-top:1px solid var(--line);display:grid;gap:4px}
 .gf__legal{padding-top:14px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px}
 .gf__legal ul{display:flex;flex-wrap:wrap;list-style:none}
@@ -342,14 +364,7 @@
   .gf__legal{flex-direction:column}
 }
 
-/* ═══════ STAGGERED FADE-IN — เอฟเฟกต์ของ apple.com (ตัวเล่นอยู่ที่ src/staggered.js)
-   ซ่อนกล่องไว้ตั้งแต่ก่อน JS โหลด เพื่อไม่ให้เห็นกล่องแวบขึ้นแล้วหายก่อนเฟด
-   html.sfi ใส่โดยสคริปต์ใน index.html เฉพาะเมื่อไม่ได้ตั้ง Reduced Motion (ไม่มี JS = แสดงปกติ)
-   ⚠ รายการ selector ต้องตรงกับ GROUP_SELECTOR / ITEM_SELECTOR ใน src/staggered.js ═══════ */
-html.sfi :is(main .hero, main .section):not(.staggered-end) :is(
-  .hero > .container > *, .hero__media,
-  .section-head, .props > li, .tiles > li, .steps > li, .stats > li, .plans > li, .cards > li,
-  .frow, .faq, .cta-band, .billing, .compare-wrap, .pay, .form){opacity:0}
+/* STAGGERED FADE-IN: ไม่มีกฎซ่อนเนื้อหาใน CSS — src/staggered.js ซ่อนเฉพาะกล่องใต้จอหลังผู้ใช้เลื่อนจริง (เนื้อหามองเห็นเป็นค่าเริ่มต้น) */
 
 /* ═══════ AI MOTION — โมชั่นพรีเซนต์ AI ผู้ช่วยกฎหมาย (src/components/AiMotion.jsx)
    ฉากวน 17 วินาที · ขนาดทุกอย่างเป็น cqw ให้สเกลตามกล่อง · ไม่มี [data-play] = เฟรมคำตอบนิ่ง
@@ -491,6 +506,11 @@ html.sfi :is(main .hero, main .section):not(.staggered-end) :is(
 
 /* ═══════ ประกายเคลื่อนไหว — ไอคอนไทล์ AI (IconSparkAnim) ═══════
    ดาวใหญ่หายใจช้า ๆ · ดาวเล็กกับดาวจิ๋วกะพริบสลับกัน · แสงเรือง ฟ้าเต้นตาม  (Reduce Motion: base.css หยุดให้เอง) */
+/* แอนิเมชันย่อยในกล่องโมชั่น: หยุดเมื่อกล่องอยู่นอกจอ (data-play ถูกถอดโดย IntersectionObserver) */
+.hm:not([data-play]) *,.hm:not([data-play]) *::before,.hm:not([data-play]) *::after,
+.aim:not([data-play]) *,.aim:not([data-play]) *::before,.aim:not([data-play]) *::after{animation-play-state:paused}
+/* ไอคอนประกาย: หยุดเมื่อไอคอนอยู่นอกจอ (data-paused ใส่โดย IntersectionObserver ใน IconSparkAnim) */
+.spark-anim[data-paused],.spark-anim[data-paused] path{animation-play-state:paused}
 .spark-anim{animation:spark-glow 3.2s ease-in-out infinite}
 .spark-anim path{transform-box:fill-box;transform-origin:center}
 .spark-anim__big{animation:spark-breathe 3.2s ease-in-out infinite}
@@ -540,6 +560,7 @@ html.sfi :is(main .hero, main .section):not(.staggered-end) :is(
 .hm-odo__strip{display:flex;flex-direction:column;transform:translateY(calc(var(--to) * -1.15em))}
 .hm-odo__strip span{display:block;height:1.15em;text-align:center}
 .hm-odo__sep{display:inline-block;height:1.15em;margin:0 -.02em}
+.hm-odo__strip span::before,.hm-odo__sep::before{content:attr(data-d)}
 .hm__wall{position:absolute;left:0;right:0;top:calc(var(--u)*11.6);display:grid;gap:calc(var(--u)*1.2);
   -webkit-mask:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
 .hm__row{display:flex;gap:calc(var(--u)*1.2);width:max-content}
@@ -668,7 +689,7 @@ html.sfi :is(main .hero, main .section):not(.staggered-end) :is(
 .hm-nt{display:grid;grid-template-columns:calc(var(--u)*1.5) 1fr;align-items:center;gap:calc(var(--u)*.5);padding:calc(var(--u)*.5) calc(var(--u)*.6);
   border-radius:calc(var(--u)*.7);background:rgba(255,255,255,.95);box-shadow:0 calc(var(--u)*.2) calc(var(--u)*.8) rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);
   animation:hm-notif var(--loop) var(--e) calc(var(--base) + var(--d)) infinite both}
-.hm-nt__icon{width:calc(var(--u)*1.5);height:calc(var(--u)*1.5);border-radius:28%;background:url(/assets/app-icon.webp) center/cover}
+.hm-nt__icon{width:calc(var(--u)*1.5);height:calc(var(--u)*1.5);border-radius:28%;background:url(/assets/app-icon-64.webp) center/cover}
 .hm-nt span{display:grid;min-width:0}
 .hm-nt b{font-size:calc(var(--u)*.68);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hm-nt small{font-size:calc(var(--u)*.58);color:#8a929c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -803,3 +824,24 @@ html.sfi :is(main .hero, main .section):not(.staggered-end) :is(
 /* ข้อความไล่สี (background-clip:text) ระบายสีได้แค่ในกรอบของ element — สระ/วรรณยุกต์ที่ห้อยล่าง (ู ุ ฺ) หรือลอยบนจะขาด
    เพิ่มพื้นที่บน-ล่างให้กรอบ แล้วหักคืนด้วย margin ติดลบ เลย์เอาต์จึงไม่ขยับ */
 .hm__tagline span,.hm__fhead span{display:inline-block;padding:.12em 0 .22em;margin:-.12em 0 -.22em}
+
+/* ═══════ แผนที่สำนักงาน (หน้าติดต่อ) — แผนที่ Google ฝังเป็นภาพ คลิกทั้งกล่องเปิด Google Maps ═══════ */
+.map{position:relative;display:block;aspect-ratio:21/9;border-radius:var(--radius-tile);overflow:hidden;background:#e9eef2;
+  box-shadow:0 0 0 1px rgba(0,0,0,.06);color:var(--ink);isolation:isolate}
+.map__link{position:absolute;inset:0;z-index:1;display:block;color:inherit}
+.map__link:hover{text-decoration:none}
+.map__frame{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;transition:transform .6s var(--ease)}
+.map:hover .map__frame{transform:scale(1.02)}
+.map__card{position:absolute;left:24px;bottom:24px;max-width:min(420px,calc(100% - 48px));display:grid;gap:4px;padding:16px 20px;border-radius:16px;
+  background:rgba(255,255,255,.88);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  box-shadow:0 8px 28px rgba(0,0,0,.14);font-size:var(--t-small);line-height:var(--lh-small);color:var(--ink-2)}
+.map__card b{font-size:17px;line-height:var(--lh-17);color:var(--ink)}
+.map__btn{position:absolute;right:24px;bottom:24px;padding:10px 18px;border-radius:99px;background:var(--btn);color:#fff;font-size:14px;font-weight:600;
+  box-shadow:0 6px 18px rgba(0,113,227,.35);transition:background-color .2s var(--ease)}
+.map:hover .map__btn{background:var(--btn-hover)}
+.map__link:focus-visible{outline:3px solid var(--focus);outline-offset:-3px;border-radius:var(--radius-tile)}
+@media (max-width:734px){
+  .map{aspect-ratio:4/5}
+  .map__card{left:16px;right:16px;bottom:72px;max-width:none}
+  .map__btn{left:16px;right:16px;bottom:16px;text-align:center}
+}

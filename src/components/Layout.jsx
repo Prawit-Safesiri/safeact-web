@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { COMPANY, fullAddress, appLink } from '../data/company.js';
-import { metaFor } from '../seo.js';
+import { headModel, headEntries, HEAD_KEYS, LD_ID, ROUTES, metaFor, normPath } from '../seo.js';
+import NotFound from '../pages/NotFound.jsx';
 import LocalNav from './LocalNav.jsx';
 import { initStaggered } from '../staggered.js';
 
@@ -13,30 +14,35 @@ const NAV = [
   ['/refund-policy/', 'นโยบายคืนเงิน'],
 ];
 
-const CRUMB = {
-  '/features/': 'ฟีเจอร์',
-  '/pricing/': 'แผนและราคา',
-  '/refund-policy/': 'นโยบายการยกเลิกและการคืนเงิน',
-  '/terms/': 'ข้อกำหนดการใช้บริการ',
-  '/privacy/': 'นโยบายความเป็นส่วนตัว',
-  '/about/': 'เกี่ยวกับเรา',
-  '/contact/': 'ติดต่อเรา',
-};
-
-// อัปเดต head ตอนเปลี่ยนหน้าในเบราว์เซอร์ (ตอน build ทุกหน้าถูก prerender head ไว้แล้ว)
+// อัปเดต head ตอนเปลี่ยนหน้าในเบราว์เซอร์ ด้วยข้อมูลชุดเดียวกับที่ prerender ใช้ (headModel ใน src/seo.js)
+// • โหลดหน้าโดยตรง: ไม่แตะ head ที่ prerender ไว้เลย (Google แนะนำไม่ให้ JS เปลี่ยน canonical จากค่าใน HTML)
+// • URL ที่ไม่มีอยู่: ใส่ noindex และลบ canonical / Open Graph / JSON-LD (กันกรณีโฮสต์ตอบ 200 แทน 404)
 function useHead(pathname) {
+  const first = useRef(true);
   useEffect(() => {
-    const m = metaFor(pathname);
-    document.title = m.title;
-    const set = (sel, attr, val) => { const el = document.head.querySelector(sel); if (el) el.setAttribute(attr, val); };
-    const url = `${location.origin}${pathname}`;
-    set('meta[name="description"]', 'content', m.description);
-    set('meta[property="og:title"]', 'content', m.title);
-    set('meta[property="og:description"]', 'content', m.description);
-    set('meta[name="twitter:title"]', 'content', m.title);
-    set('meta[name="twitter:description"]', 'content', m.description);
-    set('link[rel="canonical"]', 'href', `https://www.safeact.com${pathname}`);
-    set('meta[property="og:url"]', 'content', url);
+    const prerendered = first.current && document.getElementById('root')?.dataset.ssr === normPath(pathname);
+    first.current = false;
+    if (prerendered) return;
+
+    const h = headModel(pathname);
+    document.title = h.title;
+    const head = document.head;
+    const find = (tag, attr, key) => head.querySelector(`${tag}[${attr}="${key}"]`);
+    const entries = headEntries(h);
+    const wanted = new Set(entries.map(([tag, attr, key]) => `${tag}|${attr}|${key}`));
+    // ลบแท็กที่หน้านี้ไม่ควรมี
+    HEAD_KEYS.forEach(([tag, attr, key]) => { if (!wanted.has(`${tag}|${attr}|${key}`)) find(tag, attr, key)?.remove(); });
+    // ตั้งค่าแท็กที่ต้องมี (สร้างใหม่ถ้ายังไม่มี เช่น เข้ามาทางหน้า 404 แล้วกดไปหน้าอื่น)
+    entries.forEach(([tag, attr, key, val]) => {
+      let el = find(tag, attr, key);
+      if (!el) { el = document.createElement(tag); el.setAttribute(attr, key); head.appendChild(el); }
+      el.setAttribute(tag === 'link' ? 'href' : 'content', val);
+    });
+    let ld = document.getElementById(LD_ID);
+    if (h.jsonLd) {
+      if (!ld) { ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.id = LD_ID; head.appendChild(ld); }
+      ld.textContent = h.jsonLd;
+    } else ld?.remove();
   }, [pathname]);
 }
 
@@ -59,7 +65,7 @@ function GlobalNav() {
           <img src="/assets/safeact-logo.png" alt="SafeAct" width="1000" height="161" />
         </Link>
         <ul className="gn__links">
-          {NAV.map(([to, label]) => <li key={to}><NavLink to={to}>{label}</NavLink></li>)}
+          {NAV.map(([to, label]) => <li key={to}><NavLink to={to} end caseSensitive>{label}</NavLink></li>)}
         </ul>
         <div className="gn__actions">
           <a className="gn__signin" href={appLink('/auth')}>เข้าสู่ระบบ</a>
@@ -87,7 +93,7 @@ function GlobalNav() {
 }
 
 function Footer({ pathname }) {
-  const here = CRUMB[pathname];
+  const here = metaFor(pathname).crumb;
   const year = 2026;
   return (
     <footer className="gf" aria-labelledby="gf-title">
@@ -114,8 +120,10 @@ function Footer({ pathname }) {
             <h3>บริการ</h3>
             <ul>
               <li><Link to="/features/">ฟีเจอร์ทั้งหมด</Link></li>
-              <li><Link to="/features/#laws">อัปเดตกฎหมาย</Link></li>
-              <li><Link to="/features/#workflow">ระบบงาน จป.</Link></li>
+              <li><Link to="/features/#laws">อัปเดตกฎหมายความปลอดภัย</Link></li>
+              <li><Link to="/features/#action-plan">Action Plan รายปี</Link></li>
+              <li><Link to="/features/#training">Training Matrix</Link></li>
+              <li><Link to="/features/#workflow">ระบบบริหารงานความปลอดภัย</Link></li>
               <li><Link to="/features/#ai">AI ผู้ช่วยกฎหมาย</Link></li>
             </ul>
           </div>
@@ -143,13 +151,16 @@ function Footer({ pathname }) {
               <li><Link to="/contact/">ติดต่อเรา</Link></li>
               <li><a href={`tel:${COMPANY.phoneE164}`}>{COMPANY.phone}</a></li>
               <li><a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></li>
+              {COMPANY.appStoreUrl && <li><a href={COMPANY.appStoreUrl} rel="noopener">แอป {COMPANY.appName} บน App Store</a></li>}
+              {COMPANY.sameAs.map((u) => <li key={u}><a href={u} rel="noopener">{new URL(u).host.replace(/^www\./, '')}</a></li>)}
             </ul>
           </div>
         </nav>
 
         <address className="gf__company" style={{ fontStyle: 'normal' }}>
-          <span><strong>{COMPANY.nameTh}</strong> ({COMPANY.nameEn}) · เลขประจำตัวผู้เสียภาษี {COMPANY.taxId}</span>
-          <span>{fullAddress()}</span>
+          <span>{COMPANY.footerLine}</span>{' '}
+          <span><strong>{COMPANY.nameTh}</strong> ({COMPANY.nameEn}) · เลขประจำตัวผู้เสียภาษี {COMPANY.taxId}</span>{' '}
+          <span>{fullAddress()}</span>{' '}
           <span>โทร <a href={`tel:${COMPANY.phoneE164}`}>{COMPANY.phone}</a> · อีเมล <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></span>
         </address>
 
@@ -169,9 +180,13 @@ function Footer({ pathname }) {
 export default function Layout() {
   const { pathname, hash } = useLocation();
   useHead(pathname);
+  // เลื่อนกลับบนสุดเฉพาะตอน "เปลี่ยนหน้า" — ตอนโหลดหน้าครั้งแรกปล่อยให้เบราว์เซอร์คืนตำแหน่งเดิม (reload) หรือเลื่อนไปยังข้อความที่ลิงก์มา
+  const last = useRef(pathname + hash);
   useEffect(() => {
+    const key = pathname + hash;
     if (hash) document.getElementById(hash.slice(1))?.scrollIntoView();
-    else window.scrollTo(0, 0);
+    else if (last.current !== key) window.scrollTo(0, 0);
+    last.current = key;
   }, [pathname, hash]);
   // กล่องใน section ทยอยเฟดขึ้นตอนเลื่อนถึง แบบ StaggeredFadeIn ของ apple.com
   useEffect(() => initStaggered(), [pathname]);
@@ -181,7 +196,8 @@ export default function Layout() {
       <a className="skip-link" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
       <GlobalNav />
       <LocalNav />
-      <Outlet />
+      {/* URL ที่ไม่ตรงกับหน้าจริงแบบตรงตัว (เช่น /Pricing/ หรือ /pricing//) แสดงหน้า 404 ให้ตรงกับ head ที่เป็น noindex */}
+      {ROUTES[normPath(pathname)] ? <Outlet /> : <NotFound />}
       <Footer pathname={pathname} />
     </>
   );

@@ -1,7 +1,13 @@
 import { useState } from 'react';
-import Media from '../components/Media.jsx';
+import { Link } from 'react-router-dom';
 import { COMPANY, fullAddress, appLink } from '../data/company.js';
 import { IconCall, IconMail, IconBuilding } from '../components/Icons.jsx';
+
+// แผนที่: ค้นด้วยชื่ออาคาร "SPE Tower Bangkok" ได้หมุดเดียวตรงอาคาร (ตรงกับผลค้นที่อยู่ 252 Phahonyothin Rd, Samsen Nai)
+// ชื่อไทย/ที่อยู่ไทยแบบเต็มทำให้ Google เจอหลายที่ หมุดกระจาย — ทดสอบแล้ว 27 ก.ย. 2569
+const MAP_QUERY = encodeURIComponent('SPE Tower Bangkok');
+const MAP_EMBED = `https://www.google.com/maps?q=${MAP_QUERY}&hl=th&z=16&output=embed`;
+const MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${MAP_QUERY}`;
 
 // ยังไม่มี backend รับฟอร์ม → ประกอบข้อความเป็นอีเมลถึงทีมขาย (ทำงานได้ทันทีโดยไม่เก็บข้อมูลไว้ที่เว็บ)
 function LeadForm() {
@@ -17,7 +23,8 @@ function LeadForm() {
     setSent(true);
   };
   return (
-    <form className="form" onSubmit={onSubmit} aria-describedby="form-note">
+    // method="post": ถ้ากดส่งก่อน JavaScript โหลด ข้อมูลที่กรอกจะไม่ไปอยู่ใน URL
+    <form className="form" method="post" action="/contact/" onSubmit={onSubmit} aria-describedby="form-note">
       <div className="field"><label htmlFor="f-name">ชื่อ-นามสกุล</label><input id="f-name" name="name" autoComplete="name" required /></div>
       <div className="field"><label htmlFor="f-company">บริษัท / หน่วยงาน</label><input id="f-company" name="company" autoComplete="organization" /></div>
       <div className="field"><label htmlFor="f-email">อีเมล</label><input id="f-email" name="email" type="email" autoComplete="email" required /></div>
@@ -35,7 +42,7 @@ function LeadForm() {
       <div className="field full"><label htmlFor="f-msg">รายละเอียด</label><textarea id="f-msg" name="message" /></div>
       <div className="full" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 16 }}>
         <button className="btn" type="submit">ส่งข้อความ</button>
-        <p id="form-note" className="form__note">ระบบจะเปิดแอปอีเมลของท่านพร้อมข้อความที่กรอก ข้อมูลใช้เพื่อติดต่อกลับตาม<a href="/privacy/"> นโยบายความเป็นส่วนตัว</a> เท่านั้น</p>
+        <p id="form-note" className="form__note">ระบบจะเปิดแอปอีเมลของท่านพร้อมข้อความที่กรอก ข้อมูลใช้เพื่อติดต่อกลับตาม<Link to="/privacy/">นโยบายความเป็นส่วนตัว</Link> เท่านั้น</p>
       </div>
       {sent && <p className="full" role="status">เปิดแอปอีเมลแล้ว หากไม่เปิด โปรดส่งถึง {COMPANY.email} โดยตรง</p>}
     </form>
@@ -47,8 +54,8 @@ export default function Contact() {
     <main id="main">
       <section className="hero" aria-labelledby="c-title" style={{ paddingBottom: 72 }}>
         <div className="container">
-          <h1 id="c-title" className="t-hero">คุยกับทีมขาย</h1>
-          <p className="t-sub">ขอใบเสนอราคาสำหรับองค์กร นัดสาธิตระบบ หรือสอบถามเรื่องการชำระเงิน เราพร้อมช่วยเหลือ</p>
+          <h1 id="c-title" className="t-hero">ติดต่อ SafeAct</h1>
+          <p className="t-sub">คุยกับทีมขาย ขอใบเสนอราคาสำหรับองค์กร นัดสาธิตระบบ หรือสอบถามเรื่องการชำระเงิน<br /><span style={{ whiteSpace: 'nowrap' }}>เราพร้อมช่วยเหลือ</span></p>
         </div>
       </section>
 
@@ -88,7 +95,18 @@ export default function Contact() {
 
       <section className="section" aria-label="แผนที่">
         <div className="container--wide">
-          <Media label={`แผนที่สำนักงาน — ${COMPANY.address.line}`} spec="ฝัง Apple Maps / Google Maps" ratio="21/9" />
+          {/* แผนที่ฝังจาก Google Maps ใช้เป็นภาพพื้นหลัง · ลิงก์วางทับเต็มกล่อง (iframe อยู่นอก <a> ตามข้อกำหนด HTML) */}
+          <div className="map">
+            <iframe className="map__frame" src={MAP_EMBED} title="แผนที่สำนักงาน SafeAct" loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade" tabIndex={-1} aria-hidden="true" />
+            <a className="map__link" href={MAP_LINK} target="_blank" rel="noopener noreferrer" aria-label={`เปิดแผนที่สำนักงาน ${COMPANY.nameTh} ใน Google Maps (เปิดแท็บใหม่)`}>
+              <span className="map__card">
+                <b>{COMPANY.nameTh}</b>{' '}
+                <span>{fullAddress()}</span>
+              </span>{' '}
+              <span className="map__btn">เปิดใน Google Maps</span>
+            </a>
+          </div>
         </div>
       </section>
     </main>

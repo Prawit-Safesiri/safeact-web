@@ -18,7 +18,7 @@
 @font-face{font-family:"Apple Thai";font-weight:700;src:local("Sukhumvit Set Bold"),local("SukhumvitSet-Bold");unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC}
 @font-face{
   font-family:"SafeAct Thai";font-style:normal;font-weight:100 700;font-display:swap;
-  src:url(https://fonts.gstatic.com/s/anuphan/v6/2sDeZGxYgY7LkLT0mX4Dam--C70lZQ.woff2) format("woff2");
+  src:url(/assets/fonts/anuphan-thai.woff2) format("woff2");   /* Anuphan (SIL OFL) เก็บไว้ในเว็บเอง ไม่เรียกเซิร์ฟเวอร์ภายนอก */
   unicode-range:U+0E01-0E5B,U+200C-200D,U+25CC;
 }
 :root{

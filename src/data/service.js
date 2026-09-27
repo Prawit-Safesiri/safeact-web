@@ -1,0 +1,35 @@
+// ข้อมูลบริการ — แหล่งเดียวของข้อความที่ต้อง "แสดงบนหน้าเว็บ" และ "ประกาศใน JSON-LD" ให้ตรงกัน
+// (Google กำหนดให้ structured data ตรงกับเนื้อหาที่ผู้ใช้มองเห็น)
+
+// หมวดในคลังกฎหมาย
+export const LAW_CATEGORIES = [
+  'ความปลอดภัยในการทำงาน', 'อาชีวอนามัย', 'สิ่งแวดล้อม', 'วิศวกรรม', 'จราจรและขนส่ง', 'กฎหมายท้องถิ่น',
+];
+
+// จำนวนกฎหมายในคลัง — ตัวเลขจากหมวดอัปเดตกฎหมายของระบบสมาชิก
+// ⚠ อัปเดต count และวันที่พร้อมกันทุกครั้ง (ใช้ในโมชั่นหน้าแรก ข้อความหน้าแรก/ฟีเจอร์ และกล่องสถิติ)
+export const LAW_LIBRARY = { count: 1419, asOfIso: '2026-09-27', asOfTh: '27 ก.ย. 2569' };
+// ตัวเลขปัดลงหลักร้อยสำหรับข้อความ "กว่า 1,400 ฉบับ"
+export const lawCountRounded = () => (Math.floor(LAW_LIBRARY.count / 100) * 100).toLocaleString('en-US');
+
+export const SERVICE = {
+  name: 'SafeAct',
+  // ประเภทบริการ (ใช้เป็น serviceType และในคำอธิบาย)
+  type: 'แพลตฟอร์มออนไลน์แบบสมาชิกสำหรับติดตามกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน',
+  audience: 'เจ้าหน้าที่ความปลอดภัยในการทำงาน (จป.)',
+};
+
+// ฟีเจอร์ที่มีคำอธิบายอยู่บนหน้า /features/ — id คือ anchor บนหน้านั้น · shot คือชื่อไฟล์ใน /assets/features/
+// ⚠ อย่าเพิ่มฟีเจอร์ที่ยังไม่มีคำอธิบายบนหน้าเว็บ
+export const FEATURES = [
+  { id: 'laws', name: 'อัปเดตกฎหมาย', nav: 'ติดตามและแจ้งเตือนกฎหมาย', shot: 'laws' },
+  { id: 'notifications', name: 'กฎหมายที่ติดตามและการแจ้งเตือน', shot: 'notify' },
+  { id: 'action-plan', name: 'Action Plan รายปี', nav: 'Action Plan รายปี', shot: 'actionplan' },
+  { id: 'training', name: 'การอบรมพนักงาน (Training Matrix)', nav: 'Training Matrix', shot: 'training' },
+  { id: 'inspection', name: 'บันทึกงานตรวจรับรอง', nav: 'บันทึกงานตรวจรับรอง', shot: 'inspection' },
+  { id: 'contractors', name: 'ระบบผู้รับเหมา' },
+  { id: 'hearing', name: 'โปรแกรมอนุรักษ์การได้ยิน', nav: 'โปรแกรมอนุรักษ์การได้ยิน', shot: 'hearing' },
+  { id: 'audit', name: 'Dashboard Compliance และ Workflow Audit', nav: 'Dashboard และ Workflow Audit', shot: 'dashboard' },
+  { id: 'documents', name: 'คลังเอกสารความปลอดภัย', nav: 'คลังเอกสาร', shot: 'documents' },
+  { id: 'ai', name: 'AI ผู้ช่วยกฎหมาย', nav: 'AI ผู้ช่วยกฎหมาย' },
+];

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import DocPage from '../components/DocPage.jsx';
-import { COMPANY, fullAddress } from '../data/company.js';
+import { COMPANY, LEGAL_UPDATED, fullAddress } from '../data/company.js';
 
 const TOC = [
   ['t1', '1. คู่สัญญาและการยอมรับ'], ['t2', '2. บัญชีผู้ใช้'], ['t3', '3. แผนบริการและการชำระเงิน'],
@@ -11,7 +11,7 @@ const TOC = [
 // เนื้อหาตรงกับ safeact-connect-hub/src/routes/terms.tsx (ระบบสมาชิกจริง)
 export default function Terms() {
   return (
-    <DocPage id="t-title" title="ข้อกำหนดและเงื่อนไขการใช้บริการ" updated={{ iso: '2026-09-27', th: '27 กันยายน 2569' }} toc={TOC}>
+    <DocPage id="t-title" title="ข้อกำหนดและเงื่อนไขการใช้บริการ" updated={LEGAL_UPDATED} toc={TOC}>
       <section aria-labelledby="t1">
         <h2 id="t1">1. คู่สัญญาและการยอมรับข้อกำหนด</h2>
         <p>ข้อกำหนดนี้เป็นข้อตกลงระหว่างท่านกับ {COMPANY.nameTh} (“บริษัท”) เลขประจำตัวผู้เสียภาษี {COMPANY.taxId} ผู้ให้บริการ SafeAct ทั้งบนเว็บไซต์ ระบบสมาชิก และแอป SafeAct Club การสมัครหรือใช้บริการถือว่าท่านได้อ่านและยอมรับข้อกำหนดนี้ รวมถึง <Link to="/refund-policy/">นโยบายการยกเลิกและการคืนเงิน</Link> และ <Link to="/privacy/">นโยบายความเป็นส่วนตัว</Link></p>

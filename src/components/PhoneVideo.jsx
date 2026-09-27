@@ -8,7 +8,8 @@ import { useEffect, useRef, useState } from 'react';
 //   • ผู้ใช้กดหยุด → ค้างไว้ ไม่เล่นเองอีกจนกว่าจะกดเล่น
 //   • Reduced Motion → ไม่เล่นอัตโนมัติ ผู้ใช้กดปุ่มเล่นเอง
 // ตำแหน่งจอวัดจาก app-iphone-hand.webp (1000×1288): แผ่นแอปอยู่ที่ x 116–577, y 95–1035
-const LABEL = 'วิดีโอแอป SafeAct';
+// วิดีโอ 720×1280 (ช่องแสดงผลกว้างราว 200–300px) เข้ารหัสแบบเริ่มเล่นได้ทันที · ไฟล์ต้นฉบับ 1080p อยู่ที่ app-screen.mp4
+const LABEL = 'วิดีโอแอป SafeAct Club';
 const ARIA = { playing: `หยุดพัก${LABEL}`, paused: `เล่น${LABEL}` };
 
 export default function PhoneVideo() {
@@ -58,10 +59,11 @@ export default function PhoneVideo() {
 
   return (
     <div className="phone">
-      <img className="phone__img" src="/assets/app-iphone-hand.webp" width="1000" height="1288" loading="lazy" decoding="async"
-        alt="มือถือ iPhone เปิดแอป SafeAct ขณะเลือกกิจกรรมเสี่ยงของกิจการ แล้ว AI คัดกฎหมายที่เกี่ยวข้องให้" />
+      <img className="phone__img" src="/assets/app-iphone-hand.webp" srcSet="/assets/app-iphone-hand-640.webp 640w, /assets/app-iphone-hand.webp 1000w"
+        sizes="(min-width: 1376px) 640px, (min-width: 1069px) calc(50vw - 48px), (min-width: 735px) calc(50vw - 36px), (min-width: 503px) 440px, 88vw" width="1000" height="1288" loading="lazy" decoding="async"
+        alt="มือถือ iPhone เปิดแอป SafeAct Club ขณะเลือกกิจกรรมเสี่ยงของกิจการ แล้ว AI คัดกฎหมายที่เกี่ยวข้องให้" />
       <div ref={box} className="phone__screen">
-        <video ref={vid} src="/assets/app-screen.mp4" poster="/assets/app-screen-poster.webp"
+        <video ref={vid} src="/assets/app-screen-720.mp4" poster="/assets/app-screen-720-poster.webp"
           muted loop playsInline preload="none" aria-hidden="true" tabIndex={-1} />
         <button type="button" className={`im__btn im__btn--${state}${ready ? ' is-ready' : ''}`}
           aria-label={ARIA[state]} onClick={onButton} />

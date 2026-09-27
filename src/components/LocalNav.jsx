@@ -17,7 +17,7 @@ export default function LocalNav() {
         <div className="ln__right">
           <ul className="ln__menu">
             {ITEMS.map(([to, label]) => (
-              <li key={to}><NavLink to={to} end>{label}</NavLink></li>
+              <li key={to}><NavLink to={to} end caseSensitive>{label}</NavLink></li>
             ))}
           </ul>
           <a className="btn btn--sm" href={checkoutLink('free')}>ทดลองใช้ฟรี</a>

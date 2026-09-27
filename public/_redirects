@@ -1,0 +1,9 @@
+# Cloudflare Pages — ส่งต่อ URL ของเว็บเดิม (WordPress) เฉพาะหน้าที่มีหน้าเทียบเท่าในเว็บใหม่
+# หน้าอื่นของเว็บเดิมปล่อยเป็น 404 ตามที่ตัดสินใจไว้ (แทนที่ ไม่เก็บหน้าเดิม)
+/pdpa              /privacy/      301
+/pdpa/             /privacy/      301
+/safeact-member    /pricing/      301
+/safeact-member/   /pricing/      301
+/faq               /              301
+/faq/              /              301
+/sitemap_index.xml /sitemap.xml   301

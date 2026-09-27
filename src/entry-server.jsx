@@ -3,6 +3,8 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import App from './App.jsx';
 export { ROUTES, headTags } from './seo.js';
+export { SITE_URL, APP_URL } from './data/company.js';
+export { PLANS, baht } from './data/plans.js';
 
 export function render(url) {
   return renderToString(
