@@ -88,4 +88,4 @@ curl -s  https://safeact.com/sitemap.xml
 - **ภาพ**: WebP พร้อม `srcset`/`sizes` · ฟอนต์ Anuphan เก็บในเว็บเอง (`public/assets/fonts/`) · JS/CSS ที่มี hash ออกที่ `/build/`
 
 ## ไฟล์ต้นฉบับที่ไม่ได้ใช้บนหน้าเว็บแล้ว (เก็บไว้เป็นต้นฉบับ)
-`public/assets/laws-macbook.jpg`, `action-plan.jpg`, `training-dashboard.jpg` (ใช้ `.webp` แทน) · `app-screen.mp4`, `app-screen-poster.webp` (ใช้ชุด `-720` แทน) · `app-icon.webp`
+`public/assets/laws-macbook.jpg`, `action-plan.jpg`, `training-dashboard.jpg` (ใช้ `.webp` แทน) · `app-screen.mp4`, `app-screen-poster.webp` (ใช้ชุด `-720` แทน) · `app-icon.webp` · `og-image.png` (ภาพแชร์ลิงก์ชุดเดิม เก็บไว้เพราะลิงก์ที่แชร์ไปแล้วยังอ้างถึง — ปัจจุบันใช้ `og-logo.png`)

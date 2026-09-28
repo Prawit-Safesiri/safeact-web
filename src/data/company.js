@@ -39,7 +39,8 @@ export const COMPANY = {
   // 2 บรรทัดบนจอกว้าง (ตัดบรรทัดตามที่เจ้าของกำหนด) · จอแคบตัดบรรทัดตามปกติ
   footerLines: ['ผู้ให้บริการ SafeAct แพลตฟอร์มออนไลน์ติดตามกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน', 'พร้อมระบบบริหารงานความปลอดภัยสำหรับ จป.'],
 
-  logo: { path: '/assets/safeact-logo.png', width: 1000, height: 161 },
+  // โลโก้ตัวแทนองค์กรใน JSON-LD = ไอคอนแอป (เจ้าของกำหนด 28 ก.ย. 2569) · ตัวอักษร SAFEACT ในส่วนหัวใช้ safeact-logo.png ตามเดิม
+  logo: { path: '/assets/icon-512.png', width: 512, height: 512 },
 
   // LINE Official Account — ปุ่ม "เพิ่มเพื่อน" ทางการของ LINE (ภาพจากเซิร์ฟเวอร์ LINE ตามโค้ดที่ LINE ให้มา)
   line: { url: 'https://lin.ee/qyDzfoi', button: 'https://scdn.line-apps.com/n/line_add_friends/btn/th.png' },

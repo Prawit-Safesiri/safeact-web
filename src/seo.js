@@ -10,11 +10,13 @@ import { SITE_URL, APP_URL, COMPANY, LEGAL_DATES } from './data/company.js';
 import { PLANS, baht, fromPrice } from './data/plans.js';
 import { SERVICE, FEATURES, LAW_CATEGORIES } from './data/service.js';
 
+// ภาพตัวแทนเว็บเมื่อแชร์ลิงก์ (LINE, Facebook ฯลฯ) = โลโก้ไอคอนแอปอยู่กลางภาพ
+// LINE ครอปเป็นสี่เหลี่ยมจัตุรัสตรงกลาง จึงต้องไม่มีข้อความหรือภาพอื่นด้านข้าง · เปลี่ยนภาพเมื่อใดให้เปลี่ยนชื่อไฟล์ด้วย (แคช 30 วัน)
 const OG_IMAGE = {
-  url: `${SITE_URL}/assets/og-image.png`,
+  url: `${SITE_URL}/assets/og-logo.png`,
   width: 1200,
   height: 630,
-  alt: 'SafeAct แพลตฟอร์มติดตามกฎหมายความปลอดภัย พร้อมระบบบริหารงานความปลอดภัยสำหรับ จป.',
+  alt: 'โลโก้ SafeAct',
 };
 
 const ID = {
