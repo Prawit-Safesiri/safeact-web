@@ -40,7 +40,7 @@ table{border-collapse:collapse}
 .t-eyebrow{font-size:var(--t-lead);line-height:var(--lh-lead);letter-spacing:var(--ls-lead);font-weight:600;color:var(--ink-2)}
 .muted{color:var(--ink-2)}
 /* ย่อหน้าที่กำหนดจุดตัดบรรทัดเอง: แต่ละ span ขึ้นบรรทัดใหม่บนจอกว้าง 1069px ขึ้นไป */
-@media (min-width:1069px){.t-lines > span{display:block}}   /* จอเล็กกว่านี้ความกว้างเนื้อหาแคบลง บรรทัดจะยาวเกิน จึงตัดบรรทัดตามปกติ */
+@media (min-width:1069px){.t-lines > span{display:block}.t-lines > .t-gap{margin-top:.7em}}   /* .t-gap = เว้นช่องว่างก่อนบรรทัดนี้ */   /* จอเล็กกว่านี้ความกว้างเนื้อหาแคบลง บรรทัดจะยาวเกิน จึงตัดบรรทัดตามปกติ */
 
 /* ---------- ปุ่ม (สเปก .button ของ Apple: pill 980px · 17px/1.17648/-0.022em คงเดิมในภาษาไทย) ---------- */
 .btn{
