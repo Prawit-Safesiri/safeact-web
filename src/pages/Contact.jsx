@@ -1,61 +1,43 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { COMPANY, fullAddress, appLink } from '../data/company.js';
+import { COMPANY, fullAddress } from '../data/company.js';
 import { IconCall, IconMail, IconBuilding } from '../components/Icons.jsx';
+import LineAddFriend from '../components/LineAddFriend.jsx';
 
 // แผนที่: ค้นด้วยชื่ออาคาร "SPE Tower Bangkok" ได้หมุดเดียวตรงอาคาร (ตรงกับผลค้นที่อยู่ 252 Phahonyothin Rd, Samsen Nai)
 // ชื่อไทย/ที่อยู่ไทยแบบเต็มทำให้ Google เจอหลายที่ หมุดกระจาย — ทดสอบแล้ว 27 ก.ย. 2569
+// ที่อยู่: ไม่ตัดบรรทัดกลาง "ห้องเลขที่ 1032-01" และกลางชื่อถนน / แขวง / เขต
+const keepNumbers = (t) => t.split(/(ห้องเลขที่ \d+-\d+|(?:ถนน|แขวง|เขต)\S+)/).map((p, i) => (i % 2 ? <span key={i} style={{ whiteSpace: 'nowrap' }}>{p}</span> : p));
+
 const MAP_QUERY = encodeURIComponent('SPE Tower Bangkok');
 const MAP_EMBED = `https://www.google.com/maps?q=${MAP_QUERY}&hl=th&z=16&output=embed`;
 const MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${MAP_QUERY}`;
-
-// ยังไม่มี backend รับฟอร์ม → ประกอบข้อความเป็นอีเมลถึงทีมขาย (ทำงานได้ทันทีโดยไม่เก็บข้อมูลไว้ที่เว็บ)
-function LeadForm() {
-  const [sent, setSent] = useState(false);
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const f = Object.fromEntries(new FormData(e.currentTarget));
-    const body = [
-      `ชื่อ-นามสกุล: ${f.name}`, `บริษัท: ${f.company}`, `อีเมล: ${f.email}`, `โทรศัพท์: ${f.phone}`,
-      `จำนวนผู้ใช้งาน/สาขา: ${f.size}`, `เรื่องที่สนใจ: ${f.topic}`, '', f.message,
-    ].join('\n');
-    window.location.href = `mailto:${COMPANY.email}?subject=${encodeURIComponent(`[เว็บไซต์] ${f.topic} — ${f.company || f.name}`)}&body=${encodeURIComponent(body)}`;
-    setSent(true);
-  };
-  return (
-    // method="post": ถ้ากดส่งก่อน JavaScript โหลด ข้อมูลที่กรอกจะไม่ไปอยู่ใน URL
-    <form className="form" method="post" action="/contact/" onSubmit={onSubmit} aria-describedby="form-note">
-      <div className="field"><label htmlFor="f-name">ชื่อ-นามสกุล</label><input id="f-name" name="name" autoComplete="name" required /></div>
-      <div className="field"><label htmlFor="f-company">บริษัท / หน่วยงาน</label><input id="f-company" name="company" autoComplete="organization" /></div>
-      <div className="field"><label htmlFor="f-email">อีเมล</label><input id="f-email" name="email" type="email" autoComplete="email" required /></div>
-      <div className="field"><label htmlFor="f-phone">โทรศัพท์</label><input id="f-phone" name="phone" type="tel" autoComplete="tel" inputMode="tel" /></div>
-      <div className="field"><label htmlFor="f-topic">เรื่องที่สนใจ</label>
-        <select id="f-topic" name="topic" defaultValue="ขอใบเสนอราคา Enterprise">
-          <option>ขอใบเสนอราคา Enterprise</option>
-          <option>สาธิตระบบ (Demo)</option>
-          <option>ชำระเงินแบบใบแจ้งหนี้</option>
-          <option>ยกเลิก / ขอคืนเงิน</option>
-          <option>อื่น ๆ</option>
-        </select>
-      </div>
-      <div className="field"><label htmlFor="f-size">จำนวนผู้ใช้งาน / สาขา</label><input id="f-size" name="size" placeholder="เช่น 10 คน 3 สาขา" /></div>
-      <div className="field full"><label htmlFor="f-msg">รายละเอียด</label><textarea id="f-msg" name="message" /></div>
-      <div className="full" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 16 }}>
-        <button className="btn" type="submit">ส่งข้อความ</button>
-        <p id="form-note" className="form__note">ระบบจะเปิดแอปอีเมลของท่านพร้อมข้อความที่กรอก ข้อมูลใช้เพื่อติดต่อกลับตาม<Link to="/privacy/">นโยบายความเป็นส่วนตัว</Link> เท่านั้น</p>
-      </div>
-      {sent && <p className="full" role="status">เปิดแอปอีเมลแล้ว หากไม่เปิด โปรดส่งถึง {COMPANY.email} โดยตรง</p>}
-    </form>
-  );
-}
 
 export default function Contact() {
   return (
     <main id="main">
       <section className="hero" aria-labelledby="c-title" style={{ paddingBottom: 72 }}>
+        {/* ภาพ hero ด้านบนหัวเรื่อง (ภาพชุดเดียวกับหน้าเกี่ยวกับเรา) */}
+        <div className="container--wide contact-hero">
+          <img className="about-hero" src="/assets/about-team.webp" srcSet="/assets/about-team-960.webp 960w, /assets/about-team.webp 1888w"
+            sizes="(min-width: 1305px) 1260px, 96vw" width="1888" height="833" fetchPriority="high"
+            alt="ทีม SafeAct สวมหมวกนิรภัยและแว่นตานิรภัย ดูข้อมูลบนแท็บเล็ตในโรงงาน" />
+        </div>
         <div className="container">
+          {/* ไอคอนแอปพร้อมเงายาว แบบเดียวกับหน้าแรก */}
+          <span className="hero__icon-wrap contact-icon">
+            <span className="hero__icon-shadow" aria-hidden="true" />
+            <img className="hero__icon" src="/assets/app-icon-352.webp" srcSet="/assets/app-icon-352.webp 2x, /assets/app-icon-600.webp 3x"
+              width="352" height="352" alt={`ไอคอนแอป ${COMPANY.appName} ของ SafeAct`} decoding="async" />
+          </span>
           <h1 id="c-title" className="t-hero">ติดต่อ SafeAct</h1>
-          <p className="t-sub">คุยกับทีมขาย ขอใบเสนอราคาสำหรับองค์กร นัดสาธิตระบบ หรือสอบถามเรื่องการชำระเงิน<br /><span style={{ whiteSpace: 'nowrap' }}>เราพร้อมช่วยเหลือ</span></p>
+          {/* แต่ละ span = 1 บรรทัดบนจอกว้าง 1069px ขึ้นไป (ตัดบรรทัดตามที่เจ้าของกำหนด) */}
+          <p className="t-sub t-lines">
+            <span>คุยกับทีมขาย ขอใบเสนอราคาสำหรับองค์กร นัดสาธิตระบบ หรือ</span>{' '}
+            <span>สอบถามเรื่องการชำระเงิน <span style={{ whiteSpace: 'nowrap' }}>เราพร้อมช่วยเหลือ</span></span>
+          </p>
+          <div className="contact-line">
+            <span>หรือแชตกับเราทาง LINE</span>
+            <LineAddFriend />
+          </div>
         </div>
       </section>
 
@@ -77,23 +59,13 @@ export default function Contact() {
             <li className="card">
               <IconBuilding className="props__icon" style={{ margin: '0 0 16px', width: 36, height: 36 }} />
               <h2>สำนักงาน</h2>
-              <address style={{ fontStyle: 'normal' }}><p>{COMPANY.nameTh}<br />{fullAddress()}</p></address>
+              <address style={{ fontStyle: 'normal' }}><p>{COMPANY.nameTh}<br />{keepNumbers(fullAddress())}</p></address>
             </li>
           </ul>
         </div>
       </section>
 
-      <section className="section section--alt" aria-labelledby="form-title">
-        <div className="container">
-          <header className="section-head">
-            <h2 id="form-title" className="t-h2">ส่งข้อความถึงเรา</h2>
-            <p className="t-lead">สมาชิกปัจจุบันจัดการแผนและใบเสร็จได้เองที่ <a href={appLink('/billing')}>หน้าแพ็กเกจสมาชิก</a></p>
-          </header>
-          <LeadForm />
-        </div>
-      </section>
-
-      <section className="section" aria-label="แผนที่">
+      <section className="section" aria-label="แผนที่" style={{ paddingTop: 0 }}>
         <div className="container--wide">
           {/* แผนที่ฝังจาก Google Maps ใช้เป็นภาพพื้นหลัง · ลิงก์วางทับเต็มกล่อง (iframe อยู่นอก <a> ตามข้อกำหนด HTML) */}
           <div className="map">
@@ -102,7 +74,7 @@ export default function Contact() {
             <a className="map__link" href={MAP_LINK} target="_blank" rel="noopener noreferrer" aria-label={`เปิดแผนที่สำนักงาน ${COMPANY.nameTh} ใน Google Maps (เปิดแท็บใหม่)`}>
               <span className="map__card">
                 <b>{COMPANY.nameTh}</b>{' '}
-                <span>{fullAddress()}</span>
+                <span>{keepNumbers(fullAddress())}</span>
               </span>{' '}
               <span className="map__btn">เปิดใน Google Maps</span>
             </a>

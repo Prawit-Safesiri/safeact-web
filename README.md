@@ -15,7 +15,7 @@ npm run preview
 ## แหล่งข้อมูลที่ต้องแก้เมื่อข้อมูลธุรกิจเปลี่ยน
 | ไฟล์ | เนื้อหา |
 |---|---|
-| `src/data/company.js` | โดเมนหลัก (`SITE_URL`) ชื่อบริษัท ชื่อแบรนด์ ประโยคนิยาม "SafeAct คือ…" เลขผู้เสียภาษี ที่อยู่ โทร อีเมล เวลาทำการ ลิงก์ทางการ (`sameAs`, `appStoreUrl`) วันที่มีผลของเอกสารนโยบาย (`LEGAL_UPDATED`) |
+| `src/data/company.js` | โดเมนหลัก (`SITE_URL`) ชื่อบริษัท ชื่อแบรนด์ ประโยคนิยาม "SafeAct คือ…" เลขผู้เสียภาษี ที่อยู่ โทร อีเมล เวลาทำการ ลิงก์ทางการ (`sameAs`, `appStoreUrl`) วันที่ปรับปรุงล่าสุดของเอกสารนโยบายแต่ละฉบับ (`LEGAL_DATES`) |
 | `src/data/service.js` | หมวดกฎหมาย จำนวนกฎหมายในคลัง (`LAW_LIBRARY`) รายชื่อฟีเจอร์และ anchor บนหน้า `/features/` |
 | `src/data/plans.js` | แผนและราคา — ซิงก์จากตาราง `plans` ใน Supabase ของระบบสมาชิก (ราคาจริงแก้ที่ `/admin/plans` ในแอป) |
 | `src/data/faq.js` | คำถามที่พบบ่อยบนหน้าเว็บ |
@@ -38,7 +38,7 @@ npm run preview
 - **หน้า 404**: `noindex` ไม่มี canonical / Open Graph / JSON-LD
 
 ### ตัวตรวจอัตโนมัติตอน build (build ล้มเหลวถ้าไม่ผ่าน)
-placeholder ใน `index.html` ครบ · ทุกหน้ามี `<h1>` เดียว title description canonical · JSON-LD parse ได้ `@id` อ้างถึงกันครบ ไม่มีค่าว่าง · ราคาใน JSON-LD ตรงกับที่แสดงบนหน้าราคา · ไม่มีโดเมนอื่นนอกจาก `safeact.com` / `member.safeact.com` · ไม่มี `www.safeact.com` และ `hreflang` · ทุกไฟล์ใน `dist/` อ่านได้ (สิทธิ์ 644)
+placeholder ใน `index.html` ครบ · ไม่มี `font-size` เล็กกว่า 13px · ทุกหน้ามี `<h1>` เดียว title description canonical · JSON-LD parse ได้ `@id` อ้างถึงกันครบ ไม่มีค่าว่าง · ราคาใน JSON-LD ตรงกับที่แสดงบนหน้าราคา · ไม่มีโดเมนอื่นนอกจาก `safeact.com` / `member.safeact.com` · ไม่มี `www.safeact.com` และ `hreflang` · ทุกไฟล์ใน `dist/` อ่านได้ (สิทธิ์ 644)
 
 ## Deploy
 
@@ -82,6 +82,7 @@ curl -s  https://safeact.com/sitemap.xml
 จากนั้นที่ Google Search Console: ยืนยันแบบ Domain (DNS) · ส่ง `https://safeact.com/sitemap.xml` · ลบ sitemap ของเว็บเดิม · ตรวจหน้าแรกและหน้าราคาด้วย URL Inspection · ตรวจ JSON-LD ด้วย Rich Results Test (หน้าแรกและ `/features/` จะรายงานรายการ Software App ว่าขาด `offers` และ `aggregateRating`/`review` — เป็นไปตามที่ตั้งใจ เพราะยังไม่มีรีวิวจริงบนหน้าเว็บ ไม่กระทบการเก็บหน้าลงดัชนี และห้ามใส่คะแนนที่ไม่มีอยู่จริง)
 
 ## มาตรฐานที่วางไว้
+- **ขนาดตัวอักษร** (กำหนดใน `src/styles/tokens.css`): เล็กสุดที่ใช้ได้ 13px (`--t-min`) · เมนูส่วนหัวและส่วนท้าย 15px (`--t-nav`) · build ล้มเหลวถ้า CSS มี `font-size` เป็น px ที่เล็กกว่า `--t-min` · ข้อความในกล่องแอนิเมชัน (`.hm`, `.aim`) ย่อขยายตามความกว้างกล่อง ออกแบบให้ ≥ 13px บนมือถือกว้าง 375px ขึ้นไปและจอคอมพิวเตอร์กว้าง 1280px ขึ้นไป
 - **Accessibility (ตาม Apple HIG/WCAG 2.2 AA)**: `lang="th"` · skip link · landmark ครบ · h1 หน้าละ 1 · โฟกัสคีย์บอร์ดชัดเจน · ปุ่ม/ลิงก์สูงขั้นต่ำ 44px · FAQ ใช้ `<details>` · ตารางมี scope · `prefers-reduced-motion`
 - **ดีไซน์**: token ตามระบบหน้า marketing ของ Apple (globalnav 44px, localnav sticky 52px, ปุ่ม pill, section 140/100/80px, tile มุม 28px)
 - **ภาพ**: WebP พร้อม `srcset`/`sizes` · ฟอนต์ Anuphan เก็บในเว็บเอง (`public/assets/fonts/`) · JS/CSS ที่มี hash ออกที่ `/build/`

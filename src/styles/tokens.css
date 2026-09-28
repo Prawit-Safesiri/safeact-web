@@ -84,8 +84,9 @@
   --lh-21:1.381;   --ls-21:.011em;
   --lh-19:1.36844; --ls-19:.012em;
   --lh-17:1.35296;
+  --lh-15:1.35;
   --lh-14:1.35718;
-  --lh-12:1.33337;
+  --lh-13:1.35;
 
   /* บทบาท → คลาสของ Apple (ขนาดใหญ่ / ≤1068px / ≤734px) */
   --t-hero:80px;  --lh-hero:var(--lh-80); --ls-hero:var(--ls-80);   /* typography-headline-super   80/64/48 */
@@ -97,7 +98,15 @@
   --t-lead:21px;  --lh-lead:var(--lh-21); --ls-lead:var(--ls-21);   /* typography-intro             21/21/19 */
   --t-body:17px;  --lh-body:var(--lh-17);                           /* typography-body */
   --t-small:14px; --lh-small:var(--lh-14);                          /* typography-body-reduced */
-  --t-foot:12px;  --lh-foot:var(--lh-12);                           /* typography-caption */
+
+  /* ── มาตรฐานขนาดตัวอักษรของเว็บ (เจ้าของกำหนด 28 ก.ย. 2569) ──
+     • เล็กสุดที่ใช้ได้ = 13px → --t-min (ป้าย หมายเหตุ หัวกลุ่มตาราง) ห้ามมีข้อความบนหน้าเว็บเล็กกว่านี้
+     • รายละเอียดในส่วนหัว (เมนู) และส่วนท้าย = 15px → --t-nav
+     ตัวตรวจตอน build (scripts/prerender.mjs) จะไม่ผ่านถ้า CSS มี font-size เป็น px ที่เล็กกว่า --t-min
+     ข้อยกเว้น: ข้อความในกล่องแอนิเมชัน (.hm / .aim) เป็นภาพประกอบ ย่อขยายตามความกว้างกล่อง */
+  --t-min:13px;   --lh-min:var(--lh-13);
+  --t-nav:15px;   --lh-nav:var(--lh-15);
+  --t-foot:var(--t-min); --lh-foot:var(--lh-min);                   /* typography-caption (Apple ใช้ 12px · เว็บนี้ใช้ขั้นต่ำ 13px) */
 
   --radius-tile:28px;
   --radius-card:18px;

@@ -4,7 +4,8 @@ export default function DocPage({ id, title, lead, updated, toc, children }) {
     <main id="main">
       <header className="container doc-hero">
         <h1 id={id} className="t-h1">{title}</h1>
-        {lead && <p className="t-lead">{lead}</p>}
+        {/* lead ส่งเป็น <span> หลายชิ้นได้: แต่ละชิ้นขึ้นบรรทัดใหม่บนจอกว้าง (t-lines) */}
+        {lead && <p className="t-lead t-lines">{lead}</p>}
         {updated && <p className="doc-meta">มีผลบังคับใช้และปรับปรุงล่าสุด: <time dateTime={updated.iso}>{updated.th}</time></p>}
       </header>
       <div className="container doc">

@@ -1,5 +1,5 @@
 import DocPage from '../components/DocPage.jsx';
-import { COMPANY, LEGAL_UPDATED, fullAddress } from '../data/company.js';
+import { COMPANY, LEGAL_DATES, fullAddress } from '../data/company.js';
 
 const TOC = [
   ['p1', '1. ผู้ควบคุมข้อมูล'], ['p2', '2. ข้อมูลที่เก็บรวบรวม'], ['p3', '3. วัตถุประสงค์'], ['p4', '4. ฐานทางกฎหมาย'],
@@ -10,7 +10,7 @@ const TOC = [
 // หัวข้อตรงกับ safeact-connect-hub/src/routes/privacy.tsx
 export default function Privacy() {
   return (
-    <DocPage id="pv-title" title="นโยบายความเป็นส่วนตัว" lead="เราให้ความสำคัญกับข้อมูลส่วนบุคคลของท่าน และปฏิบัติตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562" updated={LEGAL_UPDATED} toc={TOC}>
+    <DocPage id="pv-title" title="นโยบายความเป็นส่วนตัว" lead="เราให้ความสำคัญกับข้อมูลส่วนบุคคลของท่าน และปฏิบัติตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562" updated={LEGAL_DATES.privacy} toc={TOC}>
       <section aria-labelledby="p1"><h2 id="p1">1. ผู้ควบคุมข้อมูลส่วนบุคคล</h2>
         <p>{COMPANY.nameTh} เลขประจำตัวผู้เสียภาษี {COMPANY.taxId} {fullAddress()} อีเมล <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></p></section>
       <section aria-labelledby="p2"><h2 id="p2">2. ข้อมูลส่วนบุคคลที่เราเก็บรวบรวม</h2>

@@ -6,7 +6,7 @@
 //   เราคือใคร  → Organization (OnlineBusiness) + WebSite
 //   ให้บริการอะไร → Service (+ OfferCatalog ราคาแต่ละแผน) และ WebApplication (รายการฟีเจอร์)
 // หมายเหตุ: ไม่ใส่ FAQPage แล้ว (Google เลิกแสดงผล FAQ ตั้งแต่ พ.ค. 2026) · ไม่ใส่คะแนนรีวิวจนกว่าจะมีรีวิวจริงบนหน้าเว็บ
-import { SITE_URL, APP_URL, COMPANY, LEGAL_UPDATED } from './data/company.js';
+import { SITE_URL, APP_URL, COMPANY, LEGAL_DATES } from './data/company.js';
 import { PLANS, baht, fromPrice } from './data/plans.js';
 import { SERVICE, FEATURES, LAW_CATEGORIES } from './data/service.js';
 
@@ -231,24 +231,24 @@ export const ROUTES = {
   },
   '/refund-policy/': {
     title: 'นโยบายการยกเลิกและการคืนเงิน | SafeAct',
-    description: 'เงื่อนไขการยกเลิกบริการ ระยะเวลาแจ้งล่วงหน้า กรณีที่คืนเงินได้และไม่ได้ ขั้นตอนขอคืนเงิน และการประสานงานข้อพิพาทระหว่างผู้จัดการอบรมกับผู้ใช้บริการ',
-    lastmod: LEGAL_UPDATED.iso,
+    description: 'เงื่อนไขการยกเลิกบริการสมาชิก SafeAct รับประกันคืนเงินภายใน 7 วัน กรณีที่คืนเงินได้และไม่ได้ ขั้นตอนและระยะเวลาการคืนเงิน และการจัดการข้อพิพาท',
+    lastmod: LEGAL_DATES.refund.iso,
     crumb: 'นโยบายการยกเลิกและการคืนเงิน',
-    page: { dateModified: LEGAL_UPDATED.iso },
+    page: { dateModified: LEGAL_DATES.refund.iso },
   },
   '/terms/': {
     title: 'ข้อกำหนดและเงื่อนไขการใช้บริการ | SafeAct',
     description: 'ข้อกำหนดการใช้งานบริการ SafeAct ของบริษัท เซฟแอ็กต์ จำกัด ครอบคลุมบัญชีผู้ใช้ แผนบริการ การชำระเงิน ทรัพย์สินทางปัญญา และกฎหมายที่ใช้บังคับ',
-    lastmod: LEGAL_UPDATED.iso,
+    lastmod: LEGAL_DATES.terms.iso,
     crumb: 'ข้อกำหนดการใช้บริการ',
-    page: { dateModified: LEGAL_UPDATED.iso },
+    page: { dateModified: LEGAL_DATES.terms.iso },
   },
   '/privacy/': {
     title: 'นโยบายความเป็นส่วนตัว (PDPA) | SafeAct',
     description: 'วิธีที่บริษัท เซฟแอ็กต์ จำกัด เก็บ ใช้ และคุ้มครองข้อมูลส่วนบุคคลตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 และสิทธิของเจ้าของข้อมูล',
-    lastmod: LEGAL_UPDATED.iso,
+    lastmod: LEGAL_DATES.privacy.iso,
     crumb: 'นโยบายความเป็นส่วนตัว',
-    page: { dateModified: LEGAL_UPDATED.iso },
+    page: { dateModified: LEGAL_DATES.privacy.iso },
   },
   '/about/': {
     title: 'เกี่ยวกับเรา — บริษัท เซฟแอ็กต์ จำกัด | SafeAct',

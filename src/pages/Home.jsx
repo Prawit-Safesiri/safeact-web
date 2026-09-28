@@ -210,7 +210,7 @@ export default function Home() {
             <div className="frow__text">
               <p className="t-eyebrow" style={{ marginBottom: 8 }}>เว็บ + iPhone</p>
               <h2 id="app-title" className="t-h3">ทำงานได้ทุกที่<br />ข้อมูลตรงกันทุกอุปกรณ์</h2>
-              <p>ใช้บนคอมพิวเตอร์ที่สำนักงาน แล้วเปิดต่อบน iPhone ขณะเดินตรวจหน้างาน ทุกการเปลี่ยนแปลงซิงก์แบบเรียลไทม์</p>
+              <p>ใช้บนคอมพิวเตอร์ที่สำนักงาน แล้วเปิดต่อบน iPhone ขณะเดินตรวจหน้างาน ทุกการเปลี่ยนแปลงซิงก์แบบ<span style={{ whiteSpace: 'nowrap' }}>เรียลไทม์</span></p>
               <ul className="checks">
                 <li>แจ้งเตือนกฎหมายที่ติดตามผ่าน Push Notification</li>
                 <li>ดูรายละเอียดกฎหมายและเอกสารได้แม้อยู่หน้างาน</li>

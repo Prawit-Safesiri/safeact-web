@@ -37,7 +37,11 @@ export default function Features() {
       <section className="hero" aria-labelledby="f-title">
         <div className="container">
           <h1 id="f-title" className="t-hero">ฟีเจอร์ SafeAct<br /><span className="t-hero__sub">ระบบบริหารงานความปลอดภัย</span></h1>
-          <p className="t-sub">{COMPANY.definitionShort} ตั้งแต่ติดตามกฎหมาย ไปจนถึงบริหารงานความปลอดภัยทั้งองค์กร</p>
+          {/* บรรทัดสุดท้าย "ไปจนถึง…" ขึ้นบรรทัดใหม่บนจอกว้าง (ตัดบรรทัดตามที่เจ้าของกำหนด) */}
+          <p className="t-sub t-lines">
+            <span>{COMPANY.definitionShort} ตั้งแต่ติดตามกฎหมาย</span>{' '}
+            <span>ไปจนถึงบริหารงานความปลอดภัยทั้งองค์กร</span>
+          </p>
           <div className="cta-row">
             <a className="btn" href={checkoutLink('free')}>ทดลองใช้ฟรี 30 วัน</a>{' '}
             <Link className="more" to="/pricing/">เปรียบเทียบแผน</Link>

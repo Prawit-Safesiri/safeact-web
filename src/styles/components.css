@@ -9,10 +9,10 @@
 .gn__brand{display:flex;align-items:center;height:100%;padding-inline-end:8px}
 .gn__brand img{height:17px;width:auto}
 .gn__links{display:flex;align-items:center;justify-content:space-between;flex:1;list-style:none;max-width:720px;margin-inline:auto}
-.gn__links a{display:flex;align-items:center;height:var(--gn-h);padding-inline:8px;font-size:14px;line-height:var(--lh-14);color:rgba(0,0,0,.8)}
+.gn__links a{display:flex;align-items:center;height:var(--gn-h);padding-inline:8px;font-size:var(--t-nav);line-height:var(--lh-nav);font-weight:500;color:rgba(0,0,0,.8)}
 .gn__links a:hover,.gn__links a[aria-current="page"]{color:#000;text-decoration:none}
 .gn__actions{display:flex;align-items:center;gap:4px}
-.gn__actions a.gn__signin{font-size:14px;line-height:var(--lh-14);color:rgba(0,0,0,.8);padding-inline:8px}
+.gn__actions a.gn__signin{font-size:var(--t-nav);line-height:var(--lh-nav);font-weight:500;color:rgba(0,0,0,.8);padding-inline:8px}
 .gn__burger{display:none;align-items:center;justify-content:center;width:44px;height:44px;margin-inline-end:-12px;border:0;background:none;color:rgba(0,0,0,.8)}
 .gn__burger svg{width:18px;height:18px}
 .gn__burger line{transition:transform .24s var(--ease),opacity .12s;transform-origin:9px 9px}
@@ -32,7 +32,7 @@
   .gn__sheet .gn__sheet-sub a{font-family:var(--font-text);font-size:17px;line-height:var(--lh-17);letter-spacing:0;font-weight:400;color:var(--ink-2)}
 }
 
-/* ═══════ LOCAL NAV — sticky · สูง 52px · ชื่อ 21px/600 · ปุ่ม pill 12px ═══════ */
+/* ═══════ LOCAL NAV — sticky · สูง 52px · ชื่อ 21px/600 · เมนูและปุ่ม pill 15px (--t-nav) ═══════ */
 .ln{position:sticky;top:0;z-index:50;height:var(--ln-h)}
 .ln::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(255,255,255,.72);
   -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
@@ -46,11 +46,11 @@
 .ln__mark{height:26px;width:auto}
 .ln__title:hover{text-decoration:none}
 .ln__menu{display:flex;align-items:center;gap:24px;list-style:none}
-.ln__menu a{font-size:14px;line-height:var(--lh-14);color:var(--ink);opacity:.88;white-space:nowrap}
+.ln__menu a{font-size:var(--t-nav);line-height:var(--lh-nav);color:var(--ink);opacity:.88;white-space:nowrap}
 .ln__menu a:hover{color:var(--link);opacity:1;text-decoration:none}
 /* พื้นที่กดสูง 44px (HIG) โดยหน้าตาเท่าเดิม: ลิงก์สูงเต็มแถบ · ปุ่ม pill ขยายพื้นที่กดด้วย ::after */
 .ln__menu a{display:inline-flex;align-items:center;min-height:44px}
-.ln .btn--sm{position:relative}
+.ln .btn--sm{position:relative;font-size:var(--t-nav);line-height:var(--lh-nav)}
 .ln .btn--sm::after{content:"";position:absolute;inset:-7px 0}
 .ln__menu a[aria-current="page"]{opacity:.56;cursor:default}
 .ln__menu a[aria-current="page"]:hover{color:var(--ink)}
@@ -61,7 +61,7 @@
 }
 
 /* ═══════ BREADCRUMBS (ในฟุตเตอร์ แบบ Apple) ═══════ */
-.crumbs{display:flex;flex-wrap:wrap;align-items:center;list-style:none;font-size:14px;color:var(--ink-2);gap:4px}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;list-style:none;font-size:var(--t-nav);color:var(--ink-2);gap:4px}
 .crumbs li+li::before{content:"›";margin-inline:6px 8px;color:var(--ink-3)}
 .crumbs a{color:rgba(0,0,0,.8)}
 .crumbs img{height:13px;width:auto}
@@ -202,7 +202,7 @@
 .tile__body h3{margin-bottom:10px}
 .tile__body p{color:var(--ink-2)}
 /* ไทล์พื้นดำ: สีตัวอักษรและลิงก์ที่อ่านได้ชัด (คอนทราสต์ ≥ 4.5:1) */
-.tile--dark a{color:var(--link-dark)}
+.tile--dark a:not(.btn){color:var(--link-dark)}
 .tile--dark .tile__body p{color:#a1a1a6}
 .tile__more{margin-top:16px}
 .tile .ph{border-radius:0;margin-top:auto}
@@ -236,10 +236,10 @@
 /* ═══════ BILLING SWITCH (segmented control แบบ Apple) ═══════ */
 .seg{display:inline-flex;padding:4px;border-radius:var(--radius-pill);background:#e8e8ed;position:relative}
 .seg input{position:absolute;opacity:0;pointer-events:none}
-.seg label{position:relative;z-index:1;min-width:120px;padding:8px 20px;border-radius:var(--radius-pill);font-size:var(--t-small);font-weight:600;text-align:center;color:var(--ink-2);cursor:pointer;transition:color .2s}
+.seg label{position:relative;z-index:1;min-width:150px;padding:10px 24px;border-radius:var(--radius-pill);font-family:var(--font-display);font-size:24px;line-height:var(--lh-24);letter-spacing:var(--ls-24);font-weight:600;text-align:center;color:var(--ink-2);cursor:pointer;transition:color .2s}
 .seg input:checked+label{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
 .seg input:focus-visible+label{outline:2px solid var(--focus);outline-offset:2px}
-.seg small{display:block;font-size:12px;line-height:var(--lh-12);font-weight:400;color:var(--ok)}
+.seg small{display:block;margin-top:2px;font-family:var(--font-text);font-size:var(--t-min);line-height:var(--lh-min);letter-spacing:0;font-weight:400;color:var(--ok)}
 .billing{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:48px}
 .billing p{font-size:var(--t-small);color:var(--ink-2);text-align:center}
 
@@ -248,14 +248,14 @@
 .plan{position:relative;display:flex;flex-direction:column;padding:32px 24px 28px;border-radius:var(--radius-card);background:#fff;border:1px solid var(--line)}
 .section--alt .plan{border-color:transparent}
 .plan--featured{border:2px solid var(--btn)!important}
-.plan__badge{position:absolute;top:-12px;left:24px;padding:3px 10px;border-radius:var(--radius-pill);background:var(--btn);color:#fff;font-size:12px;font-weight:600}
+.plan__badge{position:absolute;top:-12px;left:24px;padding:3px 10px;border-radius:var(--radius-pill);background:var(--btn);color:#fff;font-size:var(--t-min);font-weight:600}
 .plan__badge--quiet{background:var(--ink)}
 .plan h3{font-size:24px;line-height:var(--lh-24);letter-spacing:var(--ls-24)}
 .plan__sub{margin-top:4px;font-size:var(--t-small);color:var(--ink-2);min-height:2.86em}
 .plan__price{margin-top:20px;display:flex;align-items:baseline;gap:4px;flex-wrap:wrap}
 .plan__price strong{font-family:var(--font-display);font-size:40px;line-height:var(--lh-40);font-weight:600;letter-spacing:var(--ls-40)}
 .plan__price span{font-size:var(--t-small);color:var(--ink-2)}
-.plan__vat{margin-top:6px;font-size:12px;color:var(--ink-2);min-height:3em}
+.plan__vat{margin-top:6px;font-size:var(--t-min);color:var(--ink-2);min-height:3em}
 .plan__save{color:var(--ok);font-weight:600}
 .plan .btn{margin-top:20px}
 .plan .checks{margin-top:24px;padding-top:24px;border-top:1px solid var(--line);font-size:var(--t-small);line-height:var(--lh-small);gap:10px}
@@ -266,13 +266,14 @@
 @media (max-width:734px){.plans{grid-template-columns:1fr;gap:24px}}
 
 /* ═══════ COMPARE TABLE ═══════ */
-.compare-wrap{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius-card);background:#fff}
-.compare{width:100%;min-width:720px;font-size:var(--t-small)}
+/* ตารางเปรียบเทียบกว้างไม่เกิน 800px อยู่กลาง (คอลัมน์ไม่ห่างเกินไปบนจอใหญ่) · จอแคบกว่า 720px เลื่อนแนวนอนได้ */
+.compare-wrap{position:relative;max-width:800px;margin-inline:auto;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius-card);background:#fff}
+.compare{width:100%;min-width:720px;font-size:var(--t-body);line-height:var(--lh-body)}   /* ตัวอักษรในตาราง 17px เท่าเนื้อหา */
 .compare caption{text-align:start;padding:0 0 16px}
 .compare th,.compare td{padding:14px 12px;border-bottom:1px solid var(--line-soft);text-align:center;vertical-align:middle}
-.compare thead th{position:sticky;top:0;background:#fff;font-size:17px;font-weight:600}
+.compare thead th{position:sticky;top:0;background:#fff;font-size:19px;line-height:var(--lh-19);font-weight:600}
 .compare tbody th{text-align:start;font-weight:400;color:var(--ink)}
-.compare .grp th{padding-top:28px;text-align:start;font-weight:600;color:var(--ink-2);font-size:12px;line-height:var(--lh-12);border-bottom:1px solid var(--line)}
+.compare .grp th{padding-top:28px;text-align:start;font-weight:600;color:var(--ink-2);font-size:var(--t-nav);line-height:var(--lh-nav);border-bottom:1px solid var(--line)}
 .compare .yes{color:var(--ok)}
 .compare .no{color:var(--ink-3)}
 .compare .yes svg,.compare .no svg{width:18px;height:18px;margin-inline:auto}
@@ -316,15 +317,15 @@
 .field input,.field select,.field textarea{width:100%;min-height:52px;padding:14px 16px;border:1px solid #86868b;border-radius:12px;background:#fff;font:inherit;font-size:17px;color:var(--ink)}
 .field textarea{min-height:140px;resize:vertical}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--focus);outline:4px solid rgba(0,125,250,.6);outline-offset:0}
-.form__note{font-size:12px;color:var(--ink-2)}
+.form__note{font-size:var(--t-min);color:var(--ink-2)}
 @media (max-width:734px){.form{grid-template-columns:1fr}}
 
 /* ═══════ LEGAL / DOC PAGES ═══════ */
 .doc-hero{padding-top:80px;padding-bottom:48px;text-align:center}
 .doc-hero .t-lead{margin-top:16px;color:var(--ink-2)}
-.doc-meta{margin-top:20px;font-size:var(--t-small);color:var(--ink-2)}
+.doc-meta{margin-top:20px;font-size:var(--t-body);line-height:var(--lh-body);color:var(--ink-2)}
 .doc{display:grid;grid-template-columns:240px 1fr;gap:64px;padding-bottom:var(--sec-pad)}
-.doc__toc{position:sticky;top:calc(var(--ln-h) + 24px);align-self:start;font-size:var(--t-small)}
+.doc__toc{position:sticky;top:calc(var(--ln-h) + 24px);align-self:start;font-size:var(--t-nav);line-height:var(--lh-nav)}   /* สารบัญ 15px เท่าเมนูส่วนหัว */
 .doc__toc p{font-weight:600;margin-bottom:12px}
 .doc__toc ol{list-style:none;display:grid;gap:10px;border-inline-start:1px solid var(--line);padding-inline-start:16px}
 .doc__toc a{color:var(--ink-2)}
@@ -350,8 +351,8 @@
 .flow li b{display:block}
 @media (max-width:1068px){.doc{grid-template-columns:1fr;gap:32px}.doc__toc{position:static}}
 
-/* ═══════ FOOTER — สเปก globalfooter ของ Apple: 14px · พื้น #f5f5f7 ═══════ */
-.gf{background:var(--bg-2);color:rgba(0,0,0,.56);font-size:14px;line-height:var(--lh-14)}
+/* ═══════ FOOTER — โครง globalfooter ของ Apple · ตัวอักษร 15px (--t-nav) · พื้น #f5f5f7 ═══════ */
+.gf{background:var(--bg-2);color:rgba(0,0,0,.56);font-size:var(--t-nav);line-height:var(--lh-nav)}
 .gf a{color:rgba(0,0,0,.8)}
 .gf__inner{width:min(980px, calc(100% - 44px));margin-inline:auto;padding-block:17px 21px}
 .gf__notes{padding-bottom:17px;border-bottom:1px solid var(--line)}
@@ -359,7 +360,7 @@
 .gf__notes ol{padding-inline-start:1.4em;display:grid;gap:6px}
 .gf__crumbs{padding-block:17px 0}
 .gf__dir{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-block:20px 16px}
-.gf__dir h2,.gf__dir h3{font-family:var(--font-text);font-size:14px;letter-spacing:0;font-weight:600;color:var(--ink);margin-bottom:10px}
+.gf__dir h2,.gf__dir h3{font-family:var(--font-text);font-size:var(--t-nav);letter-spacing:0;font-weight:600;color:var(--ink);margin-bottom:10px}
 .gf__dir ul{list-style:none;display:grid;gap:10px}
 .gf__company{padding-block:16px;border-top:1px solid var(--line);display:grid;gap:4px}
 .gf__legal{padding-top:14px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px}
@@ -520,17 +521,17 @@
   .aim__type{font-size:calc(var(--u)*3.7)}
   .aim__stage{top:calc(var(--u)*27);bottom:calc(var(--u)*21)}
   .aim__win{--h:calc(var(--u)*9.4)}
-  .aim__list li{display:block;line-height:var(--h);font-size:calc(var(--u)*3);padding-inline:calc(var(--u)*2.4)}   /* block: ชื่อที่ยาวเกินแสดง … */
+  .aim__list li{display:block;line-height:var(--h);font-size:calc(var(--u)*3.1);padding-inline:calc(var(--u)*1.4)}   /* block: ชื่อที่ยาวเกินแสดง … */
   .aim .aim__status{font-size:calc(var(--u)*3.2)}
   .aim__answer{padding:calc(var(--u)*4.6);gap:calc(var(--u)*3)}
-  .aim .aim__label{font-size:calc(var(--u)*3)}
+  .aim .aim__label{font-size:calc(var(--u)*3.1)}
   .aim .aim__text{font-size:calc(var(--u)*4.3)}
   .aim__text span,.aim__text b,.aim__cite-t span,.aim__sub span{white-space:nowrap}
-  .aim .aim__cite{white-space:normal;border-radius:calc(var(--u)*3);font-size:calc(var(--u)*2.9);padding:calc(var(--u)*1.6) calc(var(--u)*2.4)}
-  .aim .aim__ok{font-size:calc(var(--u)*3)}
+  .aim .aim__cite{white-space:normal;border-radius:calc(var(--u)*3);font-size:calc(var(--u)*3.05);padding:calc(var(--u)*1.6) calc(var(--u)*2.2)}
+  .aim .aim__ok{font-size:calc(var(--u)*3.1)}
   .aim .aim__tag{bottom:calc(var(--u)*7.5)}
   .aim .aim__app{font-size:calc(var(--u)*3.4)}
-  .aim__app span{font-size:calc(var(--u)*3)}
+  .aim__app span{font-size:calc(var(--u)*3.1)}
   .aim .aim__sub{font-size:calc(var(--u)*3.2)}
   .aim__sub span{display:block}
   .aim__get{margin-top:calc(var(--u)*5.5);width:calc(var(--u)*24);height:calc(var(--u)*8.6)}
@@ -575,6 +576,11 @@
 .about-icon img{width:min(300px,70%);height:auto;
   filter:drop-shadow(14px 18px 16px rgba(0,64,160,.22)) drop-shadow(32px 44px 48px rgba(0,64,160,.18))}
 .about-hero{display:block;width:100%;height:auto;aspect-ratio:21/9;object-fit:cover;border-radius:var(--radius-tile)}
+/* หน้าติดต่อ: ภาพ hero อยู่เหนือหัวเรื่อง */
+.contact-hero{margin-bottom:64px}
+.hero__icon-wrap.contact-icon{margin:0 auto 48px}
+.hero__icon-wrap.contact-icon + .t-hero{position:relative;z-index:1}
+@media (max-width:734px){.contact-hero{margin-bottom:40px}.contact-hero .about-hero{aspect-ratio:4/3}.hero__icon-wrap.contact-icon{margin:0 auto 32px}}
 
 /* ═══════ HERO MOTION — โมชั่นขายของหน้าแรก 21:9 (src/components/HeroMotion.jsx)
    ฉากวน 24s · 1% = 0.24s · หน่วย --u = 1% ของความกว้างกล่อง · ไม่มี [data-play] = แสดงฉากจบนิ่ง
@@ -612,9 +618,9 @@
 .hm__card{flex:none;width:calc(var(--u)*18);height:calc(var(--u)*8.6);padding:calc(var(--u)*1) calc(var(--u)*1.2);border-radius:calc(var(--u)*1.2);
   background:rgba(255,255,255,.86);box-shadow:0 0 0 1px rgba(0,0,0,.06),0 calc(var(--u)*.4) calc(var(--u)*1.4) rgba(0,0,0,.05);
   display:grid;grid-template-rows:auto 1fr auto;gap:calc(var(--u)*.3)}
-.hm__tag{justify-self:start;padding:calc(var(--u)*.1) calc(var(--u)*.7);border-radius:99px;background:#eef5ff;color:var(--ac);font-size:calc(var(--u)*1);font-weight:600}
+.hm__tag{justify-self:start;padding:calc(var(--u)*.1) calc(var(--u)*.7);border-radius:99px;background:#eef5ff;color:var(--ac);font-size:calc(var(--u)*1.05);font-weight:600}
 .hm__ctitle{align-self:start;font-size:calc(var(--u)*1.3);line-height:1.35;font-weight:600;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.hm__cyear{font-size:calc(var(--u)*1);color:var(--ink-3)}
+.hm__cyear{font-size:calc(var(--u)*1.05);color:var(--ink-3)}
 .hm__beam{position:absolute;top:-10%;bottom:-10%;left:-12%;width:10%;opacity:0;
   background:linear-gradient(90deg,transparent,rgba(41,151,255,.28),rgba(41,151,255,.55),rgba(41,151,255,.28),transparent)}
 
@@ -851,10 +857,10 @@
   /* ฉาก 1: ตัวเลขใหญ่อยู่บน คำอธิบายอยู่บรรทัดถัดไป · การ์ดกฎหมายใหญ่ขึ้น 3 แถวเต็มกล่อง */
   .hm .hm__libhead{top:calc(var(--u)*3);flex-direction:column;align-items:center;gap:0;font-size:calc(var(--u)*1.9);line-height:1.3}
   .hm__count{font-size:calc(var(--u)*5.6)}
-  .hm__wall{top:calc(var(--u)*14.6);gap:calc(var(--u)*1.3)}
+  .hm__wall{top:calc(var(--u)*14.2);gap:calc(var(--u)*1.3)}
   .hm__row{gap:calc(var(--u)*1.3)}
-  .hm__card{width:calc(var(--u)*20);height:calc(var(--u)*10.6);padding:calc(var(--u)*1.1) calc(var(--u)*1.3)}
-  .hm__tag,.hm__cyear{font-size:calc(var(--u)*1.2)}
+  .hm__card{width:calc(var(--u)*20);height:calc(var(--u)*11.3);padding:calc(var(--u)*1.1) calc(var(--u)*1.3)}
+  .hm__tag,.hm__cyear{font-size:calc(var(--u)*1.45)}   /* ≥ 13px บนจอกว้าง 375px */
   .hm__ctitle{font-size:calc(var(--u)*1.45)}
   .hm__row--1{transform:translateX(calc(var(--u)*-33.7))}
   .hm[data-play] .hm__row--1{animation-name:hm-row1m}
@@ -863,7 +869,7 @@
     padding:0 calc(var(--u)*.7) 0 calc(var(--u)*1.3)}
   .hm__spark{width:calc(var(--u)*2);height:calc(var(--u)*2)}
   .hm__type{font-size:calc(var(--u)*1.7)}
-  .hm__go{width:calc(var(--u)*4.8);height:calc(var(--u)*4.8)}
+  .hm__go{margin-left:auto;width:calc(var(--u)*4.8);height:calc(var(--u)*4.8)}   /* ชิดปลายขวาของช่องค้นหา (แทน .hm__status ที่ซ่อนไว้) */
   .hm__go svg{width:calc(var(--u)*2);height:calc(var(--u)*2)}
   .hm__status{display:none}
   /* ฉาก 3: คำตอบคอลัมน์เดียว + แหล่งอ้างอิงที่ตรงที่สุด 1 ใบ */
@@ -877,16 +883,17 @@
   .hm__cites li{padding:calc(var(--u)*1.1) calc(var(--u)*1.8)}
   .hm__cites li:nth-child(n+2){display:none}
   .hm__cites b{font-size:calc(var(--u)*1.6)}
-  .hm__cites small{font-size:calc(var(--u)*1.3)}
+  .hm__cites small{font-size:calc(var(--u)*1.45)}
   .hm__cites em{font-size:calc(var(--u)*2.8)}
   /* ฉาก 4: ไทล์ฟีเจอร์ 2 คอลัมน์ 3 แถว */
   .hm__feat{gap:calc(var(--u)*1.5)}
   .hm__fhead{font-size:calc(var(--u)*3.3);line-height:1.2}
-  .hm__feat ul{grid-template-columns:repeat(2,calc(var(--u)*17.2));gap:calc(var(--u)*1)}
-  .hm__tile{padding:calc(var(--u)*.9);gap:calc(var(--u)*.25)}
-  .hm-art{zoom:.86}
+  .hm__feat ul{grid-template-columns:repeat(2,calc(var(--u)*17.6));gap:calc(var(--u)*.9)}
+  .hm__tile{padding:calc(var(--u)*.8);gap:calc(var(--u)*.2)}
+  .hm-art{zoom:.8}
   .hm__tile > b{margin-top:calc(var(--u)*.5);font-size:calc(var(--u)*1.55)}
-  .hm__tile > small{font-size:calc(var(--u)*1.15);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* คำอธิบาย ≥ 13px บนจอกว้าง 375px · ข้อความที่ยาวเกินขึ้นบรรทัดใหม่ (ไม่ตัดเป็น …) */
+  .hm__tile > small{font-size:calc(var(--u)*1.45);line-height:1.3;text-wrap:balance}
   /* ฉาก 5: ฉากจบ */
   .hm__icon{width:calc(var(--u)*11.5);height:calc(var(--u)*11.5)}
   .hm__tagline{font-size:calc(var(--u)*4.9)}
@@ -906,6 +913,10 @@
 /* ═══════ แผนที่สำนักงาน (หน้าติดต่อ) — แผนที่ Google ฝังเป็นภาพ คลิกทั้งกล่องเปิด Google Maps ═══════ */
 .map{position:relative;display:block;aspect-ratio:21/9;border-radius:var(--radius-tile);overflow:hidden;background:#e9eef2;
   box-shadow:0 0 0 1px rgba(0,0,0,.06);color:var(--ink);isolation:isolate}
+/* ปุ่มเพิ่มเพื่อน LINE (ภาพทางการ 232×72 · แสดงสูง 42px ยังคมบนจอ Retina) */
+.line-add{display:inline-flex;align-items:center;min-height:44px}
+.line-add img{height:42px;width:auto}
+.contact-line{position:relative;z-index:1;margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 16px;color:var(--ink-2)}
 .map__link{position:absolute;inset:0;z-index:1;display:block;color:inherit}
 .map__link:hover{text-decoration:none}
 .map__frame{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;transition:transform .6s var(--ease)}

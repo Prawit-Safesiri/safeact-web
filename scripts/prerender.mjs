@@ -115,5 +115,19 @@ for (const f of files.filter((x) => /\.(html|xml|txt)$/.test(x))) {
   if (f.endsWith('.html') && new RegExp(`www\\.${brand.replace('.', '\\.')}`).test(text)) fail(`${path.relative(dist, f)}: พบข้อความ www.${brand}`);
 }
 
+// 3) มาตรฐานขนาดตัวอักษร: ห้ามมี font-size เป็น px ที่เล็กกว่า --t-min (src/styles/tokens.css)
+//    (ข้อความในกล่องแอนิเมชันใช้หน่วย --u ตามความกว้างกล่อง ไม่ใช่ px จึงไม่อยู่ในการตรวจนี้)
+const tokens = fs.readFileSync(path.join(root, 'src/styles/tokens.css'), 'utf8');
+const minPx = Number((/--t-min:\s*(\d+(?:\.\d+)?)px/.exec(tokens) || [])[1]);
+if (!minPx) fail('ไม่พบ --t-min ใน src/styles/tokens.css');
+for (const f of files.filter((x) => x.endsWith('.css'))) {
+  const css = fs.readFileSync(f, 'utf8');
+  for (const m of css.matchAll(/font-size:\s*(\d*\.?\d+)px/g)) {
+    if (Number(m[1]) < minPx) fail(`${path.relative(dist, f)}: พบ font-size:${m[1]}px เล็กกว่ามาตรฐาน ${minPx}px — ใช้ var(--t-min) แทน`);
+  }
+}
+const inline = files.filter((x) => x.endsWith('.html')).flatMap((f) => [...fs.readFileSync(f, 'utf8').matchAll(/font-size:\s*(\d*\.?\d+)px/g)].filter((m) => Number(m[1]) < minPx).map((m) => `${path.relative(dist, f)}: ${m[0]}`));
+if (inline.length) fail(`พบ font-size เล็กกว่ามาตรฐาน ${minPx}px ใน HTML:\n${inline.join('\n')}`);
+
 fs.rmSync(path.join(root, 'dist-ssr'), { recursive: true, force: true });
 console.log(`sitemap.xml + robots.txt + 404.html written · ตรวจ ${files.length} ไฟล์ผ่าน`);

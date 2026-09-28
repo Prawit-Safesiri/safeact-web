@@ -4,6 +4,7 @@ import { COMPANY, fullAddress, appLink } from '../data/company.js';
 import { headModel, headEntries, HEAD_KEYS, LD_ID, ROUTES, metaFor, normPath } from '../seo.js';
 import NotFound from '../pages/NotFound.jsx';
 import LocalNav from './LocalNav.jsx';
+import LineAddFriend from './LineAddFriend.jsx';
 import { initStaggered } from '../staggered.js';
 
 const NAV = [
@@ -151,6 +152,7 @@ function Footer({ pathname }) {
               <li><Link to="/contact/">ติดต่อเรา</Link></li>
               <li><a href={`tel:${COMPANY.phoneE164}`}>{COMPANY.phone}</a></li>
               <li><a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></li>
+              <li><LineAddFriend /></li>
               {COMPANY.appStoreUrl && <li><a href={COMPANY.appStoreUrl} rel="noopener">แอป {COMPANY.appName} บน App Store</a></li>}
               {COMPANY.sameAs.map((u) => <li key={u}><a href={u} rel="noopener">{new URL(u).host.replace(/^www\./, '')}</a></li>)}
             </ul>
@@ -158,7 +160,7 @@ function Footer({ pathname }) {
         </nav>
 
         <address className="gf__company" style={{ fontStyle: 'normal' }}>
-          <span>{COMPANY.footerLine}</span>{' '}
+          <span className="t-lines">{COMPANY.footerLines.map((t, i) => <span key={i}>{i > 0 && ' '}{t}</span>)}</span>{' '}
           <span><strong>{COMPANY.nameTh}</strong> ({COMPANY.nameEn}) · เลขประจำตัวผู้เสียภาษี {COMPANY.taxId}</span>{' '}
           <span>{fullAddress()}</span>{' '}
           <span>โทร <a href={`tel:${COMPANY.phoneE164}`}>{COMPANY.phone}</a> · อีเมล <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></span>

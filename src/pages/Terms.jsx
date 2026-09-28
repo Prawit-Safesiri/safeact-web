@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import DocPage from '../components/DocPage.jsx';
-import { COMPANY, LEGAL_UPDATED, fullAddress } from '../data/company.js';
+import { COMPANY, LEGAL_DATES, fullAddress } from '../data/company.js';
 
 const TOC = [
   ['t1', '1. คู่สัญญาและการยอมรับ'], ['t2', '2. บัญชีผู้ใช้'], ['t3', '3. แผนบริการและการชำระเงิน'],
@@ -11,7 +11,7 @@ const TOC = [
 // เนื้อหาตรงกับ safeact-connect-hub/src/routes/terms.tsx (ระบบสมาชิกจริง)
 export default function Terms() {
   return (
-    <DocPage id="t-title" title="ข้อกำหนดและเงื่อนไขการใช้บริการ" updated={LEGAL_UPDATED} toc={TOC}>
+    <DocPage id="t-title" title="ข้อกำหนดและเงื่อนไขการใช้บริการ" updated={LEGAL_DATES.terms} toc={TOC}>
       <section aria-labelledby="t1">
         <h2 id="t1">1. คู่สัญญาและการยอมรับข้อกำหนด</h2>
         <p>ข้อกำหนดนี้เป็นข้อตกลงระหว่างท่านกับ {COMPANY.nameTh} (“บริษัท”) เลขประจำตัวผู้เสียภาษี {COMPANY.taxId} ผู้ให้บริการ SafeAct ทั้งบนเว็บไซต์ ระบบสมาชิก และแอป SafeAct Club การสมัครหรือใช้บริการถือว่าท่านได้อ่านและยอมรับข้อกำหนดนี้ รวมถึง <Link to="/refund-policy/">นโยบายการยกเลิกและการคืนเงิน</Link> และ <Link to="/privacy/">นโยบายความเป็นส่วนตัว</Link></p>
@@ -41,7 +41,7 @@ export default function Terms() {
           <li>ขอคืนเงินเต็มจำนวนได้ภายใน 7 วันนับจากวันชำระเงินครั้งแรก หากยังไม่ได้ใช้บริการเกินสมควร (เช่น ดาวน์โหลดเอกสารจำนวนมาก)</li>
           <li>หลัง 7 วัน ไม่มีการคืนเงินสำหรับรอบบิลที่ชำระแล้ว เว้นแต่บริษัทเป็นฝ่ายยุติบริการ</li>
         </ul>
-        <p>รายละเอียดทั้งหมด รวมถึงบริการอบรมและขั้นตอนการขอคืนเงิน อยู่ใน <Link to="/refund-policy/">นโยบายการยกเลิกและการคืนเงิน</Link></p>
+        <p>รายละเอียดทั้งหมด รวมถึงขั้นตอนการขอคืนเงิน อยู่ใน <Link to="/refund-policy/">นโยบายการยกเลิกและการคืนเงิน</Link></p>
       </section>
       <section aria-labelledby="t5">
         <h2 id="t5">5. ขอบเขตการใช้งานและทรัพย์สินทางปัญญา</h2>
