@@ -367,6 +367,17 @@
 .gf__dir h2,.gf__dir h3{font-family:var(--font-text);font-size:var(--t-nav);letter-spacing:0;font-weight:600;color:var(--ink);margin-bottom:10px}
 .gf__dir ul{list-style:none;display:grid;gap:10px}
 .gf__company{padding-block:16px;border-top:1px solid var(--line);display:grid;gap:4px}
+/* เส้นคั่นใต้บรรทัดคำอธิบายบริการ ก่อนข้อมูลบริษัท */
+.gf__company > .t-lines{padding-bottom:12px;margin-bottom:8px;border-bottom:1px solid var(--line)}
+.gf__pair i{font-style:normal}
+.gf__w{display:inline-block}
+@media (max-width:734px){
+  .gf__company{gap:12px}
+  .gf__company > .t-lines{margin-bottom:4px}
+  .gf__pair > span{display:block}
+  .gf__pair > span + i + span{margin-top:4px}
+  .gf__pair i{display:none}
+}
 .gf__legal{padding-top:14px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px}
 .gf__legal ul{display:flex;flex-wrap:wrap;list-style:none}
 .gf__legal li+li{border-inline-start:1px solid var(--line);margin-inline-start:8px;padding-inline-start:8px}

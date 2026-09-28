@@ -161,13 +161,14 @@ function Footer({ pathname }) {
 
         <address className="gf__company" style={{ fontStyle: 'normal' }}>
           <span className="t-lines">{COMPANY.footerLines.map((t, i) => <span key={i}>{i > 0 && ' '}{t}</span>)}</span>{' '}
-          <span><strong>{COMPANY.nameTh}</strong> ({COMPANY.nameEn}) · เลขประจำตัวผู้เสียภาษี {COMPANY.taxId}</span>{' '}
-          <span>{fullAddress()}</span>{' '}
-          <span>โทร <a href={`tel:${COMPANY.phoneE164}`}>{COMPANY.phone}</a> · อีเมล <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></span>
+          {/* มือถือ: แต่ละส่วนขึ้นบรรทัดใหม่ (ซ่อนจุดคั่น) · ที่อยู่ตัดบรรทัดได้เฉพาะตรงช่องว่าง ไม่ตัดกลางคำ */}
+          <span className="gf__pair"><span><strong>{COMPANY.nameTh}</strong> ({COMPANY.nameEn})</span><i> · </i><span>เลขประจำตัวผู้เสียภาษี {COMPANY.taxId}</span></span>{' '}
+          <span>{fullAddress().split(' ').flatMap((w, i) => [i > 0 && ' ', <span key={i} className="gf__w">{w}</span>])}</span>{' '}
+          <span className="gf__pair"><span>โทร <a href={`tel:${COMPANY.phoneE164}`}>{COMPANY.phone}</a></span><i> · </i><span>อีเมล <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></span></span>
         </address>
 
         <div className="gf__legal">
-          <span>Copyright © {year} {COMPANY.nameTh} สงวนลิขสิทธิ์</span>
+          <span>Copyright © {year} {COMPANY.nameTh} <span className="gf__w">สงวนลิขสิทธิ์</span></span>
           <ul>
             <li><Link to="/privacy/">นโยบายความเป็นส่วนตัว</Link></li>
             <li><Link to="/terms/">ข้อกำหนดการใช้บริการ</Link></li>
