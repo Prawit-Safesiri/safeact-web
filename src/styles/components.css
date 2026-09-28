@@ -91,6 +91,10 @@
 .hero__note{margin-top:16px;font-size:var(--t-small);color:var(--ink-2);text-wrap:balance}
 .hero__media{margin-top:72px}
 @media (max-width:734px){.hero{padding-top:56px}.hero__media{margin-top:48px}}
+/* หน้าแรก: แอนิเมชันจอแอป (.pm) อยู่บนสุดเหนือหัวเรื่อง · มือถือ (กล่องเต็มความกว้าง) ชิดใต้แถบเมนู */
+.hero__top{margin-bottom:64px}
+@media (max-width:734px){.hero__top{margin-bottom:40px}}
+@media (max-width:480px){.hero--top{padding-top:0}}
 
 /* ═══════ MEDIA PLACEHOLDER — กล่องว่างรอภาพ/วิดีโอจริง ═══════ */
 .ph{
@@ -909,6 +913,391 @@
 /* ข้อความไล่สี (background-clip:text) ระบายสีได้แค่ในกรอบของ element — สระ/วรรณยุกต์ที่ห้อยล่าง (ู ุ ฺ) หรือลอยบนจะขาด
    เพิ่มพื้นที่บน-ล่างให้กรอบ แล้วหักคืนด้วย margin ติดลบ เลย์เอาต์จึงไม่ขยับ */
 .hm__tagline span,.hm__fhead span{display:inline-block;padding:.12em 0 .22em;margin:-.12em 0 -.22em}
+
+/* ═══════ PAD MOTION — จอแอป "ฉาย" จากแท็บเล็ตในภาพทีมงาน หน้าเกี่ยวกับเรา (src/components/PadMotion.jsx)
+   ฉากวน 27s · 1% = 0.27s · หน่วย --u = 1% ของความกว้างจอจำลองบนจอใหญ่ (≈ 4.9px) · ไม่มี [data-play] = เห็นภาพอย่างเดียว
+   เปิด 1–6% · ฉาก 1 5.5–28% · ฉาก 2 28–56% · ฉาก 3 56–91% · ปิด 91–97% · พัก 97–100%
+   ตำแหน่งจอจำลอง (--pl --pt --pw --ph) และจุดแท็บเล็ต (--tx --ty) วัดจากภาพ about-team.webp (2000×883) ที่ครอป 21:9
+   ⚠ เปลี่ยนภาพเมื่อใด ต้องวัดจุดแท็บเล็ตใหม่: จอใหญ่ = มุมขวาบนของแท็บเล็ต · มือถือ = กึ่งกลางขอบบนของแท็บเล็ตในภาพ about-team-m.webp
+   ⚠ ห้ามใส่ opacity / filter / clip-path / mask ที่บรรพบุรุษของ .pm__glass (backdrop-filter จะมองไม่เห็นภาพ)
+     การขยาย/หดทำด้วย transform ที่ .pm__proj ตัวเดียว รอบจุดแท็บเล็ต มุมจอจึงวิ่งตามขอบลำแสงพอดี ═══════ */
+@property --pmn{syntax:'<integer>';initial-value:0;inherits:true}
+.pm{--t:27s;--rd:.3;--u:.394cqw;--tx:68.75%;--ty:70.35%;--pl:3.9%;--pt:5.9%;--pw:39.4%;--ph:89.7%;--e:cubic-bezier(.32,.72,0,1);
+  --pr:calc(var(--u)*5.2);--c1:#f5f5f7;--c2:#c9ced8;--cb:#8ec5ff;--cg:#4ade80;--ca:#ffb340;--cr:#ff9d94;--fill:#2f6fd0;--min:max(13px,calc(var(--u)*2.75));
+  position:relative;width:100%;aspect-ratio:21/9;overflow:hidden;container-type:inline-size;border-radius:var(--radius-tile);
+  background:#dfe4ea;color:var(--c1);font-family:var(--font-text);text-align:left}
+.pm *{box-sizing:border-box}
+/* :where = ไม่เพิ่มน้ำหนัก selector → padding/margin ของคลาสชิ้นส่วนด้านล่างยังชนะ */
+.pm :where(p,ul){margin:0;padding:0;list-style:none}
+.pm i,.pm em,.pm mark{font-style:normal}
+.pm small{font-size:var(--min);line-height:1.35;color:var(--c2)}
+.pm svg{display:block}
+.pm__photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pm__stage,.pm__proj{position:absolute;inset:0}
+.pm__stage{pointer-events:none;-webkit-user-select:none;user-select:none}
+.pm__proj{transform-origin:var(--tx) var(--ty);transform:scale(.02)}
+/* แสง: ประกายที่แท็บเล็ต + ลำแสงสามเหลี่ยมจากขอบจอจำลองไปรวมที่แท็บเล็ต */
+.pm__glint{position:absolute;left:var(--tx);top:var(--ty);width:calc(var(--u)*18);height:calc(var(--u)*18);margin:calc(var(--u)*-9) 0 0 calc(var(--u)*-9);border-radius:50%;opacity:0;
+  background:radial-gradient(circle,rgba(255,255,255,.95),rgba(142,197,255,.55) 30%,rgba(142,197,255,0) 68%)}
+/* ลำแสงเริ่มจากขอบจอจำลองช่วงที่เป็นเส้นตรง (เว้นมุมโค้ง --pr) · --ay = ระยะจากขอบบนของลำแสงถึงจุดแท็บเล็ต */
+.pm__beamwrap{--ay:calc(27.621cqw - var(--pr));position:absolute;left:calc(var(--pl) + var(--pw));top:calc(var(--pt) + var(--pr));width:calc(var(--tx) - var(--pl) - var(--pw));height:calc(var(--ph) - var(--pr)*2);
+  filter:blur(calc(var(--u)*.2))}
+.pm__beam,.pm__edge{position:absolute;inset:0;opacity:0}
+.pm__beam{overflow:hidden;clip-path:polygon(0 0,100% var(--ay),0 100%);
+  background:linear-gradient(90deg,rgba(142,197,255,.16),rgba(176,214,255,.34) 60%,rgba(255,255,255,.9))}
+.pm__beam::after{content:"";position:absolute;inset:0 auto 0 0;width:30%;opacity:0;background:linear-gradient(90deg,transparent,rgba(142,197,255,.7),#fff,transparent)}
+.pm__edge{background:linear-gradient(90deg,rgba(176,214,255,.3),rgba(214,234,255,.8) 70%,#fff)}
+.pm__edge--a{clip-path:polygon(0 0,100% var(--ay),0 calc(var(--u)*.9))}
+.pm__edge--b{clip-path:polygon(0 100%,100% var(--ay),0 calc(100% - var(--u)*.9))}
+/* จอกระจก */
+.pm__panel{position:absolute;left:var(--pl);top:var(--pt);width:var(--pw);height:var(--ph);border-radius:var(--pr)}
+.pm__glass,.pm__flash{position:absolute;inset:0;border-radius:inherit;opacity:0}
+.pm__glass{background:rgba(9,13,22,.74);-webkit-backdrop-filter:blur(20px) saturate(135%);backdrop-filter:blur(20px) saturate(135%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 calc(var(--u)*3) calc(var(--u)*9) rgba(0,0,0,.38)}
+.pm__flash{background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(142,197,255,.78))}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.pm__glass{background:rgba(9,13,22,.88)}}
+.pm__screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:calc(var(--u)*3.6) calc(var(--u)*4) calc(var(--u)*2.4);border-radius:inherit;overflow:hidden;opacity:0;
+  font-size:max(13px,calc(var(--u)*3));line-height:1.4}
+.pm__bar{display:flex;align-items:center;gap:calc(var(--u)*1.6);height:calc(var(--u)*7)}
+.pm__bar img{width:calc(var(--u)*5.6);height:calc(var(--u)*5.6);border-radius:24%}
+.pm__bar > b{font-size:max(13px,calc(var(--u)*3.2));font-weight:600;letter-spacing:-.01em}
+.pm__bell{position:relative;display:grid;place-items:center;width:calc(var(--u)*6);height:calc(var(--u)*6);margin-left:auto;transform-origin:50% 12%}
+.pm__bell svg{width:calc(var(--u)*4.6);height:calc(var(--u)*4.6)}
+.pm__badge,.pm-ph__count{display:grid;place-items:center;min-width:calc(var(--u)*4.2);height:calc(var(--u)*4.2);padding:0 calc(var(--u)*1);border-radius:99px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.22);color:#fff;font-size:var(--min);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.pm__badge{position:absolute;right:calc(var(--u)*-1.4);top:calc(var(--u)*-1);background:var(--fill);opacity:0}
+.pm-n{--pmn:var(--to)}
+.pm-n::after{counter-reset:pmn var(--pmn);content:counter(pmn)}
+.pm__caps{position:relative;height:calc(var(--u)*6.4);margin-top:calc(var(--u)*1.2)}
+.pm__cap{position:absolute;inset:0;font-family:var(--font-display);font-size:calc(var(--u)*4.3);line-height:calc(var(--u)*6.4);font-weight:600;letter-spacing:-.005em;white-space:nowrap;opacity:0}
+.pm__cap span + span{color:var(--cb)}
+.pm__scenes{position:relative;flex:1;min-height:0;margin-top:calc(var(--u)*2)}
+.pm__scene{position:absolute;inset:0;opacity:0}
+.pm__segs{display:flex;justify-content:center;gap:calc(var(--u)*1.2);padding-top:calc(var(--u)*2.6)}
+.pm__segs i{width:calc(var(--u)*4.6);height:calc(var(--u)*.8);border-radius:99px;background:#fff;opacity:.25}
+/* ชิ้นส่วนที่ใช้ซ้ำ */
+.pm-card{border-radius:calc(var(--u)*3.2);background:rgba(0,0,0,.30);box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}
+.pm-pill{display:inline-flex;align-items:center;padding:calc(var(--u)*.5) calc(var(--u)*1.7);border-radius:99px;font-size:var(--min);line-height:1.35;font-weight:600;white-space:nowrap}
+.pm-pill--b{background:rgba(142,197,255,.16);color:#cfe3ff}
+.pm-pill--g{background:rgba(74,222,128,.16);color:#7ee2a0}
+.pm-pill--a{background:rgba(255,179,64,.16);color:#ffcf87}
+.pm-pill--r{background:rgba(255,120,110,.18);color:#ffb3ad}
+.pm-pill--p{background:rgba(255,130,160,.16);color:#ffb3c4}
+.pm-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:calc(var(--u)*1.2);border-radius:99px;background:var(--fill);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);color:#fff;font-weight:600;white-space:nowrap}
+.pm-tap{position:absolute;left:50%;top:50%;width:calc(var(--u)*9);height:calc(var(--u)*9);margin:calc(var(--u)*-4.5) 0 0 calc(var(--u)*-4.5);border-radius:50%;background:rgba(255,255,255,.42);opacity:0}
+/* ฉาก 1 */
+.pm__s1{display:flex;flex-direction:column;gap:calc(var(--u)*2.2)}
+.pm-mc{display:grid;grid-template-columns:1fr auto;align-items:center;gap:calc(var(--u)*1.2) calc(var(--u)*2);padding:calc(var(--u)*2.6) calc(var(--u)*3.2)}
+.pm-mc__top{display:flex;align-items:center;gap:calc(var(--u)*1.6)}
+.pm-mc__top b{font-size:calc(var(--u)*3.4);font-weight:700;white-space:nowrap}
+.pm-mc__num{grid-row:1/3;grid-column:2;display:flex;align-items:baseline;gap:calc(var(--u)*1.2)}
+.pm-mc__num .pm-n{font-family:var(--font-display);font-size:calc(var(--u)*8);line-height:1;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.pm-mc__chips{display:flex;flex-wrap:wrap;gap:calc(var(--u)*1.2)}
+.pm-dd{padding:calc(var(--u)*2.2) calc(var(--u)*3) calc(var(--u)*.8);transform-origin:94% 0}
+.pm-dd__head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:calc(var(--u)*1.2)}
+.pm-dd__head b{font-weight:600}
+.pm-dd__head span{font-size:var(--min);color:var(--cb)}
+.pm-it{position:relative;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:calc(var(--u)*.6) calc(var(--u)*2.2);
+  padding:calc(var(--u)*1.5) calc(var(--u)*2.6) calc(var(--u)*1.5) 0;border-top:1px solid rgba(255,255,255,.08)}
+.pm-it__ic{grid-row:1/3;display:grid;place-items:center;width:calc(var(--u)*6.4);height:calc(var(--u)*6.4);border-radius:calc(var(--u)*1.8);background:rgba(142,197,255,.14);color:var(--cb)}
+.pm-it__ic svg{width:calc(var(--u)*4);height:calc(var(--u)*4)}
+.pm-it__top{display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*2);min-width:0}
+.pm-it__bar{display:block;flex:0 1 auto;max-width:calc(100% - var(--u)*22);height:calc(var(--u)*1.6);border-radius:99px;background:rgba(255,255,255,.34)}
+.pm-it small{white-space:nowrap}
+.pm-it__dot{position:absolute;right:0;top:50%;width:calc(var(--u)*1.4);height:calc(var(--u)*1.4);margin-top:calc(var(--u)*-.7);border-radius:50%;background:#5aa8ff}
+/* ฉาก 2 */
+.pm-ph{display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*2);height:calc(var(--u)*7.4);opacity:0}
+.pm-ph p{display:flex;align-items:center;gap:calc(var(--u)*1.6);min-width:0}
+.pm-ph p b{font-size:calc(var(--u)*3.4);font-weight:600;white-space:nowrap}
+.pm-ph__alert{height:calc(var(--u)*6.8);padding:0 calc(var(--u)*1.6) 0 calc(var(--u)*2.4);background:rgba(255,255,255,.12);font-size:var(--min)}
+.pm-ph__alert svg{width:calc(var(--u)*3.6);height:calc(var(--u)*3.6)}
+.pm-ph__count{background:#dc2626}
+.pm__s2{display:flex;flex-direction:column}
+.pm-plan{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;gap:calc(var(--u)*2);margin-top:calc(var(--u)*2.2);border-radius:calc(var(--u)*3.2);overflow:hidden;opacity:0}
+.pm-kpis{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:calc(var(--u)*1.6)}
+.pm-kpi{position:relative;display:grid;gap:calc(var(--u)*.4);padding:calc(var(--u)*2.2) calc(var(--u)*1.8)}
+.pm-kpi small{white-space:nowrap}
+.pm-kpi .pm-n{font-family:var(--font-display);font-size:calc(var(--u)*6);line-height:1.1;font-weight:700;font-variant-numeric:tabular-nums}
+.pm-kpi--g .pm-n{color:var(--cg)}.pm-kpi--a .pm-n{color:var(--ca)}.pm-kpi--r .pm-n{color:var(--cr)}
+.pm-kpi__dot,.pm-kpi__dot::after{position:absolute;width:calc(var(--u)*1.6);height:calc(var(--u)*1.6);border-radius:50%}
+.pm-kpi__dot{right:calc(var(--u)*2);bottom:calc(var(--u)*4.4);background:#ff6b5e}
+.pm-kpi__dot::after{content:"";inset:0;border:1.5px solid #ff6b5e}
+.pm-kpi__all{display:flex;align-items:center;gap:calc(var(--u)*1.4)}
+.pm-kpi__all em{font-size:var(--min);font-weight:600;color:var(--cb)}
+.pm-ring{width:calc(var(--u)*6.2);height:calc(var(--u)*6.2);margin-left:auto;transform:rotate(-90deg)}
+.pm-ring circle{fill:none;stroke:rgba(255,255,255,.16);stroke-width:4.4}
+.pm-ring .pm-ring__v{stroke:#5aa8ff;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:calc((100 - var(--v))*1px)}   /* ต้องมีหน่วย px: Firefox ไม่รับ calc() ไม่มีหน่วย */
+.pm-rows{flex:1;min-height:0;display:flex;flex-flow:column wrap;align-content:flex-start;gap:calc(var(--u)*1.6) calc(var(--u)*4);overflow:hidden}
+.pm-row{flex:none;display:grid;grid-template-columns:1fr auto;align-items:center;gap:calc(var(--u)*1.2) calc(var(--u)*2);width:100%;padding:calc(var(--u)*1.9) calc(var(--u)*2.6)}
+.pm-row b{font-weight:600;white-space:nowrap}
+.pm-row__yr{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,1fr);gap:calc(var(--u)*.8)}
+.pm-row__yr i{height:calc(var(--u)*1.5);border-radius:99px;background:rgba(255,255,255,.12)}
+.pm-row--r .on{background:#ff6b5e}.pm-row--a .on{background:var(--ca)}.pm-row--g .on{background:var(--cg)}
+.pm-scan{position:absolute;inset:0 auto 0 0;width:36%;opacity:0;background:linear-gradient(90deg,transparent,rgba(142,197,255,.34),transparent)}
+/* ข้อความเตือน: จอใหญ่ชิดล่างเวที (--tt:100%) · มือถือชิดใต้การ์ดตัวเลข — ถ้าเวทีเตี้ยกว่า --tt + ความสูงข้อความ ช่องว่างด้านบนจะหดจนข้อความชิดล่างเวที */
+.pm-toastbox{--tt:100%;position:absolute;inset:0;display:flex;flex-direction:column}
+.pm-toastbox::before{content:"";flex:0 1 var(--tt);min-height:0}
+.pm-toast{flex:none;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:calc(var(--u)*2.2);padding:calc(var(--u)*2.4) calc(var(--u)*3);border-radius:calc(var(--u)*3.2);
+  background:#2c2008;box-shadow:inset 0 0 0 1px rgba(255,179,64,.36),0 calc(var(--u)*-1) calc(var(--u)*6) rgba(0,0,0,.5);opacity:0}
+.pm-toast__ic{display:grid;place-items:center;width:calc(var(--u)*6.6);height:calc(var(--u)*6.6);border-radius:50%;background:rgba(255,179,64,.16);color:var(--ca)}
+.pm-toast__ic svg{width:calc(var(--u)*3.8);height:calc(var(--u)*3.8)}
+.pm-toast b{display:block;font-weight:600;color:#fff}
+.pm-toast b span{display:inline-block}
+.pm-toast small{display:block;margin-top:calc(var(--u)*.4);color:#d8d2c4}
+/* ฉาก 3 — แชต: เนื้อหาชิดบนเมื่อพอดีเวที · ถ้ายาวกว่าเวทีจะชิดล่าง (ปุ่มอยู่ในจอเสมอ) ส่วนที่เกินขึ้นไปจางหายที่ขอบบน
+   ทำด้วย 2 ชั้น: .pm-tho เลื่อนลง 100% ของเวที แล้ว .pm-thread (สูงอย่างน้อยเท่าเวที) เลื่อนขึ้น 100% ของตัวเอง
+   .pm-fold = ชิ้นที่กางออก/พับเก็บด้วย grid-template-rows 0fr ↔ 1fr · ช่องไฟระหว่างชิ้นพับตามไปด้วย (.pm-gapb/.pm-gapt) */
+.pm__s3{--fd:calc(var(--u)*2.2);inset:calc(var(--fd)*-1) 0 0;overflow:hidden;-webkit-mask:linear-gradient(transparent,#000 var(--fd));mask:linear-gradient(transparent,#000 var(--fd))}
+.pm-tho{position:absolute;inset:var(--fd) 0 0;transform:translateY(100%)}
+.pm-thread{min-height:100%;transform:translateY(-100%)}
+.pm-fold{display:grid;grid-template-rows:1fr}
+.pm-fold__in{min-height:0;overflow:hidden}
+/* ช่องไฟเป็น margin ของลูก ไม่ใช่ padding ของ .pm-fold__in — padding ทำให้ชิ้นที่พับแล้วยังเหลือความสูงค้าง */
+.pm-gapb > *{margin-bottom:calc(var(--u)*2.2)}
+.pm-gapt > *{margin-top:calc(var(--u)*2.2)}
+.pm-right{display:flex;justify-content:flex-end}
+.pm-row1{display:flex;align-items:center;justify-content:space-between;height:calc(var(--u)*7.4)}
+.pm-ask{padding:calc(var(--u)*1.4) calc(var(--u)*3);border-radius:calc(var(--u)*3.6) calc(var(--u)*3.6) calc(var(--u)*1.2) calc(var(--u)*3.6);background:var(--fill);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);color:#fff;white-space:nowrap;transform-origin:100% 100%;opacity:0}
+.pm-dots{display:flex;gap:calc(var(--u)*1);padding:calc(var(--u)*2.2) calc(var(--u)*2.6);border-radius:99px;background:rgba(255,255,255,.12);opacity:0}
+.pm-dots i{width:calc(var(--u)*1.5);height:calc(var(--u)*1.5);border-radius:50%;background:var(--c2)}
+.pm-ans{padding:calc(var(--u)*2.4) calc(var(--u)*3.2);opacity:0}
+.pm-ans__who{display:flex;align-items:center;gap:calc(var(--u)*1.2);font-size:var(--min);font-weight:600;color:var(--cb)}
+.pm-ans__who svg{width:calc(var(--u)*3.2);height:calc(var(--u)*3.2)}
+.pm-ans__l{display:flex;align-items:baseline;gap:calc(var(--u)*1.6);white-space:nowrap}
+.pm-ans__l--1{padding-block:calc(var(--u)*1.1)}
+.pm-ans__l--3{margin-top:calc(var(--u)*1.1);padding-left:calc(var(--u)*3.1);color:var(--c2)}
+.pm-ans__l--4{padding-top:calc(var(--u)*1.1)}
+.pm-ans__l b{font-weight:700;color:var(--ca)}
+.pm-ans mark{background:linear-gradient(rgba(142,197,255,.42),rgba(142,197,255,.42)) no-repeat 0 100%/100% 38%;color:#fff;font-weight:600}
+.pm-bul{flex:none;width:calc(var(--u)*1.5);height:calc(var(--u)*1.5);border-radius:50%;translate:0 calc(var(--u)*-.3)}
+.pm-bul--a{background:var(--ca)}.pm-bul--r{background:#ff6b5e}
+.pm-cite{padding:calc(var(--u)*2) calc(var(--u)*3.2) calc(var(--u)*2.2)}
+.pm-cite > small{display:block;font-weight:600;color:var(--cb)}
+.pm-cite p{display:flex;align-items:flex-start;gap:calc(var(--u)*1.6);margin-top:calc(var(--u)*1.2);padding:calc(var(--u)*1.4) calc(var(--u)*2.2);border-radius:calc(var(--u)*2.4);
+  background:rgba(142,197,255,.12);font-size:var(--min);line-height:1.35;color:#cfe3ff}
+.pm-cite p svg{flex:none;width:calc(var(--u)*3.6);height:calc(var(--u)*3.6)}
+.pm-cite p span span,.pm-cite p small{white-space:nowrap}
+.pm-cite p small::before{content:" · "}
+.pm-add{display:grid;align-content:start;gap:calc(var(--u)*.8);padding:calc(var(--u)*2.2) calc(var(--u)*3.2) calc(var(--u)*2.6)}
+.pm-add > small{font-weight:600;color:var(--cb)}
+.pm-add > b{font-size:calc(var(--u)*3.4);font-weight:600;white-space:nowrap}
+.pm-add__btn{height:calc(var(--u)*7.2);margin-top:calc(var(--u)*1)}
+.pm-add__a,.pm-add__b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*1.2)}
+.pm-add__b{opacity:0}
+.pm-add__b svg{width:calc(var(--u)*3.8);height:calc(var(--u)*3.8)}
+.pm-add__b path{fill:none;stroke:#fff;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100}
+.pm-add__ring{position:absolute;left:50%;top:50%;width:calc(var(--u)*4.8);height:calc(var(--u)*4.8);margin:calc(var(--u)*-2.4) 0 0 calc(var(--u)*-2.4);opacity:0}
+.pm-add__ring circle{fill:none;stroke:#fff;stroke-width:3.6;stroke-linecap:round;stroke-dasharray:30 70}
+/* เบราว์เซอร์ที่ไม่รู้จักหน่วย cqw (ก่อนปี 2565): ขนาดในจอจำลองคำนวณไม่ได้ → แสดงภาพทีมงานอย่างเดียว */
+@supports not (width:1cqw){.pm__stage,.pm .im__btn{display:none}}
+/* ปุ่มหยุด/เล่น: พื้นที่กด 44px */
+.pm .im__btn::before{content:"";position:absolute;inset:-4px}
+.pm-note{margin-top:16px;font-size:var(--t-small);line-height:var(--lh-small);color:var(--ink-2);text-align:center;text-wrap:balance}
+
+/* ── ภาพนิ่งถาวร (หน้าเกี่ยวกับเรา: <PadMotion still />) — ไม่มี animation ใดถูกตั้งชื่อ เพราะไม่มี [data-play] ── */
+.pm[data-still] .pm__proj{transform:none}
+.pm[data-still] :is(.pm__glass,.pm__screen,.pm__s1,.pm__cap,.pm__badge){opacity:1}
+.pm[data-still] :is(.pm__beam,.pm__edge,.pm__glint){opacity:.5}
+
+/* ── ภาพนิ่ง: ตั้ง Reduced Motion หรือปิด JavaScript = จอเปิดค้างที่ฉาก 1 ── */
+@media (prefers-reduced-motion:reduce),(scripting:none){
+  .pm__proj{transform:none}
+  .pm__glass,.pm__screen,.pm__s1,.pm__cap--1,.pm__badge,.pm__segs i:first-child{opacity:1}
+  .pm__beam{opacity:.5}.pm__glint{opacity:.5}
+}
+
+/* ── เล่น ── */
+.pm[data-play] .pm__stage *,.pm[data-play] .pm__stage *::before,.pm[data-play] .pm__stage *::after{animation-duration:var(--t);animation-iteration-count:infinite;animation-fill-mode:both}
+/* !important: บางชิ้นใช้ animation แบบย่อ (จุดเต้น วงโหลด) ซึ่งตั้ง play-state กลับเป็น running */
+.pm[data-paused] *,.pm[data-paused] *::before,.pm[data-paused] *::after{animation-play-state:paused!important}
+.pm[data-play] .pm__glint{animation-name:pm-glint}
+.pm[data-play] .pm__proj{animation-name:pm-proj}
+.pm[data-play] .pm__beam,.pm[data-play] .pm__edge{animation-name:pm-beam}
+.pm[data-play] .pm__beam::after{animation-name:pm-streak}
+.pm[data-play] .pm__glass{animation-name:pm-glass}
+.pm[data-play] .pm__flash{animation-name:pm-flash}
+.pm[data-play] .pm__screen{animation-name:pm-screen}
+.pm[data-play] .pm__bell{animation-name:pm-bell}
+.pm[data-play] .pm__badge{animation-name:pm-badge}
+.pm[data-play] .pm__cap--1{animation-name:pm-cap1}
+.pm[data-play] .pm__cap--2{animation-name:pm-cap2}
+.pm[data-play] .pm__cap--3{animation-name:pm-cap3}
+.pm[data-play] .pm__segs i:nth-child(1){animation-name:pm-seg1}
+.pm[data-play] .pm__segs i:nth-child(2){animation-name:pm-seg2}
+.pm[data-play] .pm__segs i:nth-child(3){animation-name:pm-seg3}
+.pm[data-play] .pm__s1{animation-name:pm-s1}
+.pm[data-play] .pm-mc .pm-n{animation-name:pm-cnt1}
+.pm[data-play] .pm-mc__chips em:nth-child(1){animation-name:pm-chip1}
+.pm[data-play] .pm-mc__chips em:nth-child(2){animation-name:pm-chip2}
+.pm[data-play] .pm-mc__chips em:nth-child(3){animation-name:pm-chip3}
+.pm[data-play] .pm-dd{animation-name:pm-dd}
+.pm[data-play] .pm-it:nth-child(1){animation-name:pm-it1}
+.pm[data-play] .pm-it:nth-child(2){animation-name:pm-it2}
+.pm[data-play] .pm-it:nth-child(3){animation-name:pm-it3}
+.pm[data-play] .pm__s2{opacity:1}
+.pm[data-play] .pm__s3{opacity:1}
+.pm[data-play] .pm-ph{animation-name:pm-ph}
+.pm[data-play] .pm-ph__count{animation-name:pm-count}
+.pm[data-play] .pm-ph .pm-tap{animation-name:pm-tap1}
+.pm[data-play] .pm-ph__alert{animation-name:pm-press1}
+.pm[data-play] .pm-plan{animation-name:pm-kpis}
+.pm[data-play] .pm-kpi:nth-child(1){animation-name:pm-k1}
+.pm[data-play] .pm-kpi:nth-child(2){animation-name:pm-k2}
+.pm[data-play] .pm-kpi:nth-child(3){animation-name:pm-k3}
+.pm[data-play] .pm-kpi:nth-child(4){animation-name:pm-k4}
+.pm[data-play] .pm-rows{animation-name:pm-rows}
+.pm[data-play] .pm-row:nth-child(1){animation-name:pm-r1}
+.pm[data-play] .pm-row:nth-child(2){animation-name:pm-r2}
+.pm[data-play] .pm-row:nth-child(3){animation-name:pm-r3}
+.pm[data-play] .pm-kpi .pm-n{animation-name:pm-cnt2}
+.pm[data-play] .pm-ring__v{animation-name:pm-ring}
+.pm[data-play] .pm-kpi__dot::after{animation:pm-pulse 1.2s ease-out infinite}
+.pm[data-play] .pm-scan{animation-name:pm-scan}
+.pm[data-play] .pm-toast{animation-name:pm-toast}
+.pm[data-play] .pm-ask{animation-name:pm-ask}
+.pm[data-play] .pm-dots{animation-name:pm-dots}
+.pm[data-play] .pm-dots i{animation:pm-dot 1.2s ease-in-out infinite}
+.pm[data-play] .pm-dots i:nth-child(2){animation-delay:.15s}.pm[data-play] .pm-dots i:nth-child(3){animation-delay:.3s}
+.pm[data-play] .pm-ans{animation-name:pm-ans}
+.pm[data-play] .pm-ans__who{animation-name:pm-l0}
+.pm[data-play] .pm-ans__l--1{animation-name:pm-l1}
+.pm[data-play] .pm-ans__l--2{animation-name:pm-l2}
+.pm[data-play] .pm-ans__l--3{animation-name:pm-l3}
+.pm[data-play] .pm-ans__l--4{animation-name:pm-l4}
+.pm[data-play] .pm-ans mark{animation-name:pm-mark}
+.pm[data-play] .pm-fold--c{animation-name:pm-unf1}
+.pm[data-play] .pm-fold--q2{animation-name:pm-unf2}
+.pm[data-play] .pm-ask--2{animation-name:pm-ask2}
+.pm[data-play] .pm-fold--d{animation-name:pm-unf3}
+.pm[data-play] .pm-fold--q,.pm[data-play] .pm-fold--h,.pm[data-play] .pm-fold--t{animation-name:pm-fold2}
+.pm[data-play] .pm-add .pm-tap{animation-name:pm-tap2}
+.pm[data-play] .pm-add__btn{animation-name:pm-press2}
+.pm[data-play] .pm-add__a{animation-name:pm-adda}
+.pm[data-play] .pm-add__ring{animation:pm-addring var(--t) infinite both,pm-spin .8s linear infinite}
+.pm[data-play] .pm-add__b{animation-name:pm-addb}
+.pm[data-play] .pm-add__b path{animation-name:pm-check}
+
+/* เปิด–ปิดแอป */
+@keyframes pm-glint{0%,1%{opacity:0;transform:scale(.4)}2.6%{opacity:1;transform:none}6%,92.5%{opacity:.5;transform:scale(.8)}95.2%{opacity:1;transform:scale(1.8);animation-timing-function:ease-in}97%,100%{opacity:0;transform:scale(.3)}}
+@keyframes pm-proj{0%,2.5%{transform:scale(.02);animation-timing-function:cubic-bezier(.16,1,.3,1)}5.2%{transform:scale(1.012)}5.8%,92.4%{transform:none;animation-timing-function:cubic-bezier(.55,0,.85,.35)}95.2%,100%{transform:scale(.02)}}
+@keyframes pm-beam{0%,2%{opacity:0}3.6%{opacity:1}6%,91.5%{opacity:.62}93.4%,94.9%{opacity:1}95.4%,100%{opacity:0}}
+@keyframes pm-streak{0%,92.8%{opacity:0;transform:translateX(-100%)}93%{opacity:1;transform:translateX(-100%);animation-timing-function:cubic-bezier(.55,0,.8,.4)}95%{opacity:1;transform:translateX(330%)}95.3%,100%{opacity:0;transform:translateX(330%)}}
+@keyframes pm-glass{0%,2.5%{opacity:0}4.2%,94.85%{opacity:1}95.2%,100%{opacity:0}}
+@keyframes pm-flash{0%,2.5%{opacity:0}3.4%{opacity:.55}5.8%,91.8%{opacity:0}93.2%{opacity:.7}94.85%{opacity:.92}95.2%,100%{opacity:0}}
+@keyframes pm-screen{0%,4.5%{opacity:0}6%,91%{opacity:1}92.5%,100%{opacity:0}}
+/* แถบแอปและหัวข้อ */
+@keyframes pm-bell{0%,10.5%{transform:none}11.2%{transform:rotate(-16deg)}11.9%{transform:rotate(12deg)}12.6%{transform:rotate(-8deg)}13.3%{transform:rotate(5deg)}14%,100%{transform:none}}
+@keyframes pm-badge{0%,10.9%{opacity:0;transform:scale(.3);--pmn:1}11.6%{opacity:1;transform:scale(1.2);--pmn:1}11.95%{transform:none;--pmn:1}12%{transform:scale(1.15);--pmn:2}12.95%{transform:none;--pmn:2}13%{transform:scale(1.15);--pmn:var(--to)}13.8%,100%{opacity:1;transform:none;--pmn:var(--to)}}
+@keyframes pm-cap1{0%,5.5%{opacity:0;transform:translateY(calc(var(--u)*2))}7.5%,26%{opacity:1;transform:none}28%,100%{opacity:0;transform:translateY(calc(var(--u)*-2))}}
+@keyframes pm-cap2{0%,28%{opacity:0;transform:translateY(calc(var(--u)*2))}30%,54%{opacity:1;transform:none}56%,100%{opacity:0;transform:translateY(calc(var(--u)*-2))}}
+@keyframes pm-cap3{0%,56%{opacity:0;transform:translateY(calc(var(--u)*2))}58%,100%{opacity:1;transform:none}}
+@keyframes pm-seg1{0%,5.5%{opacity:.25}7%,26.5%{opacity:1}28%,100%{opacity:.25}}
+@keyframes pm-seg2{0%,28%{opacity:.25}29.5%,54.5%{opacity:1}56%,100%{opacity:.25}}
+@keyframes pm-seg3{0%,56%{opacity:.25}57.5%,100%{opacity:1}}
+/* ฉาก 1 */
+@keyframes pm-s1{0%,5.8%{opacity:0;transform:translateY(calc(var(--u)*3));animation-timing-function:var(--e)}8%,26%{opacity:1;transform:none}28%,100%{opacity:0;transform:translateY(calc(var(--u)*-3))}}
+@keyframes pm-cnt1{0%,7%{--pmn:0;animation-timing-function:cubic-bezier(.2,.7,.2,1)}10%,100%{--pmn:var(--to)}}
+@keyframes pm-chip1{0%,9.5%{opacity:0;transform:scale(.7)}10.5%,100%{opacity:1;transform:none}}
+@keyframes pm-chip2{0%,10%{opacity:0;transform:scale(.7)}11%,100%{opacity:1;transform:none}}
+@keyframes pm-chip3{0%,10.5%{opacity:0;transform:scale(.7)}11.5%,100%{opacity:1;transform:none}}
+@keyframes pm-dd{0%,13.5%{opacity:0;transform:scale(.86) translateY(calc(var(--u)*-2));animation-timing-function:var(--e)}15.5%,100%{opacity:1;transform:none}}
+@keyframes pm-it1{0%,15%{opacity:0;transform:translateX(calc(var(--u)*3))}16.6%,100%{opacity:1;transform:none}}
+@keyframes pm-it2{0%,15.7%{opacity:0;transform:translateX(calc(var(--u)*3))}17.3%,100%{opacity:1;transform:none}}
+@keyframes pm-it3{0%,16.4%{opacity:0;transform:translateX(calc(var(--u)*3))}18%,100%{opacity:1;transform:none}}
+/* ฉาก 2 */
+@keyframes pm-ph{0%,28.2%{opacity:0;transform:translateY(calc(var(--u)*2))}30.2%,54.4%{opacity:1;transform:none}56%,100%{opacity:0;transform:none}}
+@keyframes pm-kpis{0%,29%{opacity:0}30.5%,56%{opacity:1}58%,63.2%{opacity:.5}65.5%,100%{opacity:0}}
+@keyframes pm-k1{0%,29.5%{opacity:0;transform:translateY(calc(var(--u)*3))}31.5%,100%{opacity:1;transform:none}}
+@keyframes pm-k2{0%,30%{opacity:0;transform:translateY(calc(var(--u)*3))}32%,100%{opacity:1;transform:none}}
+@keyframes pm-k3{0%,30.5%{opacity:0;transform:translateY(calc(var(--u)*3))}32.5%,100%{opacity:1;transform:none}}
+/* แถวงานหรี่ (จอใหญ่) หรือซ่อน (มือถือ --rd:0) ระหว่างที่ข้อความเตือนลอยทับ · แถวที่ 3 ซ่อนเสมอเพราะอยู่ใต้ข้อความเตือนพอดี */
+@keyframes pm-rows{0%,36.5%{opacity:1}38.5%,56%{opacity:var(--rd)}58%,100%{opacity:1}}
+@keyframes pm-r1{0%,31.5%{opacity:0;transform:translateY(calc(var(--u)*3))}33.5%,62.4%{opacity:1;transform:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}63%{box-shadow:inset 0 0 0 1.5px #ff6b5e}63.6%,100%{opacity:1;transform:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}}
+@keyframes pm-r2{0%,32%{opacity:0;transform:translateY(calc(var(--u)*3))}34%,100%{opacity:1;transform:none}}
+@keyframes pm-r3{0%,32.5%{opacity:0;transform:translateY(calc(var(--u)*3))}34.5%,36.5%{opacity:1;transform:none}38.5%,56%{opacity:0;transform:none}58%,100%{opacity:1;transform:none}}
+@keyframes pm-k4{0%,31%{opacity:0;transform:translateY(calc(var(--u)*3))}33%,62.4%{opacity:1;transform:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}63%{box-shadow:inset 0 0 0 1.5px #ff6b5e}63.6%,100%{opacity:1;transform:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}}
+@keyframes pm-cnt2{0%,30.5%{--pmn:0;animation-timing-function:cubic-bezier(.2,.7,.2,1)}34%,100%{--pmn:var(--to)}}
+@keyframes pm-ring{0%,30.5%{stroke-dashoffset:100px;animation-timing-function:cubic-bezier(.2,.7,.2,1)}34%,100%{stroke-dashoffset:calc((100 - var(--v))*1px)}}
+@keyframes pm-pulse{0%{transform:none;opacity:.9}70%,100%{transform:scale(3);opacity:0}}
+@keyframes pm-count{0%,34%{opacity:0;transform:scale(.3)}34.7%{opacity:1;transform:scale(1.2)}35.2%,100%{opacity:1;transform:none}}
+@keyframes pm-tap1{0%,35.5%{opacity:0;transform:scale(.3)}35.9%{opacity:1;transform:scale(.6)}36.8%,100%{opacity:0;transform:scale(1.5)}}
+@keyframes pm-press1{0%,35.6%{transform:none}36%{transform:scale(.94)}36.6%,100%{transform:none}}
+@keyframes pm-toast{0%,36.5%{opacity:0;transform:translateY(70%);animation-timing-function:var(--e)}38.5%,54%{opacity:1;transform:none}56%,100%{opacity:0;transform:translateY(40%)}}
+/* ฉาก 3 */
+@keyframes pm-ask{0%,56.5%{opacity:0;transform:scale(.7);animation-timing-function:var(--e)}58.5%,100%{opacity:1;transform:none}}
+@keyframes pm-dots{0%,58.4%{opacity:0;transform:scale(.7)}59.4%,63.4%{opacity:1;transform:none}64.6%,100%{opacity:0;transform:none}}
+@keyframes pm-dot{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(calc(var(--u)*-1.1));opacity:1}}
+@keyframes pm-scan{0%,59%{opacity:0;transform:translateX(-100%)}59.2%{opacity:1;transform:translateX(-100%)}61%{opacity:1;transform:translateX(280%)}61.1%{opacity:0;transform:translateX(-100%)}61.3%{opacity:1;transform:translateX(-100%)}63%{opacity:1;transform:translateX(280%)}63.2%,100%{opacity:0;transform:translateX(280%)}}
+@keyframes pm-ans{0%,63.6%{opacity:0;transform:translateY(calc(var(--u)*2)) scale(.98);animation-timing-function:var(--e)}66%,100%{opacity:1;transform:none}}
+@keyframes pm-l0{0%,64.6%{opacity:0}66%,100%{opacity:1}}
+@keyframes pm-l1{0%,65.2%{opacity:0;transform:translateX(calc(var(--u)*2))}66.6%,100%{opacity:1;transform:none}}
+@keyframes pm-l2{0%,66.2%{opacity:0;transform:translateX(calc(var(--u)*2))}67.6%,100%{opacity:1;transform:none}}
+@keyframes pm-l3{0%,67.2%{opacity:0;transform:translateX(calc(var(--u)*2))}68.6%,100%{opacity:1;transform:none}}
+@keyframes pm-mark{0%,68.4%{background-size:0 38%}69.8%,100%{background-size:100% 38%}}
+@keyframes pm-l4{0%,68.6%{opacity:0;transform:translateX(calc(var(--u)*2))}70%,100%{opacity:1;transform:none}}
+/* กาง: 1 กฎหมายที่เกี่ยวข้อง · 2 คำสั่งเพิ่มงาน · 3 การ์ดเพิ่มงาน — พับ: 1 คำถามแรก (มือถือ) · 2 ชิ้นเก่าเมื่อคำสั่งเพิ่มงานมา */
+@keyframes pm-unf1{0%,70%{grid-template-rows:0fr;opacity:0;animation-timing-function:var(--e)}72%,100%{grid-template-rows:1fr;opacity:1}}
+@keyframes pm-unf2{0%,76.5%{grid-template-rows:0fr;opacity:0;animation-timing-function:var(--e)}78.5%,100%{grid-template-rows:1fr;opacity:1}}
+@keyframes pm-unf3{0%,79%{grid-template-rows:0fr;opacity:0;animation-timing-function:var(--e)}81.2%,100%{grid-template-rows:1fr;opacity:1}}
+@keyframes pm-fold1{0%,70%{grid-template-rows:1fr;opacity:1;animation-timing-function:var(--e)}72%,100%{grid-template-rows:0fr;opacity:0}}
+@keyframes pm-fold2{0%,76.5%{grid-template-rows:1fr;opacity:1;animation-timing-function:var(--e)}79%,100%{grid-template-rows:0fr;opacity:0}}
+@keyframes pm-ask2{0%,76.8%{opacity:0;transform:scale(.7);animation-timing-function:var(--e)}78.6%,100%{opacity:1;transform:none}}
+@keyframes pm-tap2{0%,83.6%{opacity:0;transform:scale(.3)}84%{opacity:1;transform:scale(.6)}84.9%,100%{opacity:0;transform:scale(1.5)}}
+@keyframes pm-press2{0%,83.7%{transform:none;background-color:var(--fill)}84.1%{transform:scale(.96)}84.6%,85.9%{transform:none;background-color:var(--fill)}86.7%,100%{transform:none;background-color:#1f9d55}}
+@keyframes pm-adda{0%,84.4%{opacity:1}84.9%,100%{opacity:0}}
+@keyframes pm-addring{0%,84.6%{opacity:0}85%,85.7%{opacity:1}86%,100%{opacity:0}}
+@keyframes pm-spin{to{transform:rotate(1turn)}}
+@keyframes pm-addb{0%,85.9%{opacity:0;transform:scale(.9)}86.7%,100%{opacity:1;transform:none}}
+@keyframes pm-check{0%,86.1%{stroke-dashoffset:100;animation-timing-function:ease-out}87.5%,100%{stroke-dashoffset:0}}
+
+/* ── จอคอมพิวเตอร์ช่วงแคบ: ตัวอักษรถูกล็อกที่ 13px จึงสูงกว่าสัดส่วนจอ → ตอนการ์ดเพิ่มงานมา พับบรรทัด "กฎหมายกำหนด…" ด้วย ── */
+@media (min-width:1069px) and (max-width:1243px){
+  .pm[data-play] .pm-fold--m{animation-name:pm-fold2}
+}
+
+/* ── แท็บเล็ตและมือถือ: กล่องแนวตั้ง · จอจำลองอยู่บน 70% · แท็บเล็ตในภาพอยู่ล่าง ลำแสงพุ่งขึ้นจากกึ่งกลางขอบบนของแท็บเล็ต
+   ภาพแนวตั้ง about-team-m.webp (1215×1324): กึ่งกลางขอบบนแท็บเล็ตอยู่ที่ 49.05% / 70.54% ของภาพ
+   ภาพกำหนดขนาดตามความสูง (77.8 ÷ 70.54 = 110.29%) แล้วเลื่อน -49.05% ของความกว้างภาพ → จุดแท็บเล็ตอยู่กลางกล่อง (50% / 77.8%) ทุกขนาดจอ
+   iPhone จริง (แถบ Safari เปิดอยู่) ได้กล่องสูงราว 1.55–1.6 เท่าของความกว้าง → ทุกฉากต้องพอดีที่ความสูงนี้ ── */
+@media (max-width:1068px){
+  .pm{--u:1.28cqw;--rd:0;--tx:50%;--ty:77.8%;--pl:4cqw;--pt:4cqw;--pw:92cqw;--ph:calc(70% - 4cqw);--w:min(calc(100vw - 2*var(--gutter)),480px);
+    aspect-ratio:auto;width:var(--w);height:clamp(calc(var(--w)*1.55),calc(100vh - var(--ln-h)),calc(var(--w)*1.78));margin-inline:auto}
+  @supports (height:1svh){.pm{height:clamp(calc(var(--w)*1.55),calc(100svh - var(--ln-h)),calc(var(--w)*1.78))}}
+  .pm__photo{inset:0 auto auto 50%;width:auto;max-width:none;height:110.29%;translate:-49.05% 0}
+  .pm__beamwrap{left:calc(var(--pl) + var(--pr));top:70%;width:calc(var(--pw) - var(--pr)*2);height:7.8%}
+  .pm__beam{clip-path:polygon(0 0,100% 0,50% 100%);background:linear-gradient(180deg,rgba(142,197,255,.16),rgba(176,214,255,.36) 55%,rgba(255,255,255,.9))}
+  .pm__edge{background:linear-gradient(180deg,rgba(176,214,255,.3),rgba(214,234,255,.8) 70%,#fff)}
+  .pm__edge--a{clip-path:polygon(0 0,50% 100%,calc(var(--u)*.9) 0)}
+  .pm__edge--b{clip-path:polygon(100% 0,50% 100%,calc(100% - var(--u)*.9) 0)}
+  .pm__beam::after{inset:0 0 auto;width:auto;height:40%;background:linear-gradient(180deg,transparent,rgba(142,197,255,.7),#fff,transparent)}
+  .pm[data-play] .pm__beam::after{animation-name:pm-streak-m}
+  .pm__cap{font-size:calc(var(--u)*3.8)}
+  .pm-d,.pm-it:nth-child(3){display:none}
+  .pm-kpis{grid-template-columns:1fr 1fr;gap:calc(var(--u)*1.6) calc(var(--u)*2)}
+  .pm-kpi{padding:calc(var(--u)*1.6) calc(var(--u)*2.8)}
+  .pm-kpi__dot{right:calc(var(--u)*2.8);bottom:auto;top:calc(var(--u)*2.2)}
+  /* ระยะถึงใต้การ์ดตัวเลข = หัวข้อ 7.4u + 2.2u + การ์ด 2 แถว (22u + ป้าย 2 บรรทัด × 1.35) + ช่องไฟ 2u */
+  .pm-toastbox{--tt:calc(var(--u)*33.6 + var(--min)*2.7)}
+  .pm-toast{padding-block:calc(var(--u)*1.8)}
+  /* มือถือ: คำถามแรกพับเก็บเมื่อการ์ดกฎหมายมา · การ์ดคำตอบพับเก็บทั้งใบเมื่อสั่งเพิ่มงาน */
+  .pm[data-play] .pm-fold--q{animation-name:pm-fold1}
+  .pm[data-play] .pm-fold--a{animation-name:pm-fold2}
+  .pm[data-play] .pm-fold--h,.pm[data-play] .pm-fold--t{animation-name:none}
+}
+@media (max-width:480px){
+  .pm{--w:100vw;margin-inline:calc(var(--gutter)*-1);border-radius:0}
+}
+/* ภาพนิ่ง: กล่องเตี้ยลง (ไม่ต้องเต็มจอ) — จอจำลองสูงพอดีเนื้อหา 1 หน้าจอ */
+@media (max-width:1068px){
+  .pm[data-still]{height:calc(var(--w)*1.46)}
+}
+/* มือถือจอแคบกว่า 360px: ตัวอักษรถูกล็อกที่ 13px จึงใหญ่กว่าสัดส่วนจอ → ลดจำนวนชิ้นให้พอดี */
+@media (max-width:359px){
+  .pm-it:nth-child(2),.pm-it__dot,.pm-toast small,.pm-cite p small,.pm-fold--t{display:none}
+}
+@keyframes pm-streak-m{0%,92.8%{opacity:0;transform:translateY(-100%)}93%{opacity:1;transform:translateY(-100%);animation-timing-function:cubic-bezier(.55,0,.8,.4)}95%{opacity:1;transform:translateY(250%)}95.3%,100%{opacity:0;transform:translateY(250%)}}
 
 /* ═══════ แผนที่สำนักงาน (หน้าติดต่อ) — แผนที่ Google ฝังเป็นภาพ คลิกทั้งกล่องเปิด Google Maps ═══════ */
 .map{position:relative;display:block;aspect-ratio:21/9;border-radius:var(--radius-tile);overflow:hidden;background:#e9eef2;

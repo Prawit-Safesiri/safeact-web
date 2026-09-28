@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import AiMotion from '../components/AiMotion.jsx';
 import PhoneVideo from '../components/PhoneVideo.jsx';
 import HeroMotion from '../components/HeroMotion.jsx';
+import PadMotion from '../components/PadMotion.jsx';
 import Faq from '../components/Faq.jsx';
 import { PlansWithSwitch } from '../components/Plans.jsx';
 import { FAQ_GENERAL } from '../data/faq.js';
@@ -19,7 +20,12 @@ export default function Home() {
   return (
     <main id="main">
       {/* ─── HERO ─── */}
-      <section className="hero" aria-labelledby="hero-title">
+      <section className="hero hero--top" aria-labelledby="hero-title">
+        {/* แอนิเมชันจอแอปบนภาพทีมงาน — อยู่บนสุดเหนือหัวเรื่อง (ชุดเดียวกับหน้าเกี่ยวกับเรา) */}
+        <div className="container--wide hero__top">
+          <PadMotion alt="เจ้าหน้าที่ความปลอดภัยสองคนสวมหมวกนิรภัยและแว่นตานิรภัย ดูข้อมูลบนแท็บเล็ตในโรงงาน" />
+          <p className="pm-note">ภาพจำลองการใช้งาน {COMPANY.appName} ข้อมูลในภาพเป็นตัวอย่าง · {AI_DISCLAIMER}</p>
+        </div>
         <div className="container">
           <p className="t-eyebrow">SafeAct สำหรับธุรกิจ</p>
           <h1 id="hero-title" className="t-hero" style={{ marginTop: 12 }}>

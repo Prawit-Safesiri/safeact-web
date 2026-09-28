@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import PadMotion from '../components/PadMotion.jsx';
 import { COMPANY, fullAddress } from '../data/company.js';
 
 export default function About() {
@@ -10,9 +11,9 @@ export default function About() {
           <p className="t-sub">เราเชื่อว่าทุกสถานประกอบการควรเข้าถึงกฎหมายความปลอดภัยได้ง่าย ถูกต้อง และทันเวลา เพื่อให้คนทำงานกลับบ้านอย่างปลอดภัยทุกวัน</p>
         </div>
         <div className="container--wide hero__media">
-          <img className="about-hero" src="/assets/about-team.webp" srcSet="/assets/about-team-960.webp 960w, /assets/about-team.webp 1888w"
-            sizes="(min-width: 1305px) 1260px, 96vw" width="1888" height="833" fetchPriority="high"
-            alt="เจ้าหน้าที่ความปลอดภัยสองคนสวมหมวกนิรภัยและแว่นตานิรภัย ดูข้อมูลบนแท็บเล็ตในโรงงาน" />
+          {/* ภาพนิ่ง (ไม่ใช่โมชั่นเคลื่อนไหว) — หน้านี้เน้นความน่าเชื่อถือ ไม่ขายของ · โมชั่นเคลื่อนไหวอยู่ที่หน้าแรก */}
+          <PadMotion still alt="เจ้าหน้าที่ความปลอดภัยสองคนสวมหมวกนิรภัยและแว่นตานิรภัย ดูข้อมูลบนแท็บเล็ตในโรงงาน" />
+          <p className="pm-note">ภาพจำลองหน้าจอ {COMPANY.appName} ข้อมูลในภาพเป็นตัวอย่าง</p>
         </div>
       </section>
 

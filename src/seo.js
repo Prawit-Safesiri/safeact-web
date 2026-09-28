@@ -209,7 +209,7 @@ export const ROUTES = {
   '/': {
     title: 'SafeAct — อัปเดตกฎหมายความปลอดภัย ระบบงาน จป. ครบในที่เดียว',
     description: 'SafeAct แพลตฟอร์มสำหรับ จป. ติดตาม สรุป และแจ้งเตือนกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบบริหารงานความปลอดภัย ทดลองใช้ฟรี 30 วัน',
-    lastmod: '2026-09-27',
+    lastmod: '2026-09-28',
     page: { about: ID.org, mainEntity: ID.service, image: ['/assets/laws-macbook.webp', 1422, 1024] },
     nodes: () => [service(), webapp(), ...iosApp()],
   },
@@ -253,9 +253,9 @@ export const ROUTES = {
   '/about/': {
     title: 'เกี่ยวกับเรา — บริษัท เซฟแอ็กต์ จำกัด | SafeAct',
     description: 'บริษัท เซฟแอ็กต์ จำกัด ผู้พัฒนาและให้บริการ SafeAct แพลตฟอร์มออนไลน์ติดตามกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบงานสำหรับ จป.',
-    lastmod: '2026-09-27',
+    lastmod: '2026-09-28',
     crumb: 'เกี่ยวกับเรา',
-    page: { type: 'AboutPage', mainEntity: ID.org, image: ['/assets/about-team.webp', 1888, 833] },
+    page: { type: 'AboutPage', mainEntity: ID.org, image: ['/assets/about-team.webp', 2000, 883] },
   },
   '/contact/': {
     title: 'ติดต่อ SafeAct — ขอใบเสนอราคาและนัดสาธิตระบบ',

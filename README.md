@@ -33,7 +33,7 @@ npm run preview
   - `/pricing/`: `Service` + `OfferCatalog` (ราคา THB ไม่รวม VAT จาก `PLANS`)
   - ไม่ใช้ `FAQPage` (Google เลิกแสดงผลแล้ว) และไม่ใช้ `hreflang` (เว็บภาษาเดียว)
 - **เนื้อหามองเห็นเป็นค่าเริ่มต้น**: เอฟเฟกต์เฟด (`src/staggered.js`) เริ่มซ่อนกล่องเฉพาะส่วนที่อยู่ใต้จอ หลังผู้ใช้เลื่อนหน้าจริงครั้งแรก — บอตไม่เลื่อน จึงเห็นเนื้อหาครบ
-- **กล่องแอนิเมชัน** (`HeroMotion`, `AiMotion`) มี `data-nosnippet` และ HTML ที่ prerender แสดงตัวเลขจริง
+- **กล่องแอนิเมชัน** (`HeroMotion`, `AiMotion`, `PadMotion`) มี `data-nosnippet` และ HTML ที่ prerender แสดงตัวเลขจริง · `PadMotion` (บนสุดของหน้าแรก และหน้าเกี่ยวกับเรา) วางจอแอปจำลองทับภาพทีมงาน โดยภาพยังเป็น `<img>` จริงพร้อม `alt` (เป็น LCP ของหน้า) · ใช้ภาพ 2 ชุด: `about-team.webp` แนวกว้างสำหรับจอคอมพิวเตอร์ และ `about-team-m.webp` แนวตั้งสำหรับมือถือ — เปลี่ยนภาพเมื่อใดต้องวัดจุดแท็บเล็ตใหม่ (ดูหมายเหตุในบล็อก PAD MOTION ของ `components.css`)
 - **sitemap.xml / robots.txt** สร้างตอน build จาก `SITE_URL` และ `lastmod` ใน `ROUTES` (อัปเดต `lastmod` เมื่อแก้เนื้อหาหน้านั้น)
 - **หน้า 404**: `noindex` ไม่มี canonical / Open Graph / JSON-LD
 
@@ -82,7 +82,7 @@ curl -s  https://safeact.com/sitemap.xml
 จากนั้นที่ Google Search Console: ยืนยันแบบ Domain (DNS) · ส่ง `https://safeact.com/sitemap.xml` · ลบ sitemap ของเว็บเดิม · ตรวจหน้าแรกและหน้าราคาด้วย URL Inspection · ตรวจ JSON-LD ด้วย Rich Results Test (หน้าแรกและ `/features/` จะรายงานรายการ Software App ว่าขาด `offers` และ `aggregateRating`/`review` — เป็นไปตามที่ตั้งใจ เพราะยังไม่มีรีวิวจริงบนหน้าเว็บ ไม่กระทบการเก็บหน้าลงดัชนี และห้ามใส่คะแนนที่ไม่มีอยู่จริง)
 
 ## มาตรฐานที่วางไว้
-- **ขนาดตัวอักษร** (กำหนดใน `src/styles/tokens.css`): เล็กสุดที่ใช้ได้ 13px (`--t-min`) · เมนูส่วนหัวและส่วนท้าย 15px (`--t-nav`) · build ล้มเหลวถ้า CSS มี `font-size` เป็น px ที่เล็กกว่า `--t-min` · ข้อความในกล่องแอนิเมชัน (`.hm`, `.aim`) ย่อขยายตามความกว้างกล่อง ออกแบบให้ ≥ 13px บนมือถือกว้าง 375px ขึ้นไปและจอคอมพิวเตอร์กว้าง 1280px ขึ้นไป
+- **ขนาดตัวอักษร** (กำหนดใน `src/styles/tokens.css`): เล็กสุดที่ใช้ได้ 13px (`--t-min`) · เมนูส่วนหัวและส่วนท้าย 15px (`--t-nav`) · build ล้มเหลวถ้า CSS มี `font-size` เป็น px ที่เล็กกว่า `--t-min` · ข้อความในกล่องแอนิเมชัน (`.hm`, `.aim`) ย่อขยายตามความกว้างกล่อง ออกแบบให้ ≥ 13px บนมือถือกว้าง 375px ขึ้นไปและจอคอมพิวเตอร์กว้าง 1280px ขึ้นไป · กล่อง `.pm` ล็อกขั้นต่ำ 13px ทุกขนาดจอ
 - **Accessibility (ตาม Apple HIG/WCAG 2.2 AA)**: `lang="th"` · skip link · landmark ครบ · h1 หน้าละ 1 · โฟกัสคีย์บอร์ดชัดเจน · ปุ่ม/ลิงก์สูงขั้นต่ำ 44px · FAQ ใช้ `<details>` · ตารางมี scope · `prefers-reduced-motion`
 - **ดีไซน์**: token ตามระบบหน้า marketing ของ Apple (globalnav 44px, localnav sticky 52px, ปุ่ม pill, section 140/100/80px, tile มุม 28px)
 - **ภาพ**: WebP พร้อม `srcset`/`sizes` · ฟอนต์ Anuphan เก็บในเว็บเอง (`public/assets/fonts/`) · JS/CSS ที่มี hash ออกที่ `/build/`

@@ -17,8 +17,8 @@ export default function Contact() {
       <section className="hero" aria-labelledby="c-title" style={{ paddingBottom: 72 }}>
         {/* ภาพ hero ด้านบนหัวเรื่อง (ภาพชุดเดียวกับหน้าเกี่ยวกับเรา) */}
         <div className="container--wide contact-hero">
-          <img className="about-hero" src="/assets/about-team.webp" srcSet="/assets/about-team-960.webp 960w, /assets/about-team.webp 1888w"
-            sizes="(min-width: 1305px) 1260px, 96vw" width="1888" height="833" fetchPriority="high"
+          <img className="about-hero" src="/assets/about-team.webp" srcSet="/assets/about-team-960.webp 960w, /assets/about-team.webp 2000w"
+            sizes="(min-width: 1305px) 1260px, 96vw" width="2000" height="883" fetchPriority="high"
             alt="ทีม SafeAct สวมหมวกนิรภัยและแว่นตานิรภัย ดูข้อมูลบนแท็บเล็ตในโรงงาน" />
         </div>
         <div className="container">
