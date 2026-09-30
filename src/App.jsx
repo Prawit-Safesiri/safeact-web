@@ -8,6 +8,8 @@ import Terms from './pages/Terms.jsx';
 import Privacy from './pages/Privacy.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
+import AiCompare from './pages/AiCompare.jsx';
+import LawUpdates from './pages/LawUpdates.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 export default function App() {
@@ -16,6 +18,8 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="features" caseSensitive element={<Features />} />
+        <Route path="ai" caseSensitive element={<AiCompare />} />
+        <Route path="law-updates" caseSensitive element={<LawUpdates />} />
         <Route path="pricing" caseSensitive element={<Pricing />} />
         <Route path="refund-policy" caseSensitive element={<RefundPolicy />} />
         <Route path="terms" caseSensitive element={<Terms />} />

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { LAW_LIBRARY, FEATURES } from '../data/service.js';
+import { FEATURES } from '../data/service.js';
+import { useLiveLaws } from '../data/laws-live.js';
 import { COMPANY } from '../data/company.js';
 
 // จอแอป SafeAct Club "ฉาย" ออกจากแท็บเล็ตในภาพทีมงาน — มี 2 แบบ
@@ -9,7 +10,7 @@ import { COMPANY } from '../data/company.js';
 // เล่นเฉพาะตอนอยู่ในจอ · มีปุ่มหยุด/เล่น · ไม่มี JS / ตั้ง Reduced Motion = จอเปิดค้างที่ฉาก 1
 //
 // ⚠ แสดงเฉพาะสิ่งที่แอปจริงทำได้ (ตรวจกับ safeact-connect-hub เมื่อ 28 ก.ย. 2569) ข้อความในจอใช้คำเดียวกับแอป
-//   • แจ้งเตือนในแอป = กฎหมายใหม่ตามหมวดที่ติดตามเท่านั้น (ไม่มี push บนหน้าจอล็อก) · ชื่อกฎหมายวาดเป็นแถบ ไม่อ้างว่าฉบับใดออกใหม่
+//   • แจ้งเตือน = กฎหมายใหม่ตามหมวดที่ติดตาม (เจ้าของยืนยัน 29 ก.ย. 2569 ว่าแอปส่ง Push ได้แล้ว) · ชื่อกฎหมายวาดเป็นแถบ ไม่อ้างว่าฉบับใดออกใหม่
 //   • Action Plan = ปุ่ม "แจ้งเตือน" แล้วขึ้นข้อความสรุปงานเกินกำหนด (ไม่มีแจ้งเตือนอัตโนมัติ)
 //   • AI = ผู้ช่วย SafeAct ตรวจแผนเทียบกฎหมาย → ชิป "กฎหมายที่เกี่ยวข้อง" → สมาชิกสั่ง "เพิ่มงานนี้ลงแผนให้เลย" → การ์ด "เพิ่มลงแผนงาน"
 //     (ผู้ช่วยในแอปจริงสร้างการ์ดเพิ่มงานเฉพาะเมื่อสมาชิกสั่งเพิ่มงานชัดเจนเท่านั้น ห้ามตัดคำสั่งนี้ออกจากฉาก)
@@ -17,8 +18,9 @@ import { COMPANY } from '../data/company.js';
 //   • กฎหมายที่อ้าง: กฎกระทรวงฯ ป้องกันและระงับอัคคีภัย พ.ศ. 2555 (ซ้อมดับเพลิงและอพยพหนีไฟอย่างน้อยปีละ 1 ครั้ง) — ไม่ระบุเลขข้อ
 // SEO: ภาพทีมงานเป็น <img> จริง (alt เดิม) · กล่องแอนิเมชันเป็นภาพประกอบ (role="img" + data-nosnippet)
 
-// ตัวเลขตัวอย่างในจอ — แก้ที่นี่ที่เดียว (unread ต้องเท่ากับจำนวน <NoteItem> ในฉาก 1)
-const LAWS = { total: 14, fresh: 9, edited: 4, cancelled: 1, unread: 3 };
+// การ์ดเดือนในฉาก 1 ใช้ตัวเลขจริงของเดือนล่าสุด (ชุดเดียวกับหน้า /law-updates/ และแอป · useLiveLaws → เลื่อนเป็นเดือนล่าสุดเองทุกเดือน) ป้ายที่เป็น 0 ไม่แสดงเหมือนแอป
+// ตัวเลขอื่นในจอเป็นตัวอย่าง — แก้ที่นี่ที่เดียว (unread ต้องเท่ากับจำนวน <NoteItem> ในฉาก 1)
+const lawsOf = (m) => ({ total: m.total, fresh: m.new, edited: m.amended, cancelled: m.repealed, unread: 3 });
 const PLAN = { all: 12, done: 4, doing: 5, late: 2 };
 const MISSING = 'ซ้อมอพยพหนีไฟประจำปี';
 // งานตัวอย่างในแผน: ชื่อ · สถานะ (r เกินกำหนด · a กำลังทำ · g เสร็จสิ้น) · เดือนที่วางแผนไว้ (ช่องที่ 1–12)
@@ -29,9 +31,6 @@ const TASKS = [
 ];
 
 const MONTHS = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
-const [Y, M] = LAW_LIBRARY.asOfIso.split('-').map(Number);
-const YEAR = Y + 543;
-const MONTH = `${MONTHS[M - 1]} ${YEAR}`;
 const PCT = Math.round((PLAN.done / PLAN.all) * 100);
 
 const LABEL = 'ภาพเคลื่อนไหวจำลองหน้าจอ SafeAct Club';
@@ -65,6 +64,10 @@ export default function PadMotion({ alt, still = false }) {
   const [ready, setReady] = useState(false); // ภาพโหลดแล้ว (ไม่เปิดจอกระจกทับภาพที่ยังไม่มา)
   const [inView, setInView] = useState(false);
   const [paused, setPaused] = useState(false);
+  const { LATEST } = useLiveLaws();
+  const LAWS = lawsOf(LATEST);
+  const YEAR = LATEST.yearBe;
+  const MONTH = LATEST.long;
 
   useEffect(() => {
     if (still || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -134,9 +137,9 @@ export default function PadMotion({ alt, still = false }) {
                     <p className="pm-mc__top"><em className="pm-pill pm-pill--b">ล่าสุด</em><b>{MONTH}</b></p>
                     <p className="pm-mc__num"><Num to={LAWS.total} /><small>ฉบับ</small></p>
                     <p className="pm-mc__chips">
-                      <em className="pm-pill pm-pill--g">ใหม่ {LAWS.fresh}</em>
-                      <em className="pm-pill pm-pill--a">แก้ไข {LAWS.edited}</em>
-                      <em className="pm-pill pm-pill--p">ยกเลิก {LAWS.cancelled}</em>
+                      {LAWS.fresh > 0 && <em className="pm-pill pm-pill--g">ใหม่ {LAWS.fresh}</em>}
+                      {LAWS.edited > 0 && <em className="pm-pill pm-pill--a">แก้ไข {LAWS.edited}</em>}
+                      {LAWS.cancelled > 0 && <em className="pm-pill pm-pill--p">ยกเลิก {LAWS.cancelled}</em>}
                     </p>
                   </div>
                   <div className="pm-card pm-dd">

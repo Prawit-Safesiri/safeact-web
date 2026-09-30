@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function NotFound() {
   return (
-    <main id="main">
+    <main id="main" data-page="404">
       <section className="section" style={{ textAlign: 'center' }}>
         <div className="container">
           <h1 className="t-h1">ไม่พบหน้าที่คุณค้นหา</h1>

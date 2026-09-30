@@ -3,6 +3,8 @@ import AiMotion from '../components/AiMotion.jsx';
 import PhoneVideo from '../components/PhoneVideo.jsx';
 import HeroMotion from '../components/HeroMotion.jsx';
 import PadMotion from '../components/PadMotion.jsx';
+import AiDetail from '../components/AiDetail.jsx';
+import StoreBadges from '../components/StoreBadges.jsx';
 import Faq from '../components/Faq.jsx';
 import { PlansWithSwitch } from '../components/Plans.jsx';
 import { FAQ_GENERAL } from '../data/faq.js';
@@ -72,7 +74,7 @@ export default function Home() {
             <li>
               <IconBell className="props__icon" />
               <h3 className="t-h4">แจ้งเตือนถึงมือ</h3>
-              <p>เลือกหมวดที่ต้องการติดตาม แล้วรับการแจ้งเตือนผ่านแอป iPhone และเว็บทันทีที่มีความเคลื่อนไหว</p>
+              <p>เลือกหมวดที่ต้องการติดตาม แล้วรับการแจ้งเตือนผ่านแอป iPhone, Android และเว็บทันทีที่มีความเคลื่อนไหว</p>
             </li>
           </ul>
         </div>
@@ -92,11 +94,11 @@ export default function Home() {
                 <span className="t-eyebrow">อัปเดตกฎหมาย</span>{' '}
                 <span className="t-h3">กฎหมายทุกหมวดหมู่<br />จัดเรียงตามงานที่คุณรับผิดชอบ</span>
               </h2>
-              <p>คลังกฎหมายกว่า {lawCountRounded()} ฉบับ (ข้อมูล ณ {LAW_LIBRARY.asOfTh}) ทั้งพระราชบัญญัติ กฎกระทรวง ประกาศกรม และมาตรฐานที่เกี่ยวข้อง ค้นหาตามหมวด เดือนที่ประกาศ หรือคำสำคัญ กดติดตามฉบับที่เกี่ยวข้องกับสถานประกอบการ แล้วดูภาพรวมได้จากหน้าเดียว</p>
+              <p>คลังกฎหมาย {LAW_LIBRARY.count.toLocaleString('en-US')} ฉบับ (ข้อมูล ณ {LAW_LIBRARY.asOfTh}) ทั้งพระราชบัญญัติ กฎกระทรวง ประกาศกรม และมาตรฐานที่เกี่ยวข้อง ค้นหาตามหมวด เดือนที่ประกาศ หรือคำสำคัญ กดติดตามฉบับที่เกี่ยวข้องกับสถานประกอบการ แล้วดูภาพรวมได้จากหน้าเดียว</p>
               <ul className="chips" aria-label="หมวดกฎหมาย">
                 {LAW_CATEGORIES.map((c) => <li key={c}>{c}</li>)}
               </ul>
-              <Link className="more" to="/features/#laws">ดูรายละเอียดการติดตามกฎหมาย</Link>
+              <Link className="more" to="/law-updates/">ดูอัปเดตกฎหมายรายเดือนและหมวดทั้งหมด</Link>
             </div>
           </div>
         </div>
@@ -192,9 +194,9 @@ export default function Home() {
                     <span className="tile__kicker">AI ผู้ช่วยกฎหมาย</span>{' '}
                     <span className="t-h3"><span className="ai-lead">ไม่ใช่ AI ทั่วไป</span>{' '}รู้จริงเรื่องกฎหมายความปลอดภัย</span>
                   </h3>
-                  <p style={{ marginTop: 12 }}>ฝึกมาเฉพาะด้านความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน และค้นคำตอบจากคลังกฎหมายของ SafeAct โดยตรง ไม่ใช่จากข้อมูลทั่วไปบนอินเทอร์เน็ต ทุกคำตอบระบุข้อกฎหมายและลิงก์กลับไปยังตัวบท ให้คุณตรวจสอบกับต้นฉบับได้ทันทีก่อนนำไปใช้งาน</p>
+                  <p style={{ marginTop: 12 }}>AI ทั่วไปค้นจากเว็บแล้วสรุป AI ของ SafeAct ค้นจากคลังกฎหมายและสรุปจากตัวบทต้นฉบับ มีข้อมูลก็ตอบทันที ไม่มีก็บอกตรง ๆ ไม่ตอบมั่ว คำตอบอิงจากข้อมูลสถานประกอบการ ความเสี่ยง และ Action Plan ของคุณ จึงตรงกับงานของคุณจริง</p>
                   <p className="t-small" style={{ marginTop: 12, color: '#a1a1a6' }}>{AI_DISCLAIMER}</p>
-                  <Link className="more" style={{ marginTop: 20 }} to="/features/#ai">ดู AI ผู้ช่วยกฎหมาย</Link>
+                  <AiDetail className="more aid-open" style={{ marginTop: 20 }} label="ดูว่าต่างจาก AI ทั่วไปอย่างไร" />
                 </div>
                 <AiMotion />
               </div>
@@ -214,17 +216,15 @@ export default function Home() {
               <PhoneVideo />
             </div>
             <div className="frow__text">
-              <p className="t-eyebrow" style={{ marginBottom: 8 }}>เว็บ + iPhone</p>
+              <p className="t-eyebrow" style={{ marginBottom: 8 }}>เว็บ + iPhone + Android</p>
               <h2 id="app-title" className="t-h3">ทำงานได้ทุกที่<br />ข้อมูลตรงกันทุกอุปกรณ์</h2>
-              <p>ใช้บนคอมพิวเตอร์ที่สำนักงาน แล้วเปิดต่อบน iPhone ขณะเดินตรวจหน้างาน ทุกการเปลี่ยนแปลงซิงก์แบบ<span style={{ whiteSpace: 'nowrap' }}>เรียลไทม์</span></p>
+              <p>ใช้บนคอมพิวเตอร์ที่สำนักงาน แล้วเปิดต่อบนมือถือ iPhone หรือ Android ขณะเดินตรวจหน้างาน ทุกการเปลี่ยนแปลงซิงก์แบบ<span style={{ whiteSpace: 'nowrap' }}>เรียลไทม์</span></p>
               <ul className="checks">
                 <li>แจ้งเตือนกฎหมายที่ติดตามผ่าน Push Notification</li>
                 <li>ดูรายละเอียดกฎหมายและเอกสารได้แม้อยู่หน้างาน</li>
-                <li>บัญชีเดียวใช้ได้ทั้งเว็บและแอป {COMPANY.appName} บน iPhone</li>
+                <li>บัญชีเดียวใช้ได้ทั้งเว็บและแอป {COMPANY.appName} บน iPhone และ Android</li>
               </ul>
-              {COMPANY.appStoreUrl && (
-                <a className="more" style={{ marginTop: 20 }} href={COMPANY.appStoreUrl} rel="noopener">ดาวน์โหลด {COMPANY.appName} บน App Store</a>
-              )}
+              <StoreBadges />
             </div>
           </div>
         </div>

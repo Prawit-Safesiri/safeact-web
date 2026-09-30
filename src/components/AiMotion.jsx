@@ -74,7 +74,7 @@ export default function AiMotion() {
         <img className="aim__icon" src="/assets/app-icon-352.webp" width="352" height="352" alt="" loading="lazy" decoding="async" />
         <p className="aim__app">SafeAct Club <span>ผู้ช่วยกฎหมายความปลอดภัย</span></p>
         <p className="aim__head">ทุกคำถามกฎหมาย<br />มีคำตอบในมือคุณ</p>
-        <p className="aim__sub"><span>ติดตั้งแอป SafeAct Club บน iPhone</span> <span>ถามได้ทุกที่ แม้อยู่หน้างาน</span></p>
+        <p className="aim__sub"><span>ติดตั้งแอป SafeAct Club บน iPhone และ Android</span> <span>ถามได้ทุกที่ แม้อยู่หน้างาน</span></p>
         <span className="aim__get">
           <span className="aim__get-lbl">รับ</span>
           <svg className="aim__ring" viewBox="0 0 36 36">

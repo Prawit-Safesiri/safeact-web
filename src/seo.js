@@ -5,10 +5,14 @@
 // JSON-LD บอก Google 2 เรื่อง:
 //   เราคือใคร  → Organization (OnlineBusiness) + WebSite
 //   ให้บริการอะไร → Service (+ OfferCatalog ราคาแต่ละแผน) และ WebApplication (รายการฟีเจอร์)
-// หมายเหตุ: ไม่ใส่ FAQPage แล้ว (Google เลิกแสดงผล FAQ ตั้งแต่ พ.ค. 2026) · ไม่ใส่คะแนนรีวิวจนกว่าจะมีรีวิวจริงบนหน้าเว็บ
+//   คำถามที่พบบ่อย → FAQPage (หน้าแรก/ราคา) — Google ไม่แสดงผลพิเศษแล้ว แต่ Bing และระบบค้นหาของ AI ยังอ่าน
+// หมายเหตุ: ไม่ใส่คะแนนรีวิวจนกว่าจะมีรีวิวจริงบนหน้าเว็บ
 import { SITE_URL, APP_URL, COMPANY, LEGAL_DATES } from './data/company.js';
 import { PLANS, baht, fromPrice } from './data/plans.js';
 import { SERVICE, FEATURES, LAW_CATEGORIES } from './data/service.js';
+import { FAQ_GENERAL, FAQ_BILLING, FAQ_LAWS, faqJsonLd } from './data/faq.js';
+import { LAWS, CATEGORIES } from './data/laws.js';
+import { maxIso } from './data/law-rules.js';
 
 // ภาพตัวแทนเว็บเมื่อแชร์ลิงก์ (LINE, Facebook ฯลฯ) = โลโก้ไอคอนแอปอยู่กลางภาพ
 // LINE ครอปเป็นสี่เหลี่ยมจัตุรัสตรงกลาง จึงต้องไม่มีข้อความหรือภาพอื่นด้านข้าง · เปลี่ยนภาพเมื่อใดให้เปลี่ยนชื่อไฟล์ด้วย (แคช 30 วัน)
@@ -26,6 +30,8 @@ const ID = {
   service: `${SITE_URL}/#service`,
   webapp: `${SITE_URL}/#webapp`,
   iosapp: `${SITE_URL}/#iosapp`,
+  androidapp: `${SITE_URL}/#androidapp`,
+  lawCats: `${SITE_URL}/law-updates/#categories`,
 };
 const ref = (id) => ({ '@id': id });
 // ตัดค่าว่างทิ้ง — ข้อมูลที่เจ้าของยังไม่ได้ให้ (sameAs, vatId, appStoreUrl) จะไม่ถูกส่งออก
@@ -150,7 +156,7 @@ const webapp = (full = false) => clean({
   operatingSystem: 'Web',
   inLanguage: 'th-TH',
   provider: ref(ID.org),
-  featureList: full ? FEATURES.map((f) => f.name) : undefined,
+  featureList: FEATURES.map((f) => f.name),
   screenshot: full
     ? FEATURES.filter((f) => f.shot).map((f) => ({
       '@type': 'ImageObject',
@@ -161,18 +167,33 @@ const webapp = (full = false) => clean({
     : undefined,
 });
 
-// แอป iPhone — ส่งออกเมื่อมีลิงก์ App Store ใน company.js เท่านั้น
-const iosApp = () => (COMPANY.appStoreUrl ? [clean({
+// แอปมือถือ (iPhone / Android) — ส่งออกเฉพาะร้านที่มีลิงก์ใน company.js
+const mobileApp = (id, os, url) => clean({
   '@type': 'MobileApplication',
-  '@id': ID.iosapp,
+  '@id': id,
   name: COMPANY.appName,
-  operatingSystem: 'iOS',
+  operatingSystem: os,
   applicationCategory: 'BusinessApplication',
-  url: COMPANY.appStoreUrl,
-  installUrl: COMPANY.appStoreUrl,
+  url,
+  installUrl: url,
   inLanguage: 'th-TH',
   provider: ref(ID.org),
-})] : []);
+});
+const iosApp = () => [
+  ...(COMPANY.appStoreUrl ? [mobileApp(ID.iosapp, 'iOS', COMPANY.appStoreUrl)] : []),
+  ...(COMPANY.playStoreUrl ? [mobileApp(ID.androidapp, 'Android', COMPANY.playStoreUrl)] : []),
+];
+
+// หมวดกฎหมายทั้งหมด (หน้า /law-updates/) — ชื่อตรงกับหัวข้อการ์ดบนหน้า
+const lawCategoryList = () => ({
+  '@type': 'ItemList',
+  '@id': ID.lawCats,
+  name: 'หมวดกฎหมายในคลัง SafeAct',
+  numberOfItems: CATEGORIES.length,
+  itemListElement: CATEGORIES.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title })),
+});
+// หน้าที่แสดงตัวเลขกฎหมาย: lastmod = วันที่แก้หน้าล่าสุด หรือวันที่ซิงก์ตัวเลข แล้วแต่ว่าวันไหนใหม่กว่า
+const withLaws = (d) => maxIso(d, LAWS.syncedIso);
 
 // ── ระดับหน้า ──
 const pageNode = (path, m) => {
@@ -191,7 +212,7 @@ const pageNode = (path, m) => {
     breadcrumb: m.crumb ? ref(`${url}#breadcrumb`) : undefined,
     // ใส่เฉพาะภาพที่แสดงอยู่ในเนื้อหาของหน้านั้นจริง
     primaryImageOfPage: p.image && { '@type': 'ImageObject', url: `${SITE_URL}${p.image[0]}`, width: p.image[1], height: p.image[2] },
-    dateModified: p.dateModified,
+    dateModified: p.dateModified || m.lastmod,
   });
 };
 
@@ -211,25 +232,41 @@ export const ROUTES = {
   '/': {
     title: 'SafeAct — อัปเดตกฎหมายความปลอดภัย ระบบงาน จป. ครบในที่เดียว',
     description: 'SafeAct แพลตฟอร์มสำหรับ จป. ติดตาม สรุป และแจ้งเตือนกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบบริหารงานความปลอดภัย ทดลองใช้ฟรี 30 วัน',
-    lastmod: '2026-09-28',
+    lastmod: withLaws('2026-09-29'),
     page: { about: ID.org, mainEntity: ID.service, image: ['/assets/laws-macbook.webp', 1422, 1024] },
-    nodes: () => [service(), webapp(), ...iosApp()],
+    nodes: () => [service(), webapp(), ...iosApp(), faqJsonLd(FAQ_GENERAL, `${SITE_URL}/#faq`)],
   },
   '/features/': {
     title: 'ฟีเจอร์ SafeAct — ระบบบริหารงานความปลอดภัยสำหรับ จป.',
-    description: 'ติดตามกฎหมายทุกหมวดหมู่ Action Plan รายปี Training Matrix บันทึกงานตรวจรับรอง โปรแกรมอนุรักษ์การได้ยิน คลังเอกสาร และ AI ผู้ช่วยกฎหมาย ใช้ได้ทั้งบนเว็บและ iPhone',
-    lastmod: '2026-09-27',
+    description: 'ติดตามกฎหมายทุกหมวดหมู่ Action Plan รายปี Training Matrix บันทึกงานตรวจรับรอง โปรแกรมอนุรักษ์การได้ยิน คลังเอกสาร และ AI ผู้ช่วยกฎหมาย ใช้ได้บนเว็บ iPhone และ Android',
+    lastmod: withLaws('2026-09-29'),
     crumb: 'ฟีเจอร์',
     page: { mainEntity: ID.webapp, image: ['/assets/features/hero.webp', 2880, 1234] },
     nodes: () => [webapp(true), ...iosApp()],
   },
+  '/ai/': {
+    title: 'AI SafeAct ต่างกับ AI ทั่วไปอย่างไร | SafeAct',
+    description: 'AI ผู้ช่วยกฎหมายของ SafeAct ค้นคำตอบจากคลังกฎหมายและตัวบทต้นฉบับ ไม่ตอบมั่วเมื่อไม่มีข้อมูล อิงข้อมูลสถานประกอบการและ Action Plan ของคุณ เปรียบเทียบกับ AI ทั่วไปแบบเห็นชัด',
+    lastmod: '2026-09-29',
+    crumb: 'AI SafeAct ต่างกับ AI ทั่วไป',
+    page: { about: ID.webapp, image: ['/assets/ai-compare.webp', 2000, 1198] },
+    nodes: () => [webapp()],
+  },
+  '/law-updates/': {
+    title: 'อัปเดตกฎหมายความปลอดภัยรายเดือน และหมวดกฎหมาย | SafeAct',
+    description: `จำนวนกฎหมายความปลอดภัยที่ประกาศในแต่ละเดือนจากคลัง SafeAct แยกฉบับใหม่ แก้ไข และยกเลิก พร้อม ${CATEGORIES.length} หมวดกฎหมาย รวม ${LAWS.total.toLocaleString('en-US')} ฉบับ และมาตรฐานสากลที่เกี่ยวข้อง`,
+    lastmod: withLaws('2026-09-29'),
+    crumb: 'อัปเดตกฎหมาย',
+    page: { type: 'CollectionPage', about: ID.service, mainEntity: ID.lawCats },
+    nodes: () => [service(), lawCategoryList(), faqJsonLd(FAQ_LAWS, `${SITE_URL}/law-updates/#faq`)],
+  },
   '/pricing/': {
     title: `แผนและราคา — เริ่ม ${baht(fromPrice())}/เดือน ทดลองฟรี 30 วัน | SafeAct`,
     description: 'เปรียบเทียบแผน SafeAct: Free ทดลอง 30 วัน, Student, Basic, Business และ Enterprise ชำระรายเดือนหรือรายปี ราคายังไม่รวม VAT 7% คืนเงินได้ภายใน 7 วัน',
-    lastmod: '2026-09-27',
+    lastmod: '2026-09-29',
     crumb: 'แผนและราคา',
     page: { mainEntity: ID.service },
-    nodes: () => [service(true)],
+    nodes: () => [service(true), faqJsonLd(FAQ_BILLING, `${SITE_URL}/pricing/#faq`)],
   },
   '/refund-policy/': {
     title: 'นโยบายการยกเลิกและการคืนเงิน | SafeAct',
@@ -255,7 +292,7 @@ export const ROUTES = {
   '/about/': {
     title: 'เกี่ยวกับเรา — บริษัท เซฟแอ็กต์ จำกัด | SafeAct',
     description: 'บริษัท เซฟแอ็กต์ จำกัด ผู้พัฒนาและให้บริการ SafeAct แพลตฟอร์มออนไลน์ติดตามกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบงานสำหรับ จป.',
-    lastmod: '2026-09-28',
+    lastmod: withLaws('2026-09-29'),
     crumb: 'เกี่ยวกับเรา',
     page: { type: 'AboutPage', mainEntity: ID.org, image: ['/assets/about-team.webp', 2000, 883] },
   },

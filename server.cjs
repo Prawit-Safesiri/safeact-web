@@ -7,6 +7,7 @@
 //   • ส่งต่อ URL ของเว็บเดิมตาม dist/_redirects (มาจาก public/_redirects)
 //   • URL ที่ไม่มีอยู่ตอบสถานะ 404 ด้วย 404.html
 //   • แคช: /build/* ถาวร (ชื่อไฟล์มี hash) · /assets/* 30 วัน · HTML ตรวจกับเซิร์ฟเวอร์ทุกครั้ง
+// และ /api/laws.json = ตัวเลขกฎหมายล่าสุดจากระบบสมาชิก (ดูด้านล่าง)
 const http=require('http'),fs=require('fs'),path=require('path');
 const ROOT=path.join(__dirname,'dist'), PORT=Number(process.env.PORT)||8125;
 const TYPES={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.json':'application/json','.xml':'application/xml; charset=utf-8','.txt':'text/plain; charset=utf-8','.webmanifest':'application/manifest+json','.webp':'image/webp','.mp4':'video/mp4','.ico':'image/x-icon','.woff2':'font/woff2'};
@@ -21,14 +22,49 @@ const REDIRECTS=new Map(read('_redirects').split('\n').map((l)=>l.trim().split(/
 const SECURE={'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin'};
 const moved=(res,to,code=301)=>{res.writeHead(code,{Location:to,'Cache-Control':'no-cache'});res.end();};
 
+// ── ตัวเลขกฎหมายล่าสุด /api/laws.json ──
+// หน้า /law-updates/ และจอแอปบนภาพทีมงานดึงไปแทนชุดที่ build ไว้ → การ์ด "ล่าสุด" กราฟ และจำนวนต่อหมวดเลื่อนเป็นเดือนล่าสุดเอง
+// ดึงจากระบบสมาชิกทุก 30 นาทีด้วย scripts/laws-source.mjs (publishable key ใน .env ของเว็บ — ดู README) · ภาพหน้าปกหมวดใหม่ดาวน์โหลดลง dist/assets/laws/
+// ยังไม่ตั้งคีย์ / ดึงไม่สำเร็จ → ตอบ 503 หน้าเว็บใช้ชุดที่ build ไว้ต่อ (มีวันที่ "ข้อมูล ณ" กำกับ) · ข้อมูลที่ส่งออกไม่มีคีย์หรือที่อยู่ระบบ
+const LAWS_EVERY=30*60*1000;
+let lawsBody=null,lawsJob=null,lawsTried=0;
+function loadLaws(){
+  if(lawsJob)return lawsJob;
+  lawsTried=Date.now();
+  lawsJob=import('./scripts/laws-source.mjs').then((m)=>m.liveLaws(__dirname))
+    .then(({data,fetched,warnings})=>{
+      lawsBody=JSON.stringify(data);
+      for(const w of warnings)console.warn('[laws] '+w);
+      console.log('[laws] ข้อมูล ณ '+data.syncedIso+' · '+data.total+' ฉบับ'+(fetched?' · ภาพหน้าปกใหม่ '+fetched+' ไฟล์':''));
+    })
+    .catch((e)=>console.warn('[laws] ดึงตัวเลขล่าสุดไม่ได้ — หน้าเว็บใช้ชุดที่ build ไว้: '+e.message))
+    .finally(()=>{lawsJob=null;});
+  return lawsJob;
+}
+
 http.createServer((req,res)=>{
   let p;
   try{p=decodeURIComponent(req.url.split('?')[0]);}catch{res.writeHead(400);return res.end('400');}
-  const host=String(req.headers.host||'').toLowerCase().replace(/:\d+$/,'');
-  const live=!!HOST&&(host===HOST||host==='www.'+HOST);   // คำขอจากโดเมนจริง (ไม่ใช่ localhost)
+  // Host ที่ผู้ชมพิมพ์: ถ้าผ่าน tunnel/พร็อกซีที่เปลี่ยน Host จะอยู่ใน x-forwarded-host
+  const host=String(req.headers['x-forwarded-host']||req.headers.host||'').split(',')[0].trim().toLowerCase().replace(/:\d+$/,'');
+  // คำขอจากเว็บจริง = Host ตรงโดเมน หรือผ่าน Cloudflare (มีส่วนหัว cf-visitor) — ไม่ใช่ localhost
+  // (เดิมดูแค่ Host ทำให้บนเว็บจริงที่ Host ถูกเปลี่ยน ไม่ย้าย http→https และตอบ no-store ทุกไฟล์)
+  const viaCf=!!req.headers['cf-visitor'];
+  const live=!!HOST&&(host===HOST||host==='www.'+HOST||viaCf);
   // Cloudflare บอกโปรโตคอลที่ผู้ชมใช้ผ่านส่วนหัว CF-Visitor: {"scheme":"http"|"https"}
   const viaHttp=/"scheme"\s*:\s*"http"/.test(String(req.headers['cf-visitor']||''));
-  if(live&&(host!==HOST||viaHttp))return moved(res,SITE+req.url);
+  if(live&&(host==='www.'+HOST||viaHttp))return moved(res,SITE+req.url);
+
+  if(p==='/api/laws.json'){
+    const send=()=>{
+      const h={'Content-Type':'application/json; charset=utf-8','X-Robots-Tag':'noindex',...SECURE};
+      if(!lawsBody){res.writeHead(503,{...h,'Cache-Control':'no-store'});return res.end('{"error":"unavailable"}');}
+      res.writeHead(200,{...h,'Cache-Control':live?'public, max-age=300':'no-store'});res.end(lawsBody);
+    };
+    // ยังไม่มีข้อมูล (เพิ่งเปิดเซิร์ฟเวอร์): รอรอบที่กำลังดึง หรือเริ่มรอบใหม่ถ้าลองครั้งล่าสุดเกิน 1 นาที — รอไม่เกิน 8 วินาที
+    if(!lawsBody&&(lawsJob||Date.now()-lawsTried>60000))return void Promise.race([loadLaws(),new Promise((r)=>setTimeout(r,8000))]).then(send);
+    return send();
+  }
 
   const old=REDIRECTS.get(p);
   if(old)return moved(res,old[0],old[1]);
@@ -66,4 +102,8 @@ http.createServer((req,res)=>{
       res.end(d);
     });
   });
-}).listen(PORT,()=>console.log('serving '+ROOT+' on http://localhost:'+PORT+(SITE?' · โดเมนหลัก '+SITE+' · ส่งต่อ '+REDIRECTS.size+' รายการ':'')));
+}).listen(PORT,()=>{
+  console.log('serving '+ROOT+' on http://localhost:'+PORT+(SITE?' · โดเมนหลัก '+SITE+' · ส่งต่อ '+REDIRECTS.size+' รายการ':''));
+  loadLaws();
+  setInterval(loadLaws,LAWS_EVERY);
+});

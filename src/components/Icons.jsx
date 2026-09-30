@@ -42,6 +42,10 @@ export const IconBuilding = (p) => <I {...p}><g {...P}><path d="M8 42V10l16-5v37
 export const IconMail = (p) => <I {...p}><g {...P}><rect x="5" y="10" width="38" height="28" rx="4"/><path d="M6 12l18 14 18-14"/></g></I>;
 export const IconCall = (p) => <I {...p}><g {...P}><path d="M14 6l6 9-4 4c2 5 6 9 11 11l4-4 9 6-3 7c-17 0-30-13-30-30z"/></g></I>;
 export const IconImage = (p) => <I {...p}><g {...P}><rect x="5" y="9" width="38" height="30" rx="4"/><circle cx="16" cy="19" r="3.5"/><path d="M5 33l11-10 9 8 6-5 12 10"/></g></I>;
+// กลุ่มมาตรฐาน (หน้าอัปเดตกฎหมาย): หมวกนิรภัย · ใบไม้ · ส้อมกับมีด
+export const IconHelmet = (p) => <I {...p}><g {...P}><path d="M9 32a15 15 0 0 1 30 0"/><path d="M6 32h36a2 2 0 0 1 0 4H6a2 2 0 0 1 0-4z"/><path d="M24 17v8M17.5 19.5l2.5 6M30.5 19.5l-2.5 6"/></g></I>;
+export const IconLeaf = (p) => <I {...p}><g {...P}><path d="M40 8C22 8 10 17 10 30c0 5 3 9 8 10 13 0 22-12 22-32z"/><path d="M8 42c6-9 13-16 22-22"/></g></I>;
+export const IconFood = (p) => <I {...p}><g {...P}><path d="M13 6v11a4 4 0 0 0 8 0V6M17 6v36"/><path d="M35 6c-4 3-6 10-6 17h6v19"/></g></I>;
 export const IconVideo = (p) => <I {...p}><g {...P}><rect x="4" y="12" width="28" height="24" rx="4"/><path d="M32 21l12-7v20l-12-7z"/></g></I>;
 export const Tick = () => <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9.5l3.2 3.2L14 5.8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 export const Dash = () => <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M5 9h8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>;

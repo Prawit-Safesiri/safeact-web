@@ -1,7 +1,8 @@
+import StoreBadges from '../components/StoreBadges.jsx';
 import { Link } from 'react-router-dom';
 import AiMotion from '../components/AiMotion.jsx';
 import { checkoutLink, COMPANY, AI_DISCLAIMER } from '../data/company.js';
-import { LAW_CATEGORIES, LAW_LIBRARY, FEATURES, lawCountRounded } from '../data/service.js';
+import { LAW_CATEGORIES, LAW_LIBRARY, FEATURES } from '../data/service.js';
 import { planFrom } from '../data/plans.js';
 
 // ภาพหน้าจอจริงจากแอป SafeAct (safeact-connect-hub) · เรนเดอร์ 2x · public/assets/features/
@@ -36,7 +37,7 @@ export default function Features() {
     <main id="main">
       <section className="hero" aria-labelledby="f-title">
         <div className="container">
-          <h1 id="f-title" className="t-hero">ฟีเจอร์ SafeAct<br /><span className="t-hero__sub">ระบบบริหารงานความปลอดภัย</span></h1>
+          <h1 id="f-title" className="t-hero">ฟีเจอร์ SafeAct{' '}<br /><span className="t-hero__sub">ระบบบริหารงานความปลอดภัย</span></h1>
           {/* บรรทัดสุดท้าย "ไปจนถึง…" ขึ้นบรรทัดใหม่บนจอกว้าง (ตัดบรรทัดตามที่เจ้าของกำหนด) */}
           <p className="t-sub t-lines">
             <span>{COMPANY.definitionShort} ตั้งแต่ติดตามกฎหมาย</span>{' '}
@@ -61,7 +62,8 @@ export default function Features() {
         <div className="container">
           <header className="section-head">
             <h2 id="laws" className="t-h1" style={{ scrollMarginTop: 80 }}>ติดตามกฎหมาย</h2>
-            <p className="t-lead">คลังกฎหมายกว่า {lawCountRounded()} ฉบับ (ข้อมูล ณ {LAW_LIBRARY.asOfTh}) รู้ก่อน เตรียมตัวทัน ไม่พลาดกฎหมายที่เกี่ยวข้องกับสถานประกอบการของคุณ</p>
+            <p className="t-lead">คลังกฎหมาย {LAW_LIBRARY.count.toLocaleString('en-US')} ฉบับ (ข้อมูล ณ {LAW_LIBRARY.asOfTh}) รู้ก่อน เตรียมตัวทัน ไม่พลาดกฎหมายที่เกี่ยวข้องกับสถานประกอบการของคุณ</p>
+            <p style={{ marginTop: 20 }}><Link className="more" to="/law-updates/">ดูอัปเดตกฎหมายรายเดือนและหมวดทั้งหมด</Link></p>
           </header>
           <Row
             eyebrow="อัปเดตกฎหมาย" title="กฎหมายใหม่ทุกเดือน สรุปพร้อมอ้างอิง"
@@ -154,7 +156,8 @@ export default function Features() {
             <li><h3 className="t-h4">แนบไฟล์ให้ช่วยสรุป</h3><p>แนบเอกสารแล้วให้ AI ช่วยสรุปประเด็นสำคัญ</p></li>
             <li><h3 className="t-h4">ช่วยร่างแผนงาน</h3><p>ให้ AI เสนอแผนงาน แล้วปรับแก้ก่อนนำเข้า Action Plan</p></li>
           </ul>
-          <p className="t-small" style={{ textAlign: 'center', marginTop: 48, color: '#a1a1a6' }}>
+          <p style={{ textAlign: 'center', marginTop: 40 }}><Link className="more" to="/ai/">ดูว่า AI SafeAct ต่างจาก AI ทั่วไปอย่างไร</Link></p>
+          <p className="t-small" style={{ textAlign: 'center', marginTop: 24, color: '#a1a1a6' }}>
             มีในแผน {planFrom('AI ผู้ช่วยกฎหมาย')} · {AI_DISCLAIMER}
           </p>
         </div>
@@ -168,6 +171,7 @@ export default function Features() {
             <a className="btn" href={checkoutLink('free')}>ทดลองใช้ฟรี</a>{' '}
             <Link className="more" to="/pricing/">ดูแผนและราคา</Link>
           </div>
+          <StoreBadges className="stores--center" />
         </div>
       </section>
     </main>

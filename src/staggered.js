@@ -25,6 +25,8 @@ export const ITEM_SELECTOR = [
   '.hero > .container > *', '.hero__media',
   '.section-head', '.props > li', '.tiles > li', '.steps > li', '.stats > li', '.plans > li', '.cards > li',
   '.frow', '.faq', '.cta-band', '.billing', '.compare-wrap', '.pay', '.form',
+  // หน้าอัปเดตกฎหมาย: เฟดทั้งกลุ่ม (ไม่เฟดการ์ดหมวดทีละใบ — 36 ใบจะค้างนานเกินไป)
+  '.lkpis > li', '.lchart', '.lgroup', '.lcats__cta', '.lstd > li',
 ].join(',');
 
 function itemsOf(group) {

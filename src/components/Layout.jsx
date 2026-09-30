@@ -4,6 +4,7 @@ import { COMPANY, fullAddress, appLink } from '../data/company.js';
 import { headModel, headEntries, HEAD_KEYS, LD_ID, ROUTES, metaFor, normPath } from '../seo.js';
 import NotFound from '../pages/NotFound.jsx';
 import LocalNav from './LocalNav.jsx';
+import StoreBadges from './StoreBadges.jsx';
 import LineAddFriend from './LineAddFriend.jsx';
 import { initStaggered } from '../staggered.js';
 
@@ -62,7 +63,8 @@ function GlobalNav() {
   return (
     <header className="gn" data-open={open}>
       <nav className="gn__inner" aria-label="เมนูหลัก">
-        <Link className="gn__brand" to="/" aria-label="SafeAct หน้าแรก">
+        {/* reloadDocument = คลิกโลโก้แล้วโหลดหน้าแรกใหม่ทั้งหน้า (เจ้าของกำหนด) */}
+        <Link className="gn__brand" to="/" reloadDocument aria-label="SafeAct หน้าแรก">
           <img src="/assets/safeact-logo.png" alt="SafeAct" width="1000" height="161" />
         </Link>
         <ul className="gn__links">
@@ -121,11 +123,12 @@ function Footer({ pathname }) {
             <h3>บริการ</h3>
             <ul>
               <li><Link to="/features/">ฟีเจอร์ทั้งหมด</Link></li>
-              <li><Link to="/features/#laws">อัปเดตกฎหมายความปลอดภัย</Link></li>
+              <li><Link to="/law-updates/">อัปเดตกฎหมายความปลอดภัย</Link></li>
               <li><Link to="/features/#action-plan">Action Plan รายปี</Link></li>
               <li><Link to="/features/#training">Training Matrix</Link></li>
               <li><Link to="/features/#workflow">ระบบบริหารงานความปลอดภัย</Link></li>
               <li><Link to="/features/#ai">AI ผู้ช่วยกฎหมาย</Link></li>
+              <li><Link to="/ai/">AI SafeAct ต่างกับ AI ทั่วไป</Link></li>
             </ul>
           </div>
           <div>
@@ -153,11 +156,13 @@ function Footer({ pathname }) {
               <li><a href={`tel:${COMPANY.phoneE164}`}>{COMPANY.phone}</a></li>
               <li><a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></li>
               <li><LineAddFriend /></li>
-              {COMPANY.appStoreUrl && <li><a href={COMPANY.appStoreUrl} rel="noopener">แอป {COMPANY.appName} บน App Store</a></li>}
-              {COMPANY.sameAs.map((u) => <li key={u}><a href={u} rel="noopener">{new URL(u).host.replace(/^www\./, '')}</a></li>)}
+              {/* ช่องทางทางการอื่น (sameAs) — ไม่รวม LINE ซึ่งแสดงเป็นปุ่มเพิ่มเพื่อนด้านบนแล้ว */}
+              {COMPANY.sameAs.filter((u) => !/(^|\.)line\.me$/.test(new URL(u).host)).map((u) => <li key={u}><a href={u} rel="noopener">{new URL(u).host.replace(/^www\./, '')}</a></li>)}
             </ul>
           </div>
         </nav>
+
+        <StoreBadges className="stores--foot" />
 
         <address className="gf__company" style={{ fontStyle: 'normal' }}>
           <span className="t-lines">{COMPANY.footerLines.map((t, i) => <span key={i}>{i > 0 && ' '}{t}</span>)}</span>{' '}
