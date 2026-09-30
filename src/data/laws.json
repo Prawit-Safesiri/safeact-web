@@ -1,5 +1,5 @@
 {
-  "syncedIso": "2026-09-29",
+  "syncedIso": "2026-09-30",
   "total": 1419,
   "months": [
     {
@@ -389,7 +389,8 @@
       "title": "ประกันสังคมและเงินทดแทน",
       "desc": "กระทรวงแรงงาน",
       "count": 66,
-      "order": 32
+      "order": 32,
+      "cover": "social-security-f5vj-cover-aea218"
     },
     {
       "slug": "custom-ประดาน้ำ-foz6",
@@ -434,7 +435,8 @@
       "title": "มาตรฐานผลิตภัณฑ์อุตสาหกรรม",
       "desc": "กระทรวงอุตสาหกรรม",
       "count": 153,
-      "order": 34
+      "order": 34,
+      "cover": "industrial-standards-5vfd-cover-3f4076"
     },
     {
       "slug": "custom-รังสี-inuz",
@@ -477,7 +479,8 @@
       "title": "การควบคุมอาคาร",
       "desc": "กระทรวงมหาดไทย",
       "count": 86,
-      "order": 33
+      "order": 33,
+      "cover": "building-control-0jr7-cover-f7b437"
     },
     {
       "slug": "custom-อาหาร-hvbv",
