@@ -42,6 +42,7 @@ npm run sync:laws  # ดึงตัวเลขกฎหมาย + ภาพ�
   - `/law-updates/`: `CollectionPage` + `ItemList` 36 หมวด (ชื่อตรงกับการ์ดบนหน้า) + `FAQPage` · `lastmod` = วันที่ซิงก์ตัวเลขกฎหมาย
   - ไม่ใช้ `hreflang` (เว็บภาษาเดียว)
 - **เนื้อหามองเห็นเป็นค่าเริ่มต้น**: เอฟเฟกต์เฟด (`src/staggered.js`) เริ่มซ่อนกล่องเฉพาะส่วนที่อยู่ใต้จอ หลังผู้ใช้เลื่อนหน้าจริงครั้งแรก — บอตไม่เลื่อน จึงเห็นเนื้อหาครบ
+- **ภาพจางเข้าเมื่อโหลดเสร็จ** (แบบ apple.com): สคริปต์เล็กใน `index.html` ใส่ `data-loaded` ให้ภาพเมื่อโหลดและถอดรหัสเสร็จ · `src/styles/base.css` ซ่อนภาพใน `<main>` ที่ยังไม่โหลดแล้วจางเข้า 0.6 วินาที · ตัวสำรองตอนเปลี่ยนหน้า `src/imgfade.js` · ไม่มี JS = ภาพแสดงตามปกติ
 - **กล่องแอนิเมชัน** (`HeroMotion`, `AiMotion`, `PadMotion`) มี `data-nosnippet` และ HTML ที่ prerender แสดงตัวเลขจริง · `PadMotion` (บนสุดของหน้าแรก และหน้าเกี่ยวกับเรา) วางจอแอปจำลองทับภาพทีมงาน โดยภาพยังเป็น `<img>` จริงพร้อม `alt` (เป็น LCP ของหน้า) · ใช้ภาพ 2 ชุด: `about-team.webp` แนวกว้างสำหรับจอคอมพิวเตอร์ และ `about-team-m.webp` แนวตั้งสำหรับมือถือ — เปลี่ยนภาพเมื่อใดต้องวัดจุดแท็บเล็ตใหม่ (ดูหมายเหตุในบล็อก PAD MOTION ของ `components.css`)
   - `LawUpdateMotion` (บนสุดของหน้า `/law-updates/`): จำลอง Hub กฎหมาย + การแจ้งเตือน (กระดิ่ง · อีเมล · แอปบนมือถือ) วน 24 วินาที มีปุ่มหยุด/เล่น · ข้อความเป็นตัวอย่างทั้งหมด (ชื่อกฎหมายเป็นแถบ ไม่มีชื่อเดือนหรือตัวเลขที่อ้างเป็นข้อเท็จจริง) ยกเว้นชื่อหมวดและภาพหน้าปกที่เป็นของจริงจากแอป · หมวดที่ใช้และสวิตช์แบนเนอร์ Push อยู่ที่ `src/data/law-update-motion.js` · ภาพนิ่งตอน prerender / ไม่มี JS / ลดการเคลื่อนไหว = เฟรมแรกของรอบ
 - **llms.txt / llms-full.txt** (มาตรฐาน llmstxt.org) สร้างตอน build จาก `src/llms.js` ซึ่งดึงข้อมูลจากไฟล์ใน `src/data/` — แก้ข้อมูลที่ไฟล์ข้อมูล ไม่ต้องแก้ llms.txt เอง · build ล้มถ้าไม่มีลิงก์ทุกหน้าหรือราคาทุกแผน
@@ -130,4 +131,4 @@ curl -s https://safeact.com/llms.txt | head -5
 - **ภาพ**: WebP พร้อม `srcset`/`sizes` · ฟอนต์ Anuphan เก็บในเว็บเอง (`public/assets/fonts/`) · JS/CSS ที่มี hash ออกที่ `/build/`
 
 ## ไฟล์ต้นฉบับที่ไม่ได้ใช้บนหน้าเว็บแล้ว (เก็บไว้เป็นต้นฉบับ)
-`public/assets/laws-macbook.jpg`, `action-plan.jpg`, `training-dashboard.jpg` (ใช้ `.webp` แทน) · `app-screen.mp4`, `app-screen-poster.webp` (ใช้ชุด `-720` แทน) · `app-icon.webp` · `og-image.png` (ภาพแชร์ลิงก์ชุดเดิม เก็บไว้เพราะลิงก์ที่แชร์ไปแล้วยังอ้างถึง — ปัจจุบันใช้ `og-logo.png`)
+`public/assets/laws-macbook.jpg`, `action-plan.jpg`, `training-dashboard.jpg` (ใช้ `.webp` แทน) · `app-screen.mp4`, `app-screen-poster.webp` (ใช้ชุด `-720` แทน) · `app-screen-720-poster.webp` (ภาพ poster เดิม = เฟรมแรกที่เกือบเป็นจอเปล่า ปัจจุบันใช้ `app-screen-720-start.webp` = เฟรมที่ 5.2 วินาที) · `app-icon.webp` · `og-image.png` (ภาพแชร์ลิงก์ชุดเดิม เก็บไว้เพราะลิงก์ที่แชร์ไปแล้วยังอ้างถึง — ปัจจุบันใช้ `og-logo.png`)

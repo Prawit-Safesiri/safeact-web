@@ -7,6 +7,7 @@ import LocalNav from './LocalNav.jsx';
 import StoreBadges from './StoreBadges.jsx';
 import LineAddFriend from './LineAddFriend.jsx';
 import { initStaggered } from '../staggered.js';
+import { markLoadedImages } from '../imgfade.js';
 
 const NAV = [
   ['/features/', 'ฟีเจอร์'],
@@ -198,6 +199,8 @@ export default function Layout() {
   }, [pathname, hash]);
   // กล่องใน section ทยอยเฟดขึ้นตอนเลื่อนถึง แบบ StaggeredFadeIn ของ apple.com
   useEffect(() => initStaggered(), [pathname]);
+  // ภาพจางเข้าเมื่อโหลดเสร็จ: ตัวสำรองสำหรับภาพที่โหลดเสร็จก่อนต่อเข้าหน้า (ตัวหลักอยู่ใน index.html)
+  useEffect(() => markLoadedImages(), [pathname]);
 
   return (
     <>

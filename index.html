@@ -7,6 +7,25 @@
     <meta name="format-detection" content="telephone=no">
     <!-- ยืนยันความเป็นเจ้าของเว็บกับ Google Search Console (ห้ามลบ: ถ้าแท็กหาย Google จะยกเลิกการยืนยัน) -->
     <meta name="google-site-verification" content="SQovxsc89_kM9CwPYmywPyV11C8I8gRPwZJdyXSB884">
+    <!-- ภาพในเนื้อหาจางเข้าเมื่อโหลดเสร็จ แบบ apple.com (เลื่อนเร็วกว่าภาพโหลด ภาพไม่โผล่พรวด) · CSS อยู่ใน src/styles/base.css
+         ต้องอยู่ใน <head> ก่อนภาพแรก · เหตุการณ์ load ของภาพไม่ไปถึง window จึงดักที่ document แบบ capture
+         รอถอดรหัสภาพ (decode) ก่อนเริ่มจาง · ไม่มี JS = ไม่มีคลาส .js ภาพแสดงตามปกติ (บอตและการแชร์ลิงก์เห็นภาพครบ)
+         ภาพที่โหลดเสร็จก่อนต่อเข้าหน้า (React เปลี่ยนหน้า) มีตัวสำรองใน src/imgfade.js -->
+    <script>
+      (function () {
+        var d = document;
+        d.documentElement.classList.add('js');
+        function done(img) { img.setAttribute('data-loaded', ''); }
+        function on(e) {
+          var t = e.target;
+          if (!t || t.tagName !== 'IMG' || t.hasAttribute('data-loaded')) return;
+          if (e.type === 'load' && t.decode) t.decode().then(function () { done(t); }, function () { done(t); });
+          else done(t);
+        }
+        d.addEventListener('load', on, true);
+        d.addEventListener('error', on, true);
+      })();
+    </script>
     <!--head-->
     <link rel="icon" href="/favicon.ico" sizes="48x48">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">

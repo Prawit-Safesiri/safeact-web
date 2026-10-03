@@ -8,6 +8,10 @@ body{
   font-synthesis:none;text-rendering:optimizeLegibility;
 }
 img,svg,video{max-width:100%;display:block}
+/* ภาพในเนื้อหาจางเข้าเมื่อโหลดและถอดรหัสเสร็จ (data-loaded ใส่โดยสคริปต์ใน index.html และ src/imgfade.js) แบบ apple.com
+   เลื่อนเร็วกว่าภาพโหลด ภาพจะค่อย ๆ ปรากฏแทนการโผล่พรวด · เฉพาะเมื่อมี JS (.js) · ปิดการเคลื่อนไหว = ปรากฏทันที (กฎด้านล่าง) */
+.js main img:not([data-loaded]){opacity:0}
+.js main img{transition:opacity .6s cubic-bezier(.4,0,.6,1)}
 ul,ol{margin:0;padding:0}
 p,h1,h2,h3,h4,h5,figure,dl,dd{margin:0}
 h1,h2,h3,h4,h5{font-family:var(--font-display);font-weight:600;color:var(--ink);text-wrap:balance}
