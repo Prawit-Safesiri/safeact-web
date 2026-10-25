@@ -32,6 +32,47 @@
         "--strictPort"
       ],
       "port": 5173
+    },
+    {
+      "name": "nfpa20-th",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "../NFPA",
+        "run",
+        "dev"
+      ],
+      "port": 5190
+    },
+    {
+      "name": "safe-sparkle-admin",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "../safe-sparkle-admin",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "8080",
+        "--strictPort"
+      ],
+      "port": 8080
+    },
+    {
+      "name": "safety-member-portal",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "../safety-member-portal",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "8090",
+        "--strictPort"
+      ],
+      "port": 8090
     }
   ]
 }
