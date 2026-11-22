@@ -1,19 +1,9 @@
 import { Link } from 'react-router-dom';
 import Faq from '../components/Faq.jsx';
-import { PlansWithSwitch, CompareTable } from '../components/Plans.jsx';
+import { PlansYearly, CompareTable } from '../components/Plans.jsx';
 import { FAQ_BILLING } from '../data/faq.js';
 import { COMPANY } from '../data/company.js';
-
-const PAY = [
-  ['บัตรเครดิต/เดบิต', 'VISA · Mastercard · JCB · AMEX'],
-  ['PromptPay QR', 'สแกนจ่ายผ่านแอปธนาคาร'],
-  ['โมบายแบงก์กิ้ง', 'SCB · KBank · BBL · KTB · BAY'],
-  ['อินเทอร์เน็ตแบงก์กิ้ง', 'ผ่านหน้าเว็บธนาคาร'],
-  ['TrueMoney', 'วอลเล็ต'],
-  ['Rabbit LINE Pay', 'วอลเล็ต'],
-  ['WeChat Pay', 'สำหรับผู้ใช้ WeChat'],
-  ['โอนเงิน / ใบแจ้งหนี้', 'นิติบุคคล · หัก ณ ที่จ่าย 3%'],
-];
+import { PAY_METHODS } from '../data/payments.js';
 
 export default function Pricing() {
   return (
@@ -34,7 +24,7 @@ export default function Pricing() {
       <section aria-labelledby="plans-title" style={{ paddingBottom: 'var(--sec-pad)' }}>
         <div className="container--wide">
           <h2 id="plans-title" className="visually-hidden">แผนสมาชิก SafeAct และราคา</h2>
-          <PlansWithSwitch />
+          <PlansYearly />
         </div>
       </section>
 
@@ -51,11 +41,11 @@ export default function Pricing() {
       <section className="section" aria-labelledby="pay-title">
         <div className="container--wide">
           <header className="section-head">
-            <h2 id="pay-title" className="t-h2">ชำระเงินได้ 8 ช่องทาง</h2>
-            <p className="t-lead">การชำระเงินออนไลน์ดำเนินการผ่าน Omise ที่ได้มาตรฐาน PCI-DSS Level 1 นิติบุคคลโอนเงินตามใบแจ้งหนี้ได้ และออกใบเสร็จ/ใบกำกับภาษีอิเล็กทรอนิกส์ให้ทุกรายการ</p>
+            <h2 id="pay-title" className="t-h2">ชำระเงินได้ {PAY_METHODS.length} ช่องทาง</h2>
+            <p className="t-lead">การชำระเงินออนไลน์ดำเนินการผ่าน Omise ที่ได้มาตรฐาน PCI-DSS Level 1 และออกใบเสร็จ/ใบกำกับภาษีอิเล็กทรอนิกส์ให้ทุกรายการ</p>
           </header>
           <ul className="pay">
-            {PAY.map(([t, s]) => <li key={t}><b>{t}</b>{' '}<span className="muted">{s}</span></li>)}
+            {PAY_METHODS.map(([t, s]) => <li key={t}><b>{t}</b>{' '}<span className="muted">{s}</span></li>)}
           </ul>
         </div>
       </section>
@@ -72,7 +62,7 @@ export default function Pricing() {
             </li>
             <li className="card">
               <h3>เปิดสิทธิและรอบบิล</h3>
-              <p>เปิดใช้งานทันทีเมื่อชำระสำเร็จ แผนรายเดือน/รายปีไม่ต่ออายุอัตโนมัติ เว้นแต่ท่านเลือกไว้ และมีแจ้งเตือนก่อนหมดอายุ</p>
+              <p>เปิดใช้งานทันทีเมื่อชำระสำเร็จ แผนรายปีไม่ต่ออายุอัตโนมัติ เว้นแต่ท่านเลือกไว้ และมีแจ้งเตือนก่อนหมดอายุ</p>
             </li>
             <li className="card">
               <h3>ยกเลิกและคืนเงิน</h3>
@@ -95,7 +85,7 @@ export default function Pricing() {
       <section className="section section--dark" aria-labelledby="ent-title">
         <div className="container cta-band">
           <h2 id="ent-title" className="t-h1">องค์กรหลายสาขา?</h2>
-          <p className="t-lead">แผน Enterprise ออกแบบตามจำนวนสาขาและผู้ใช้งาน เชื่อมต่อระบบ HR / LMS มีที่ปรึกษาเฉพาะองค์กรและ SLA การตอบสนอง</p>
+          <p className="t-lead">แผน Enterprise ออกแบบตามจำนวนสาขาและผู้ใช้งาน เชื่อมต่อระบบ HR / LMS มีที่ปรึกษาเฉพาะองค์กรและฝ่าย Support ส่วนตัว</p>
           <div className="cta-row">
             <Link className="btn" to="/contact/">ขอใบเสนอราคา</Link>{' '}
             <a className="more" href={`tel:${COMPANY.phoneE164}`}>โทร {COMPANY.phone}</a>

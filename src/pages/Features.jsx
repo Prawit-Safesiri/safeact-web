@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AiMotion from '../components/AiMotion.jsx';
 import { checkoutLink, COMPANY, AI_DISCLAIMER } from '../data/company.js';
 import { LAW_CATEGORIES, LAW_LIBRARY, FEATURES } from '../data/service.js';
-import { planFrom } from '../data/plans.js';
+import { planFrom, AI_QUOTA } from '../data/plans.js';
 
 // ภาพหน้าจอจริงจากแอป SafeAct (safeact-connect-hub) · เรนเดอร์ 2x · public/assets/features/
 // srcset: เบราว์เซอร์เลือกขนาดที่พอดีกับช่องแสดงผล (ครึ่งคอลัมน์ 458px บนจอใหญ่ · เต็มความกว้างบนมือถือ)
@@ -97,47 +97,22 @@ export default function Features() {
             media={<Shot name="actionplan" alt="แผนงานความปลอดภัยรายปี สรุปจำนวนแผน ความคืบหน้า งานเกินกำหนด และตาราง 12 เดือนรายสัปดาห์" />}
           />
           <div style={{ height: 120 }} />
-          <Row flip id="training"
-            eyebrow="การอบรมพนักงาน (Training Matrix)" title="บันทึกการฝึกอบรม ที่รู้ว่าใครยังขาดอะไร"
-            body="บันทึกการฝึกอบรมของพนักงาน ตั้งค่าหลักสูตรที่ต้องอบรมตามตำแหน่ง ดูช่องว่างการอบรม และรับการแจ้งเตือนเมื่อใบรับรองใกล้หมดอายุ"
-            points={['ตาราง Matrix และ Gap', 'แจ้งเตือนหลักสูตรใกล้หมดอายุ', 'ส่งออก Excel / CSV']}
-            media={<Shot name="training" alt="ตาราง Training Matrix แสดงหลักสูตรที่พนักงานแต่ละคนผ่านแล้ว ใกล้หมดอายุ หรือยังขาด" />}
-            plan="Basic ขึ้นไป"
-          />
-          <div style={{ height: 120 }} />
-          <Row id="inspection" also="contractors"
-            eyebrow="บันทึกงานตรวจรับรอง และระบบผู้รับเหมา" title="ประวัติการตรวจ และผู้รับเหมา อยู่ครบในที่เดียว"
-            body="บันทึกงานตรวจรับรองตามกฎหมายของปั้นจั่น ระบบไฟฟ้า หม้อน้ำ ลิฟต์ และถังแรงดัน พร้อมวันหมดอายุและรอบการตรวจครั้งถัดไป"
-            detail="ระบบผู้รับเหมาใช้จัดการข้อมูลผู้รับเหมาที่เข้าทำงานในพื้นที่ของสถานประกอบการ"
-            points={['บันทึกงานตรวจรับรอง', 'ระบบจัดการผู้รับเหมา', 'แจ้งเตือนรอบตรวจ']}
-            media={<Shot name="inspection" alt="บันทึกงานตรวจรับรองปั้นจั่น ระบบไฟฟ้า หม้อน้ำ ลิฟต์ และถังแรงดัน พร้อมวันหมดอายุและสถานะ" />}
-            plan={`${planFrom('ระบบ ผู้รับเหมา')} (ระบบผู้รับเหมา)`}
-          />
-          <div style={{ height: 120 }} />
           <Row flip id="hearing"
             eyebrow="โปรแกรมอนุรักษ์การได้ยิน" title="จากแผนผังจุดเสียงดัง ถึงรายงานประจำปี"
             body="อัปโหลดแผนผังพื้นที่ วางจุดตรวจวัดระดับเสียง ผูกพนักงานกับพื้นที่ ติดตามผลทบทวน และสรุปเป็นรายงาน"
             points={['แผนที่จุดตรวจวัดเสียง', 'ข้อมูลพนักงานและหน้าที่', 'รายงานและการติดตามผล']}
             media={<Shot name="hearing" alt="แผนผังระดับเสียง (Noise Contour Map) แสดงจุดตรวจวัดและระดับ dB(A) ในอาคารผลิต" />}
           />
-          <div style={{ height: 120 }} />
-          <Row id="audit"
-            eyebrow="Dashboard Compliance และ Workflow Audit" title="ผู้บริหารเห็นภาพรวม ทีมงานเห็นสิ่งที่ต้องทำ"
-            body="สรุปสถานะการปฏิบัติตามกฎหมายทั้งองค์กร เช่น สถานะการอบรมและใบรับรองที่ใกล้หมดอายุ พร้อมขั้นตอนตรวจประเมินที่บันทึกหลักฐานตรวจสอบย้อนหลังได้"
-            points={['Dashboard Compliance', 'Workflow Audit', 'แจ้งเตือนรองรับแบบทีม']}
-            media={<Shot name="dashboard" alt="ภาพรวมสถานะการอบรม กราฟสรุป หลักสูตรทั้งหมด และการแจ้งเตือนใบรับรองใกล้หมดอายุ" />}
-            plan={planFrom('Workflow Audit')}
-          />
         </div>
       </section>
 
       <section className="section" aria-labelledby="library">
         <div className="container">
-          <h2 id="library" className="visually-hidden">คลังเอกสารความปลอดภัย</h2>
+          <h2 id="library" className="visually-hidden">คลังเอกสารและสไลด์ความปลอดภัย</h2>
           <Row id="documents"
-            eyebrow="คลังเอกสารความปลอดภัย" title="เอกสาร สื่อ และสไลด์ พร้อมใช้"
-            body="แบบฟอร์ม Checklist SOP JSA และ Template ไฟล์เอกสาร WI/SDS สื่อ ภาพ และ VDO ด้านความปลอดภัย รวมถึงสไลด์พรีเซนเทชั่นสำหรับการอบรมและสื่อสารภายใน"
-            points={['แบบฟอร์ม Checklist SOP JSA', 'ไฟล์เอกสาร WI/SDS สื่อ ภาพ และ VDO', 'สไลด์พรีเซนเทชั่น']}
+            eyebrow="คลังเอกสารและสไลด์ความปลอดภัย" title="เอกสารและสไลด์ พร้อมใช้"
+            body="แบบฟอร์ม คู่มือ Checklist และเอกสาร WI/SDS ด้านความปลอดภัย อาชีวอนามัย และสิ่งแวดล้อม รวมถึงสไลด์พรีเซนเทชั่นสำหรับการอบรมและสื่อสารภายใน ดาวน์โหลดไปใช้ได้ทันที"
+            points={['แบบฟอร์ม คู่มือ และ Checklist', 'เอกสาร WI/SDS', 'สไลด์พรีเซนเทชั่น']}
             media={<Shot name="documents" alt="คลังเอกสารความปลอดภัย แบบฟอร์ม Checklist SOP JSA คู่มือ และ Template จัดตามหมวดหมู่ประเภทงาน" />}
             plan={planFrom('คลังดาวน์โหลดเอกสาร')}
           />
@@ -158,7 +133,7 @@ export default function Features() {
           </ul>
           <p style={{ textAlign: 'center', marginTop: 40 }}><Link className="more" to="/ai/">ดูว่า AI SafeAct ต่างจาก AI ทั่วไปอย่างไร</Link></p>
           <p className="t-small" style={{ textAlign: 'center', marginTop: 24, color: '#a1a1a6' }}>
-            มีในแผน {planFrom('AI ผู้ช่วยกฎหมาย')} · {AI_DISCLAIMER}
+            มีในแผน {planFrom('AI ผู้ช่วยกฎหมาย')} (Basic {AI_QUOTA.basic} · Business {AI_QUOTA.business} · Enterprise {AI_QUOTA.enterprise} ข้อความ/เดือน) · {AI_DISCLAIMER}
           </p>
         </div>
       </section>

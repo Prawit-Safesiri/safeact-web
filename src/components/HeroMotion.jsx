@@ -3,7 +3,7 @@ import { LAW_LIBRARY, lawCountRounded } from '../data/service.js';
 
 // โมชั่นขายของหน้าแรก (21:9) — ฉากวน 24 วินาที ทำด้วย CSS (ไม่ใช่ไฟล์วิดีโอ: คมทุกขนาด โหลดเร็ว)
 // 1) คลังกฎหมายจำนวนมาก → 2) AI ค้นหา สแกนทั้งคลัง → 3) ผลลัพธ์แม่นยำพร้อมอ้างอิง
-// → 4) รวมฟีเจอร์ในแอปเดียว (รวมงานตรวจวิศวกรรม: ปั้นจั่น ระบบไฟฟ้า หม้อน้ำ ตามหน้าบันทึกงานตรวจรับรองของแอป) → 5) ฉากจบ ทดลองใช้ฟรี
+// → 4) รวมฟีเจอร์ในแอปเดียว (เฉพาะที่มีจริงในระบบสมาชิก — ตรวจ 21 พ.ย. 2569: ไม่มี Training Matrix / งานตรวจรับรองแล้ว) → 5) ฉากจบ ทดลองใช้ฟรี
 // เล่นเฉพาะตอนอยู่ในจอ · ไม่มี JS / ตั้ง Reduced Motion = แสดงฉากจบนิ่ง
 // ⚠ ตัวอย่างคำตอบอ้างกฎหมายจริง (สรุปแบบไม่ระบุเลขข้อ) — ถ้าแก้ข้อความ ต้องตรวจกับตัวบทก่อนเผยแพร่
 // จำนวนกฎหมายมาจาก LAW_LIBRARY (src/data/service.js) — แหล่งเดียวกับข้อความบนหน้าเว็บ
@@ -74,16 +74,21 @@ function Odometer({ value, live }) {
 
 const FEATURES = [
   { k: 'plan', t: 'Action Plan รายปี', s: '12 เดือน · ทุกกิจกรรม' },
-  { k: 'matrix', t: 'Training Matrix', s: 'รู้ทันใครขาดหลักสูตร' },
+  { k: 'follow', t: 'กฎหมายที่ติดตาม', s: 'เลือกหมวดที่เกี่ยวข้อง' },
   { k: 'noise', t: 'แผนผังระดับเสียง', s: 'จุดวัด dB(A) ทุกพื้นที่' },
-  { k: 'eng', t: 'งานตรวจวิศวกรรม', s: 'ปั้นจั่น · ไฟฟ้า · หม้อน้ำ' },
-  { k: 'docs', t: 'คลังเอกสาร', s: 'แบบฟอร์ม · SOP · JSA' },
-  { k: 'bell', t: 'แจ้งเตือนอัตโนมัติ', s: 'กฎหมายใหม่ · ใบรับรองหมดอายุ' },
+  { k: 'docs', t: 'คลังเอกสาร', s: 'แบบฟอร์ม · คู่มือ · SOP' },
+  { k: 'slides', t: 'สไลด์พรีเซนเทชั่น', s: 'พร้อมใช้อบรมพนักงาน' },
+  { k: 'bell', t: 'แจ้งเตือนอัตโนมัติ', s: 'กฎหมายใหม่ · อีเมลสรุป' },
 ];
 
 // ภาพประกอบฟีเจอร์ = UI จิ๋วที่ขยับตามการใช้งานจริง (วนทุก 4.8 วินาที · สไตล์หน้าสินค้า Apple)
-const MATRIX = ['ok', 'ok', 'warn', 'ok', 'ok', 'no', 'ok', 'ok', 'ok', 'warn', 'ok', 'ok'];
-const GLYPH = { ok: '✓', warn: '!', no: '×' };
+// รายการในภาพ (ชื่อเอกสาร สไลด์ และหมวด) ตั้งตามของจริงในระบบสมาชิก (safety_documents / presentations / หมวดกฎหมาย)
+// follow และ slides ใช้แถวแบบเดียวกับคลังเอกสาร (.hm-art--docs)
+const ROWS_ART = {
+  docs: [['PDF', 'r', 'แบบฟอร์มสอบสวนอุบัติเหตุ'], ['DOCX', 'b', 'SOP งานที่สูง'], ['XLSX', 'g', 'Checklist ประจำวัน']],
+  slides: [['PPTX', 'o', 'ดับเพลิงขั้นต้น'], ['PPTX', 'o', 'พนักงานใหม่ 6 ชม.'], ['PPTX', 'o', 'ทำงานบนที่สูง']],
+  follow: [['★', 'b', 'การป้องกันและระงับอัคคีภัย'], ['★', 'b', 'งานก่อสร้าง'], ['★', 'b', 'ความร้อน แสง เสียง']],
+};
 
 function FeatureArt({ k }) {
   if (k === 'plan') return (
@@ -95,16 +100,6 @@ function FeatureArt({ k }) {
       <span className="hm-plan__now" />
     </div>
   );
-  if (k === 'matrix') return (
-    <div className="hm-art hm-art--matrix">
-      {[0, 1, 2, 3].map((r) => (
-        <div key={r} className="hm-mx__row">
-          <i className="hm-mx__name" />
-          {MATRIX.slice(r * 3, r * 3 + 3).map((st, c) => <b key={c} className={`hm-mx__cell is-${st}`} style={{ '--d': `${(r + c) * 0.12}s` }}>{GLYPH[st]}</b>)}
-        </div>
-      ))}
-    </div>
-  );
   if (k === 'noise') return (
     <div className="hm-art hm-art--noise">
       <span className="hm-nz__heat" /><span className="hm-nz__iso" /><span className="hm-nz__iso" /><span className="hm-nz__iso" />
@@ -113,33 +108,18 @@ function FeatureArt({ k }) {
       ))}
     </div>
   );
-  if (k === 'eng') return (
-    <div className="hm-art hm-art--eng">
-      <svg viewBox="0 0 64 40">
-        <defs><linearGradient id="hm-eng" x1="0" x2="1"><stop offset="0" stopColor="#30d158" /><stop offset=".6" stopColor="#ffd60a" /><stop offset="1" stopColor="#ff453a" /></linearGradient></defs>
-        <path d="M10 34a22 22 0 0 1 44 0" fill="none" stroke="url(#hm-eng)" strokeWidth="3" strokeLinecap="round" opacity=".9" />
-        {Array.from({ length: 11 }, (_, t) => {
-          const a = Math.PI - (t / 10) * Math.PI; const r1 = t % 5 === 0 ? 15.5 : 17;
-          return <line key={t} x1={32 + r1 * Math.cos(a)} y1={34 - r1 * Math.sin(a)} x2={32 + 18.5 * Math.cos(a)} y2={34 - 18.5 * Math.sin(a)} stroke="#9aa3ae" strokeWidth={t % 5 === 0 ? 1.1 : 0.7} strokeLinecap="round" />;
-        })}
-        <g className="hm-eng__needle"><path d="M32 34L32 17.5" stroke="#1d1d1f" strokeWidth="1.8" strokeLinecap="round" /><circle cx="32" cy="34" r="2.6" fill="#1d1d1f" /><circle cx="32" cy="34" r="1" fill="#fff" /></g>
-      </svg>
-      <span className="hm-eng__read">6.2 <small>bar</small></span>
-      <span className="hm-eng__ok">ผ่าน</span>
-    </div>
-  );
-  if (k === 'docs') return (
+  if (ROWS_ART[k]) return (
     <div className="hm-art hm-art--docs">
-      {[['PDF', 'r', 'แบบฟอร์ม JSA'], ['DOCX', 'b', 'SOP งานที่สูง'], ['XLSX', 'g', 'Checklist ประจำวัน']].map(([t, c, n], r) => (
-        <div key={t} className="hm-doc__row" style={{ '--d': `${r * 0.2}s` }}>
-          <b className={`c-${c}`}>{t}</b><span>{n}</span>{r === 0 ? <i className="hm-doc__dl" /> : <i className="hm-doc__done" />}
+      {ROWS_ART[k].map(([t, c, n], r) => (
+        <div key={n} className="hm-doc__row" style={{ '--d': `${r * 0.2}s` }}>
+          <b className={`c-${c}`}>{t}</b><span>{n}</span>{r === 0 && k !== 'follow' ? <i className="hm-doc__dl" /> : <i className="hm-doc__done" />}
         </div>
       ))}
     </div>
   );
   return (
     <div className="hm-art hm-art--bell">
-      {[['กฎหมายใหม่ 3 ฉบับ', 'อัปเดตเมื่อสักครู่'], ['ใบรับรองใกล้หมดอายุ', 'ปั้นจั่น CR-02 · อีก 49 วัน']].map(([t, sub], r) => (
+      {[['กฎหมายใหม่ 3 ฉบับ', 'อัปเดตเมื่อสักครู่'], ['SafeAct — แจ้งเตือนกฎหมายใหม่', 'อีเมลสรุปตามความถี่ที่เลือก']].map(([t, sub], r) => (
         <div key={t} className="hm-nt" style={{ '--d': `${r * 0.5}s` }}>
           <i className="hm-nt__icon" /><span><b>{t}</b><small>{sub}</small></span>
         </div>
@@ -163,7 +143,7 @@ export default function HeroMotion() {
 
   return (
     <div ref={ref} className="hm" data-play={play || undefined} data-nosnippet="" role="img"
-      aria-label={`ภาพเคลื่อนไหวแนะนำ SafeAct: คลังกฎหมายกว่า ${lawCountRounded()} ฉบับ AI ค้นหากฎหมายเรื่องที่อับอากาศและสรุปพร้อมอ้างอิงตัวบท รวมฟีเจอร์ Action Plan Training Matrix แผนผังระดับเสียง งานตรวจวิศวกรรม คลังเอกสาร และการแจ้งเตือนไว้ในแอปเดียว ทดลองใช้ฟรี 30 วัน`}>
+      aria-label={`ภาพเคลื่อนไหวแนะนำ SafeAct: คลังกฎหมายกว่า ${lawCountRounded()} ฉบับ AI ค้นหากฎหมายเรื่องที่อับอากาศและสรุปพร้อมอ้างอิงตัวบท รวมฟีเจอร์ Action Plan กฎหมายที่ติดตาม แผนผังระดับเสียง คลังเอกสาร สไลด์ และการแจ้งเตือนไว้ในแอปเดียว ทดลองใช้ฟรี 30 วัน`}>
       <div className="hm__bg" aria-hidden="true"><i /><i /><i /></div>
 
       {/* ฉาก 1–2: คลังกฎหมาย + AI สแกน */}

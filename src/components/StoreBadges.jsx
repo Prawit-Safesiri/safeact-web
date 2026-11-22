@@ -1,10 +1,10 @@
 import { COMPANY } from '../data/company.js';
 
-// ป้ายร้านแอป = ไฟล์ทางการของ Apple และ Google (ห้ามแก้รูปทรงหรือสี)
+// ป้ายร้านแอป = ไฟล์ทางการของ Apple (ห้ามแก้รูปทรงหรือสี)
 // มีลิงก์ใน company.js = กดได้ (เปิดแท็บใหม่) · ยังไม่มีลิงก์ = แสดงเป็นภาพ
+// แอปมีบน iPhone อย่างเดียว (ระบบสมาชิกตัด Android ออก 21 พ.ย. 2569) — ป้าย Google Play เอาออก (ไฟล์ badge-google-play.webp เก็บไว้ ถ้ามีแอป Android ค่อยเพิ่มกลับ)
 const STORES = [
   ['App Store', 'appStoreUrl', 'badge-app-store.svg', 120, 40],
-  ['Google Play', 'playStoreUrl', 'badge-google-play.webp', 564, 168],
 ];
 
 export default function StoreBadges({ className = '' }) {
