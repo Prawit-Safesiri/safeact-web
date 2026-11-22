@@ -1,17 +1,17 @@
 import { Link } from 'react-router-dom';
 import AiMotion from '../components/AiMotion.jsx';
-import PhoneVideo from '../components/PhoneVideo.jsx';
 import HeroMotion from '../components/HeroMotion.jsx';
 import PadMotion from '../components/PadMotion.jsx';
 import AiDetail from '../components/AiDetail.jsx';
 import StoreBadges from '../components/StoreBadges.jsx';
 import Faq from '../components/Faq.jsx';
-import { PlansWithSwitch } from '../components/Plans.jsx';
+import { PlansYearly } from '../components/Plans.jsx';
 import { FAQ_GENERAL } from '../data/faq.js';
 import { checkoutLink, COMPANY, AI_DISCLAIMER } from '../data/company.js';
 import { LAW_CATEGORIES, LAW_LIBRARY, lawCountRounded } from '../data/service.js';
-import { baht, fromPrice, STUDENT_PRICE } from '../data/plans.js';
-import { IconScale, IconBell, IconDoc, IconChart, IconCap, IconCheck, IconEar, IconUsers, IconShield, IconReceipt, IconLock, IconSparkAnim } from '../components/Icons.jsx';
+import { baht, fromPrice } from '../data/plans.js';
+import { PAY_METHODS } from '../data/payments.js';
+import { IconScale, IconBell, IconDoc, IconChart, IconUsers, IconShield, IconReceipt, IconLock, IconSparkAnim } from '../components/Icons.jsx';
 
 // ขนาดที่ภาพแสดงจริง: ครึ่งคอลัมน์ของ .container (980px) บนจอใหญ่ · เต็มความกว้างเนื้อหาบนมือถือ
 const SIZES_HALF = '(min-width: 1069px) 458px, (min-width: 735px) 326px, 88vw';
@@ -44,7 +44,7 @@ export default function Home() {
             <Link className="more" to="/pricing/">ดูแผนและราคา</Link>
           </div>
           <p className="hero__note">
-            เริ่มต้น {baht(fromPrice())} ต่อเดือน (นักศึกษา {baht(STUDENT_PRICE)}) · ยกเลิกได้ทุกเมื่อ · คืนเงินได้ภายใน 7 วัน
+            เริ่มต้น {baht(fromPrice())} ต่อปี · ยกเลิกได้ทุกเมื่อ · คืนเงินได้ภายใน 7 วัน
             <br />ให้บริการโดย <Link to="/about/">{COMPANY.nameTh}</Link>
           </p>
         </div>
@@ -74,7 +74,7 @@ export default function Home() {
             <li>
               <IconBell className="props__icon" />
               <h3 className="t-h4">แจ้งเตือนถึงมือ</h3>
-              <p>เลือกหมวดที่ต้องการติดตาม แล้วรับการแจ้งเตือนผ่านแอป iPhone, Android และเว็บทันทีที่มีความเคลื่อนไหว</p>
+              <p>เลือกหมวดที่ต้องการติดตาม แล้วรับการแจ้งเตือนผ่านแอป iPhone อีเมล และเว็บทันทีที่มีกฎหมายใหม่</p>
             </li>
           </ul>
         </div>
@@ -128,62 +128,30 @@ export default function Home() {
             <li className="tile tile--wide tile--dark">
               <div className="tile__body">
                 <h3 className="tile__head">
-                  <span className="tile__kicker">Dashboard Compliance</span>{' '}
-                  <span className="t-h4">เห็นสถานะการปฏิบัติตามกฎหมายทันที</span>
+                  <span className="tile__kicker">โปรแกรมอนุรักษ์การได้ยิน</span>{' '}
+                  <span className="t-h4">จากแผนผังจุดเสียงดัง ถึงรายงานประจำปี</span>
                 </h3>
-                <p>ภาพรวมทั้งองค์กรในหน้าเดียว รู้ว่าเรื่องไหนเสร็จ เรื่องไหนใกล้ครบกำหนด เช่น สถานะการอบรมและใบรับรองที่ใกล้หมดอายุ</p>
-                <Link className="more tile__more" to="/features/#audit">ดู Dashboard Compliance</Link>
-              </div>
-              <img className="tile__img" src="/assets/training-dashboard.webp" srcSet="/assets/training-dashboard-800.webp 800w, /assets/training-dashboard.webp 1500w" sizes={SIZES_TILE}
-                width="1500" height="880" loading="lazy" decoding="async"
-                alt="แดชบอร์ดบันทึกการฝึกอบรม แสดงจำนวนพนักงานที่ผ่าน รอ และใกล้หมดอายุการอบรม พร้อมสรุปรายหลักสูตรและการแจ้งเตือน" />
-            </li>
-            <li className="tile">
-              <div className="tile__body">
-                <IconCap className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
-                <h3 className="t-h4">การอบรมพนักงาน</h3>
-                <p>Training Matrix และบันทึกการฝึกอบรม ดูช่องว่างการอบรม แจ้งเตือนใบรับรองใกล้หมดอายุ ส่งออก Excel</p>
-                <Link className="more tile__more" to="/features/#training">ดูระบบ Training Matrix</Link>
-              </div>
-            </li>
-            <li className="tile">
-              <div className="tile__body">
-                <IconCheck className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
-                <h3 className="t-h4">บันทึกงานตรวจรับรอง</h3>
-                <p>เก็บประวัติการตรวจสอบปั้นจั่น ระบบไฟฟ้า หม้อน้ำ ลิฟต์ และถังแรงดันตามกฎหมาย และรับการแจ้งเตือนก่อนถึงรอบตรวจครั้งถัดไป</p>
-                <Link className="more tile__more" to="/features/#inspection">ดูบันทึกงานตรวจรับรอง</Link>
-              </div>
-            </li>
-            <li className="tile">
-              <div className="tile__body">
-                <IconEar className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
-                <h3 className="t-h4">โปรแกรมอนุรักษ์การได้ยิน</h3>
-                <p>แผนที่จุดตรวจวัดเสียง ข้อมูลพนักงาน การทบทวน และรายงานในที่เดียว</p>
+                <p>อัปโหลดแผนผังพื้นที่ วางจุดตรวจวัดระดับเสียง ผูกพนักงานกับพื้นที่ ติดตามผลทบทวน และสรุปเป็นรายงานในที่เดียว</p>
                 <Link className="more tile__more" to="/features/#hearing">ดูโปรแกรมอนุรักษ์การได้ยิน</Link>
               </div>
+              <img className="tile__img" src="/assets/features/hearing-1160.webp" srcSet="/assets/features/hearing-800.webp 800w, /assets/features/hearing-1160.webp 1160w, /assets/features/hearing.webp 2320w" sizes={SIZES_TILE}
+                width="2320" height="1740" loading="lazy" decoding="async"
+                alt="แผนผังระดับเสียง (Noise Contour Map) แสดงจุดตรวจวัดและระดับ dB(A) ในอาคารผลิต" />
             </li>
-            <li className="tile">
+            <li className="tile tile--wide">
+              <div className="tile__body">
+                <IconBell className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
+                <h3 className="t-h4">กฎหมายที่ติดตามและการแจ้งเตือน</h3>
+                <p>กดติดตามกฎหมายที่ใช้กับสถานประกอบการ เลือกหมวดที่ต้องการรับข่าว แล้วรับแจ้งเตือนในระบบ ทางอีเมลสรุป และ Push Notification บน iPhone</p>
+                <Link className="more tile__more" to="/features/#notifications">ดูการติดตามและแจ้งเตือนกฎหมาย</Link>
+              </div>
+            </li>
+            <li className="tile tile--wide">
               <div className="tile__body">
                 <IconDoc className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
-                <h3 className="t-h4">คลังเอกสารความปลอดภัย</h3>
-                <p>แบบฟอร์ม Checklist SOP JSA เอกสาร WI/SDS สื่อ ภาพ VDO และสไลด์พรีเซนเทชั่นด้านความปลอดภัย พร้อมใช้งาน</p>
-                <Link className="more tile__more" to="/features/#documents">ดูคลังเอกสารความปลอดภัย</Link>
-              </div>
-            </li>
-            <li className="tile">
-              <div className="tile__body">
-                <IconUsers className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
-                <h3 className="t-h4">ระบบผู้รับเหมา</h3>
-                <p>จัดการข้อมูลผู้รับเหมาที่เข้าทำงานในพื้นที่ของสถานประกอบการ</p>
-                <Link className="more tile__more" to="/features/#contractors">ดูระบบจัดการผู้รับเหมา</Link>
-              </div>
-            </li>
-            <li className="tile">
-              <div className="tile__body">
-                <IconChart className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
-                <h3 className="t-h4">Workflow Audit</h3>
-                <p>ติดตามงานตรวจประเมินภายในเป็นขั้นตอน พร้อมบันทึกหลักฐานให้ตรวจสอบย้อนหลังได้</p>
-                <Link className="more tile__more" to="/features/#audit">ดู Workflow Audit</Link>
+                <h3 className="t-h4">คลังเอกสารและสไลด์</h3>
+                <p>แบบฟอร์ม คู่มือ Checklist เอกสาร WI/SDS และสไลด์พรีเซนเทชั่นด้านความปลอดภัย ดาวน์โหลดไปใช้งานได้ทันที</p>
+                <Link className="more tile__more" to="/features/#documents">ดูคลังเอกสารและสไลด์</Link>
               </div>
             </li>
             <li className="tile tile--full tile--dark">
@@ -209,24 +177,19 @@ export default function Home() {
       </section>
 
       {/* ─── ANYWHERE ─── */}
-      <section className="section section--alt section--clip" aria-labelledby="app-title">
-        <div className="container">
-          <div className="frow frow--flip">
-            <div className="frow__media">
-              <PhoneVideo />
-            </div>
-            <div className="frow__text">
-              <p className="t-eyebrow" style={{ marginBottom: 8 }}>เว็บ + iPhone + Android</p>
-              <h2 id="app-title" className="t-h3">ทำงานได้ทุกที่<br />ข้อมูลตรงกันทุกอุปกรณ์</h2>
-              <p>ใช้บนคอมพิวเตอร์ที่สำนักงาน แล้วเปิดต่อบนมือถือ iPhone หรือ Android ขณะเดินตรวจหน้างาน ทุกการเปลี่ยนแปลงซิงก์แบบ<span style={{ whiteSpace: 'nowrap' }}>เรียลไทม์</span></p>
-              <ul className="checks">
-                <li>แจ้งเตือนกฎหมายที่ติดตามผ่าน Push Notification</li>
-                <li>ดูรายละเอียดกฎหมายและเอกสารได้แม้อยู่หน้างาน</li>
-                <li>บัญชีเดียวใช้ได้ทั้งเว็บและแอป {COMPANY.appName} บน iPhone และ Android</li>
-              </ul>
-              <StoreBadges />
-            </div>
-          </div>
+      {/* เดิมมีวิดีโอจอ iPhone (app-screen-720.mp4) แต่เป็นขั้นตอน "เทมเพลตตามกิจการ → ทะเบียนกฎหมาย / ประเมินความสอดคล้อง"
+          ที่แอป iOS ลบออกแล้ว (เป็นข้อมูลตัวอย่าง) และเว็บสมาชิกไม่มี — เอาออก 21 พ.ย. 2569 รอคลิปใหม่จากแอปจริง */}
+      <section className="section section--alt" aria-labelledby="app-title">
+        <div className="container cta-band">
+          <p className="t-eyebrow" style={{ marginBottom: 8 }}>เว็บ + iPhone</p>
+          <h2 id="app-title" className="t-h1">ทำงานได้ทุกที่<br />ข้อมูลตรงกันทุกอุปกรณ์</h2>
+          <p className="t-lead">ใช้บนคอมพิวเตอร์ที่สำนักงาน แล้วเปิดต่อบน iPhone ขณะเดินตรวจหน้างาน กฎหมายที่ติดตามและการแจ้งเตือนตรงกัน<span style={{ whiteSpace: 'nowrap' }}>ทุกอุปกรณ์</span></p>
+          <ul className="checks app-checks">
+            <li>แจ้งเตือนกฎหมายที่ติดตามผ่าน Push Notification</li>
+            <li>อ่านรายละเอียดกฎหมายและถาม AI ได้แม้อยู่หน้างาน</li>
+            <li>บัญชีเดียวใช้ได้ทั้งเว็บและแอป {COMPANY.appName} บน iPhone</li>
+          </ul>
+          <StoreBadges className="stores--center" />
         </div>
       </section>
 
@@ -240,7 +203,7 @@ export default function Home() {
             <li><strong>30 วัน</strong><span>ทดลองใช้ฟรี</span></li>
             <li><strong>7 วัน</strong><span>รับประกันคืนเงิน</span></li>
             <li><strong>{lawCountRounded()}+</strong><span>ฉบับในคลังกฎหมาย</span></li>
-            <li><strong>8 ช่องทาง</strong><span>ชำระเงิน</span></li>
+            <li><strong>{PAY_METHODS.length} ช่องทาง</strong><span>ชำระเงิน</span></li>
           </ul>
         </div>
       </section>
@@ -261,12 +224,12 @@ export default function Home() {
             <li className="card">
               <IconUsers className="props__icon" style={{ margin: '0 0 16px', width: 36, height: 36 }} />
               <h3>ฝ่ายบุคคลและธุรกิจ SME</h3>
-              <p>นายจ้างและฝ่ายบุคคลที่ดูแลงานความปลอดภัยเอง รู้ว่ากฎหมายฉบับใดเกี่ยวข้องกับกิจการ และมีเรื่องใดใกล้ครบกำหนด</p>
+              <p>นายจ้างและฝ่ายบุคคลที่ดูแลงานความปลอดภัยเอง รู้ว่ากฎหมายฉบับใดเกี่ยวข้องกับกิจการ และวางแผนงานความปลอดภัยให้ทันกำหนด</p>
             </li>
             <li className="card">
               <IconChart className="props__icon" style={{ margin: '0 0 16px', width: 36, height: 36 }} />
               <h3>โรงงานและองค์กรหลายสาขา</h3>
-              <p>ทีมความปลอดภัยและคณะกรรมการความปลอดภัยฯ (คปอ.) เห็นสถานะการปฏิบัติตามกฎหมายของทั้งองค์กรจาก Dashboard เดียว</p>
+              <p>ทีมความปลอดภัยและคณะกรรมการความปลอดภัยฯ (คปอ.) ติดตามกฎหมายที่เกี่ยวข้อง วางแผนงานประจำปี และดูแลโปรแกรมอนุรักษ์การได้ยินในระบบเดียว</p>
             </li>
           </ul>
         </div>
@@ -279,8 +242,8 @@ export default function Home() {
             <h2 id="how-title" className="t-h1">เริ่มใช้งานใน 4 ขั้นตอน</h2>
           </header>
           <ol className="steps">
-            <li><h3>เลือกแผน</h3><p>ทดลองฟรี 30 วัน หรือเลือกแผนรายเดือน/รายปีที่เหมาะกับทีม</p></li>
-            <li><h3>ชำระเงินอย่างปลอดภัย</h3><p>บัตร PromptPay โมบายแบงก์กิ้ง วอลเล็ต หรือใบแจ้งหนี้สำหรับนิติบุคคล</p></li>
+            <li><h3>เลือกแผน</h3><p>ทดลองฟรี 30 วัน หรือเลือกแผนรายปีที่เหมาะกับทีม</p></li>
+            <li><h3>ชำระเงินอย่างปลอดภัย</h3><p>บัตร PromptPay TrueMoney หรือโมบาย/อินเทอร์เน็ตแบงก์กิ้ง SCB</p></li>
             <li><h3>เปิดสิทธิทันที</h3><p>ระบบบันทึกวันเริ่มและวันสิ้นสุดสมาชิก พร้อมออกใบเสร็จ/ใบกำกับภาษีอิเล็กทรอนิกส์</p></li>
             <li><h3>ติดตามและลงมือ</h3><p>เลือกกฎหมายที่ติดตาม รับแจ้งเตือน และบริหารงานความปลอดภัยในระบบ</p></li>
           </ol>
@@ -292,9 +255,9 @@ export default function Home() {
         <div className="container--wide">
           <header className="section-head">
             <h2 id="price-title" className="t-h1">แผนที่เหมาะกับทุกขนาด</h2>
-            <p className="t-lead">ตั้งแต่นักศึกษา ทีมเล็ก SME และโรงงาน ไปจนถึงองค์กรหลายสาขา</p>
+            <p className="t-lead">ตั้งแต่บุคคลและทีมเล็ก SME และโรงงาน ไปจนถึงองค์กรหลายสาขา</p>
           </header>
-          <PlansWithSwitch />
+          <PlansYearly />
           <p style={{ textAlign: 'center', marginTop: 40 }}>
             <Link className="more" to="/pricing/">เปรียบเทียบแผนทั้งหมด</Link>
           </p>
@@ -316,7 +279,7 @@ export default function Home() {
             <li className="card">
               <IconReceipt className="props__icon" style={{ margin: '0 0 16px', width: 36, height: 36 }} />
               <h3>เอกสารภาษีครบ</h3>
-              <p>ออกใบเสร็จรับเงิน/ใบกำกับภาษีอิเล็กทรอนิกส์ทุกรายการ นิติบุคคลชำระแบบใบแจ้งหนี้และหัก ณ ที่จ่าย 3% ได้</p>
+              <p>ออกใบเสร็จรับเงิน/ใบกำกับภาษีอิเล็กทรอนิกส์ทุกรายการ และดูย้อนหลังได้ในหน้าประวัติการชำระเงินของระบบสมาชิก</p>
             </li>
             <li className="card">
               <IconShield className="props__icon" style={{ margin: '0 0 16px', width: 36, height: 36 }} />

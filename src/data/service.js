@@ -26,11 +26,9 @@ export const FEATURES = [
   { id: 'laws', name: 'อัปเดตกฎหมาย', nav: 'ติดตามและแจ้งเตือนกฎหมาย', shot: 'laws' },
   { id: 'notifications', name: 'กฎหมายที่ติดตามและการแจ้งเตือน', shot: 'notify' },
   { id: 'action-plan', name: 'Action Plan รายปี', nav: 'Action Plan รายปี', shot: 'actionplan' },
-  { id: 'training', name: 'การอบรมพนักงาน (Training Matrix)', nav: 'Training Matrix', shot: 'training' },
-  { id: 'inspection', name: 'บันทึกงานตรวจรับรอง', nav: 'บันทึกงานตรวจรับรอง', shot: 'inspection' },
-  { id: 'contractors', name: 'ระบบผู้รับเหมา' },
   { id: 'hearing', name: 'โปรแกรมอนุรักษ์การได้ยิน', nav: 'โปรแกรมอนุรักษ์การได้ยิน', shot: 'hearing' },
-  { id: 'audit', name: 'Dashboard Compliance และ Workflow Audit', nav: 'Dashboard และ Workflow Audit', shot: 'dashboard' },
-  { id: 'documents', name: 'คลังเอกสารความปลอดภัย', nav: 'คลังเอกสาร', shot: 'documents' },
+  { id: 'documents', name: 'คลังเอกสารและสไลด์ความปลอดภัย', nav: 'คลังเอกสารและสไลด์', shot: 'documents' },
   { id: 'ai', name: 'AI ผู้ช่วยกฎหมาย', nav: 'AI ผู้ช่วยกฎหมาย' },
 ];
+// ⚠ ตัดออก 21 พ.ย. 2569 (ไม่มีระบบจริงในเว็บสมาชิกและแอป iOS): Training Matrix, บันทึกงานตรวจรับรอง, ระบบผู้รับเหมา,
+//   Dashboard Compliance, Workflow Audit — ภาพ training/inspection/dashboard ใน public/assets/features/ ไม่ได้ใช้แล้ว

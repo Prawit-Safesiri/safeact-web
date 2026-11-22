@@ -235,17 +235,11 @@
 @media (max-width:734px){.stats{grid-template-columns:repeat(2,1fr);gap:40px 16px}}
 
 /* ═══════ BILLING SWITCH (segmented control แบบ Apple) ═══════ */
-.seg{display:inline-flex;padding:4px;border-radius:var(--radius-pill);background:#e8e8ed;position:relative}
-.seg input{position:absolute;opacity:0;pointer-events:none}
-.seg label{position:relative;z-index:1;min-width:150px;padding:10px 24px;border-radius:var(--radius-pill);font-family:var(--font-display);font-size:24px;line-height:var(--lh-24);letter-spacing:var(--ls-24);font-weight:600;text-align:center;color:var(--ink-2);cursor:pointer;transition:color .2s}
-.seg input:checked+label{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
-.seg input:focus-visible+label{outline:2px solid var(--focus);outline-offset:2px}
-.seg small{display:block;margin-top:2px;font-family:var(--font-text);font-size:var(--t-min);line-height:var(--lh-min);letter-spacing:0;font-weight:400;color:var(--ok)}
 .billing{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:48px}
 .billing p{font-size:var(--t-small);color:var(--ink-2);text-align:center}
 
 /* ═══════ PLAN CARDS ═══════ */
-.plans{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;list-style:none;align-items:stretch}
+.plans{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;list-style:none;align-items:stretch}   /* 4 แผนตามตาราง plans (เลิกขาย Student 21 พ.ย. 2569) */
 .plan{position:relative;display:flex;flex-direction:column;padding:32px 24px 28px;border-radius:var(--radius-card);background:#fff;border:1px solid var(--line)}
 .section--alt .plan{border-color:transparent}
 .plan--featured{border:2px solid var(--btn)!important}
@@ -257,13 +251,12 @@
 .plan__price strong{font-family:var(--font-display);font-size:40px;line-height:var(--lh-40);font-weight:600;letter-spacing:var(--ls-40)}
 .plan__price span{font-size:var(--t-small);color:var(--ink-2)}
 .plan__vat{margin-top:6px;font-size:var(--t-min);color:var(--ink-2);min-height:3em}
-.plan__save{color:var(--ok);font-weight:600}
 .plan .btn{margin-top:20px}
 .plan .checks{margin-top:24px;padding-top:24px;border-top:1px solid var(--line);font-size:var(--t-small);line-height:var(--lh-small);gap:10px}
 .plan .checks li{padding-inline-start:26px}
 .plan .checks li::before{width:16px;height:16px;top:.1em}
 .plan .checks li.is-warn::before{background:var(--ink-3) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 4.5v4.2M8 11.2v.1' stroke='%23fff' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/100% no-repeat}
-@media (max-width:1068px){.plans{grid-template-columns:repeat(2,1fr)}.plan:last-child{grid-column:1/-1}}
+@media (max-width:1068px){.plans{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:734px){.plans{grid-template-columns:1fr;gap:24px}}
 
 /* ═══════ COMPARE TABLE ═══════ */
@@ -279,6 +272,7 @@
 .compare .no{color:var(--ink-3)}
 .compare .yes svg,.compare .no svg{width:18px;height:18px;margin-inline:auto}
 .compare .col-featured{background:rgba(0,113,227,.04)}
+.compare__val{display:block;color:var(--ink);font-size:var(--t-small);line-height:var(--lh-small);font-weight:600}   /* ค่าตามแผน เช่น โควตา AI */
 
 /* ═══════ PAYMENT BADGES ═══════ */
 .pay{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;list-style:none}
@@ -694,16 +688,6 @@
 @keyframes hm-bar{0%,6%{transform:scaleX(0);opacity:1}30%,86%{transform:scaleX(1);opacity:1}96%,100%{transform:scaleX(1);opacity:0}}
 @keyframes hm-now{0%,10%{left:32%}80%,100%{left:76%}}
 
-/* Training Matrix: ชื่อ + ผลรายหลักสูตรเด้งเข้าเป็นคลื่น */
-.hm-art--matrix{padding:calc(var(--u)*.45) calc(var(--u)*.8);display:grid;align-content:center;gap:calc(var(--u)*.22)}
-.hm-mx__row{display:grid;grid-template-columns:1fr repeat(3,calc(var(--u)*1.2));align-items:center;gap:calc(var(--u)*.4);height:calc(var(--u)*1.2)}
-.hm-mx__name{height:calc(var(--u)*.4);border-radius:99px;background:#dde3ea}
-.hm-mx__row:nth-child(2) .hm-mx__name{width:80%}.hm-mx__row:nth-child(3) .hm-mx__name{width:90%}.hm-mx__row:nth-child(4) .hm-mx__name{width:70%}
-.hm-mx__cell{display:grid;place-items:center;height:calc(var(--u)*1.2);border-radius:calc(var(--u)*.35);font-size:calc(var(--u)*.72);font-weight:700;line-height:1;
-  animation:hm-cell var(--loop) var(--e) calc(var(--base) + var(--d)) infinite both}
-.hm-mx__cell.is-ok{background:#e3f7e8;color:#1d8a3b}.hm-mx__cell.is-warn{background:#fff3d6;color:#b36b00}.hm-mx__cell.is-no{background:#ffe3e1;color:#d70015}
-@keyframes hm-cell{0%,4%{opacity:0;transform:scale(.4)}16%{opacity:1;transform:scale(1.08)}22%,88%{opacity:1;transform:none}98%,100%{opacity:0;transform:none}}
-
 /* แผนผังเสียง: heat map + เส้น isoline + หมุดวัดพร้อมค่า dB และวงคลื่นแบบเรดาร์ */
 .hm-art--noise{background:#eef3f8}
 .hm-nz__heat{position:absolute;inset:0;background:
@@ -719,24 +703,13 @@
   background:rgba(29,29,31,.82);color:#fff;font-size:calc(var(--u)*.6);font-weight:600;line-height:1.6}
 @keyframes hm-ping{0%{transform:scale(1);opacity:.9}70%,100%{transform:scale(3.2);opacity:0}}
 
-/* งานตรวจวิศวกรรม: เกจความละเอียดสูง เข็มกวาด เลยเล็กน้อยแล้วนิ่ง → ป้ายผ่าน */
-.hm-art--eng{display:grid;place-items:center}
-.hm-art--eng svg{height:66%;width:auto;margin-top:calc(var(--u)*-1.2)}
-.hm-eng__needle{transform-origin:32px 34px;animation:hm-needle var(--loop) var(--e) var(--base) infinite both}
-.hm-eng__read{position:absolute;left:0;right:0;bottom:calc(var(--u)*.45);text-align:center;font-size:calc(var(--u)*.85);font-weight:700;font-variant-numeric:tabular-nums}
-.hm-eng__read small{font-size:.75em;font-weight:500;color:#8a929c}
-.hm-eng__ok{position:absolute;right:calc(var(--u)*.5);top:calc(var(--u)*.5);padding:0 calc(var(--u)*.55);border-radius:99px;background:#e3f7e8;color:#1d8a3b;
-  font-size:calc(var(--u)*.7);font-weight:700;line-height:1.7;animation:hm-okbadge var(--loop) var(--e) var(--base) infinite both}
-@keyframes hm-needle{0%,6%{transform:rotate(-88deg)}34%{transform:rotate(6deg)}42%{transform:rotate(-8deg)}50%,86%{transform:rotate(-3deg)}100%{transform:rotate(-88deg)}}
-@keyframes hm-okbadge{0%,46%{opacity:0;transform:scale(.6)}54%,86%{opacity:1;transform:none}96%,100%{opacity:0}}
-
-/* คลังเอกสาร: รายการไฟล์เลื่อนเข้า · ไฟล์แรกดาวน์โหลดจนขึ้นเครื่องหมายถูก */
+/* คลังเอกสาร / สไลด์ / กฎหมายที่ติดตาม: รายการเลื่อนเข้า · ไฟล์แรกดาวน์โหลดจนขึ้นเครื่องหมายถูก (หมวดที่ติดตามขึ้นเครื่องหมายถูกทุกแถว) */
 .hm-art--docs{padding:calc(var(--u)*.45) calc(var(--u)*.5);display:grid;align-content:center;gap:calc(var(--u)*.25)}
 .hm-doc__row{display:grid;grid-template-columns:calc(var(--u)*2.3) 1fr calc(var(--u)*1.1);align-items:center;gap:calc(var(--u)*.5);
   padding:calc(var(--u)*.22) calc(var(--u)*.45);border-radius:calc(var(--u)*.5);background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.05);
   animation:hm-docin var(--loop) var(--e) calc(var(--base) + var(--d)) infinite both}
 .hm-doc__row b{display:grid;place-items:center;height:calc(var(--u)*1.15);border-radius:calc(var(--u)*.3);background:var(--c1);color:#fff;font-size:calc(var(--u)*.52);font-weight:700;letter-spacing:.02em}
-.hm-art--docs .c-r{--c1:#e0452b}.hm-art--docs .c-b{--c1:#2b579a}.hm-art--docs .c-g{--c1:#217346}
+.hm-art--docs .c-r{--c1:#e0452b}.hm-art--docs .c-b{--c1:#2b579a}.hm-art--docs .c-g{--c1:#217346}.hm-art--docs .c-o{--c1:#c43e1c}
 .hm-doc__row span{font-size:calc(var(--u)*.68);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hm-doc__dl,.hm-doc__done{width:calc(var(--u)*1.1);height:calc(var(--u)*1.1);border-radius:50%;position:relative}
 .hm-doc__dl{background:conic-gradient(var(--ac2) calc(var(--p,0)*1%),#e3e8ef 0);animation:hm-dl var(--loop) linear var(--base) infinite both}
@@ -1318,6 +1291,8 @@
 .stores--foot{margin:0;padding-block:4px 20px;justify-content:flex-start}
 .stores--foot img{height:40px}
 .stores--center{justify-content:center}
+/* รายการจุดเด่นแอปในบล็อกกลางหน้า (หน้าแรก "ทำงานได้ทุกที่"): กล่องอยู่กลาง ข้อความชิดซ้าย */
+.app-checks{width:fit-content;max-width:100%;margin:32px auto 0;text-align:start}
 
 /* ═══════ LAW UPDATE MOTION — ภาพเคลื่อนไหวจำลอง Hub กฎหมาย + การแจ้งเตือน บนสุดของหน้า /law-updates/ (src/components/LawUpdateMotion.jsx)
    วน 24s · 1% = 0.24s · --u = 1% ของความกว้างกล่อง (cqw) · ขนาดตัวอักษรใช้ --lf-1…6 เท่านั้น ทุกตัว ≥ 13px (scripts/prerender.mjs ตรวจ)

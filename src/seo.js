@@ -105,7 +105,7 @@ const website = (full) => clean({
 });
 
 // ── ให้บริการอะไร ──
-const CYCLES = [['yearly', 'รายปี', 'P1Y', 'ANN'], ['monthly', 'รายเดือน', 'P1M', 'MON']];
+const CYCLES = [['yearly', 'รายปี', 'P1Y', 'ANN']];   // ขายรายปีอย่างเดียว (ปิดแผนรายเดือน 22 พ.ย. 2569)
 // เฉพาะแผนที่มีราคา (ไม่รวม Free = 0 และ Enterprise = ติดต่อฝ่ายขาย) · ราคายังไม่รวม VAT ตามที่แสดงบนหน้า
 const planOffers = () => PLANS.filter((p) => p.yearly > 0).flatMap((p) => CYCLES.map(([c, label, dur, unit]) => ({
   '@type': 'Offer',
@@ -232,14 +232,14 @@ export const ROUTES = {
   '/': {
     title: 'SafeAct — อัปเดตกฎหมายความปลอดภัย ระบบงาน จป. ครบในที่เดียว',
     description: 'SafeAct แพลตฟอร์มสำหรับ จป. ติดตาม สรุป และแจ้งเตือนกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบบริหารงานความปลอดภัย ทดลองใช้ฟรี 30 วัน',
-    lastmod: withLaws('2026-09-29'),
+    lastmod: withLaws('2026-11-21'),
     page: { about: ID.org, mainEntity: ID.service, image: ['/assets/laws-macbook.webp', 1422, 1024] },
     nodes: () => [service(), webapp(), ...iosApp(), faqJsonLd(FAQ_GENERAL, `${SITE_URL}/#faq`)],
   },
   '/features/': {
     title: 'ฟีเจอร์ SafeAct — ระบบบริหารงานความปลอดภัยสำหรับ จป.',
-    description: 'ติดตามกฎหมายทุกหมวดหมู่ Action Plan รายปี Training Matrix บันทึกงานตรวจรับรอง โปรแกรมอนุรักษ์การได้ยิน คลังเอกสาร และ AI ผู้ช่วยกฎหมาย ใช้ได้บนเว็บ iPhone และ Android',
-    lastmod: withLaws('2026-09-29'),
+    description: 'ติดตามกฎหมายทุกหมวดหมู่ กฎหมายที่ติดตามและการแจ้งเตือน Action Plan รายปี โปรแกรมอนุรักษ์การได้ยิน คลังเอกสารและสไลด์ และ AI ผู้ช่วยกฎหมาย ใช้ได้บนเว็บและ iPhone',
+    lastmod: withLaws('2026-11-21'),
     crumb: 'ฟีเจอร์',
     page: { mainEntity: ID.webapp, image: ['/assets/features/hero.webp', 2880, 1234] },
     nodes: () => [webapp(true), ...iosApp()],
@@ -247,7 +247,7 @@ export const ROUTES = {
   '/ai/': {
     title: 'AI SafeAct ต่างกับ AI ทั่วไปอย่างไร | SafeAct',
     description: 'AI ผู้ช่วยกฎหมายของ SafeAct ค้นคำตอบจากคลังกฎหมายและตัวบทต้นฉบับ ไม่ตอบมั่วเมื่อไม่มีข้อมูล อิงข้อมูลสถานประกอบการและ Action Plan ของคุณ เปรียบเทียบกับ AI ทั่วไปแบบเห็นชัด',
-    lastmod: '2026-09-29',
+    lastmod: '2026-11-21',
     crumb: 'AI SafeAct ต่างกับ AI ทั่วไป',
     page: { about: ID.webapp, image: ['/assets/ai-compare.webp', 2000, 1198] },
     nodes: () => [webapp()],
@@ -255,15 +255,15 @@ export const ROUTES = {
   '/law-updates/': {
     title: 'อัปเดตกฎหมายความปลอดภัยรายเดือน และหมวดกฎหมาย | SafeAct',
     description: `จำนวนกฎหมายความปลอดภัยที่ประกาศในแต่ละเดือนจากคลัง SafeAct แยกฉบับใหม่ แก้ไข และยกเลิก พร้อม ${CATEGORIES.length} หมวดกฎหมาย รวม ${LAWS.total.toLocaleString('en-US')} ฉบับ และมาตรฐานสากลที่เกี่ยวข้อง`,
-    lastmod: withLaws('2026-09-29'),
+    lastmod: withLaws('2026-11-21'),
     crumb: 'อัปเดตกฎหมาย',
     page: { type: 'CollectionPage', about: ID.service, mainEntity: ID.lawCats },
     nodes: () => [service(), lawCategoryList(), faqJsonLd(FAQ_LAWS, `${SITE_URL}/law-updates/#faq`)],
   },
   '/pricing/': {
-    title: `แผนและราคา — เริ่ม ${baht(fromPrice())}/เดือน ทดลองฟรี 30 วัน | SafeAct`,
-    description: 'เปรียบเทียบแผน SafeAct: Free ทดลอง 30 วัน, Student, Basic, Business และ Enterprise ชำระรายเดือนหรือรายปี ราคายังไม่รวม VAT 7% คืนเงินได้ภายใน 7 วัน',
-    lastmod: '2026-09-29',
+    title: `แผนและราคา — เริ่ม ${baht(fromPrice())}/ปี ทดลองฟรี 30 วัน | SafeAct`,
+    description: 'เปรียบเทียบแผน SafeAct: Free ทดลอง 30 วัน, Basic, Business และ Enterprise ชำระแบบรายปี ราคายังไม่รวม VAT 7% คืนเงินได้ภายใน 7 วัน',
+    lastmod: '2026-11-21',
     crumb: 'แผนและราคา',
     page: { mainEntity: ID.service },
     nodes: () => [service(true), faqJsonLd(FAQ_BILLING, `${SITE_URL}/pricing/#faq`)],
@@ -292,14 +292,14 @@ export const ROUTES = {
   '/about/': {
     title: 'เกี่ยวกับเรา — บริษัท เซฟแอ็กต์ จำกัด | SafeAct',
     description: 'บริษัท เซฟแอ็กต์ จำกัด ผู้พัฒนาและให้บริการ SafeAct แพลตฟอร์มออนไลน์ติดตามกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบงานสำหรับ จป.',
-    lastmod: withLaws('2026-09-29'),
+    lastmod: withLaws('2026-11-21'),
     crumb: 'เกี่ยวกับเรา',
     page: { type: 'AboutPage', mainEntity: ID.org, image: ['/assets/about-team.webp', 2000, 883] },
   },
   '/contact/': {
     title: 'ติดต่อ SafeAct — ขอใบเสนอราคาและนัดสาธิตระบบ',
-    description: `ติดต่อ SafeAct โทร ${COMPANY.phone} อีเมล ${COMPANY.email} ขอใบเสนอราคาแผน Enterprise สาธิตระบบ หรือสอบถามการชำระเงินแบบใบแจ้งหนี้`,
-    lastmod: '2026-09-27',
+    description: `ติดต่อ SafeAct โทร ${COMPANY.phone} อีเมล ${COMPANY.email} ขอใบเสนอราคาแผน Enterprise สาธิตระบบ หรือสอบถามเรื่องการชำระเงิน`,
+    lastmod: '2026-11-21',
     crumb: 'ติดต่อเรา',
     page: { type: 'ContactPage', mainEntity: ID.org },
   },

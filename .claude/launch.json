@@ -23,7 +23,7 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "--prefix",
-        "../safeact-connect-hub",
+        "/Users/safesiri/Desktop/SAFESIRI App 2027/safeact-connect-hub",
         "run",
         "dev",
         "--",

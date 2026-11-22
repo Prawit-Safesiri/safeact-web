@@ -63,7 +63,8 @@ function checkJsonLd(url, html) {
   if (url === '/pricing/') {
     const visible = html.slice(html.indexOf('<div id="root"')).replace(/<script[\s\S]*?<\/script>/g, '');
     const offers = graph.flatMap((n) => n.hasOfferCatalog?.itemListElement || []);
-    if (offers.length !== PLANS.filter((x) => x.yearly > 0).length * 2) fail('/pricing/: จำนวน Offer ใน JSON-LD ไม่ตรงกับแผนที่มีราคา');
+    // แผนละ 1 Offer (รายปีอย่างเดียว · ปิดแผนรายเดือน 22 พ.ย. 2569)
+    if (offers.length !== PLANS.filter((x) => x.yearly > 0).length) fail('/pricing/: จำนวน Offer ใน JSON-LD ไม่ตรงกับแผนที่มีราคา');
     for (const o of offers) if (!visible.includes(baht(Number(o.price)))) fail(`/pricing/: ราคา ${o.price} (${o.name}) ใน JSON-LD ไม่มีแสดงบนหน้า`);
   }
 }
@@ -107,7 +108,7 @@ fs.writeFileSync(path.join(dist, 'llms-full.txt'), llms.full);
 for (const [name, text] of [['llms.txt', llms.short], ['llms-full.txt', llms.full]]) {
   if (!text.startsWith('# ')) fail(`${name}: ต้องขึ้นต้นด้วยหัวข้อ # ชื่อเว็บ`);
   for (const u of Object.keys(ROUTES)) if (!text.includes(`${SITE_URL}${u}`)) fail(`${name}: ไม่มีลิงก์ ${SITE_URL}${u}`);
-  for (const pl of PLANS.filter((x) => x.monthly > 0)) if (!text.includes(baht(pl.monthly))) fail(`${name}: ไม่มีราคา ${pl.name} ${baht(pl.monthly)}`);
+  for (const pl of PLANS.filter((x) => x.yearly > 0)) if (!text.includes(baht(pl.yearly))) fail(`${name}: ไม่มีราคา ${pl.name} ${baht(pl.yearly)}`);
 }
 
 // ตัวเลขกฎหมาย (src/data/laws.json) เก่าเกิน 45 วัน → เตือน (ไม่ล้ม build) ให้รัน npm run sync:laws

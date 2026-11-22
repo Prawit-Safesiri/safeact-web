@@ -18,17 +18,17 @@ const facts = () => [
   `- ผู้ให้บริการ: ${COMPANY.nameTh} (${COMPANY.nameEn}) เลขทะเบียนนิติบุคคล/เลขประจำตัวผู้เสียภาษี ${COMPANY.taxId} จดทะเบียนเมื่อ ${COMPANY.registeredOnTh}`,
   `- ที่อยู่: ${fullAddress()}`,
   `- ติดต่อ: โทร ${COMPANY.phone.replace(/ /g, ' ')} · อีเมล ${COMPANY.email} · LINE ${COMPANY.line.url} · เวลาทำการ ${COMPANY.hours}`,
-  `- กลุ่มผู้ใช้หลัก: ${SERVICE.audience} ทุกระดับ ผู้รับผิดชอบงานอาชีวอนามัยและสิ่งแวดล้อม ฝ่ายบุคคล SME โรงงาน องค์กรหลายสาขา และนักศึกษาสาขาความปลอดภัย`,
+  `- กลุ่มผู้ใช้หลัก: ${SERVICE.audience} ทุกระดับ ผู้รับผิดชอบงานอาชีวอนามัยและสิ่งแวดล้อม ฝ่ายบุคคล SME โรงงาน และองค์กรหลายสาขา`,
   `- คลังกฎหมาย: ${lawCount} ฉบับ (ข้อมูล ณ ${LAW_LIBRARY.asOfTh}) จัดเป็น ${CATEGORIES.length} หมวด พร้อมแหล่งอ้างอิงและวันมีผลใช้บังคับ แจ้งกฎหมายใหม่ประจำเดือน`,
-  `- ใช้งานได้บน: เว็บ (${APP_URL}) และแอป ${COMPANY.appName} บน iPhone และ Android ด้วยบัญชีเดียวกัน`,
+  `- ใช้งานได้บน: เว็บ (${APP_URL}) และแอป ${COMPANY.appName} บน iPhone ด้วยบัญชีเดียวกัน`,
   `- ทดลองใช้ฟรี 30 วัน · ขอคืนเงินเต็มจำนวนได้ภายใน 7 วันนับจากวันชำระเงินครั้งแรก · ราคาเป็นเงินบาท ยังไม่รวม VAT 7%`,
   `- ภาษาที่ให้บริการ: ไทย · พื้นที่ให้บริการ: ประเทศไทย`,
 ];
 
 const prices = () => PLANS.map((p) => {
-  if (p.monthly == null) return `- ${p.name} (${p.subtitle}): ติดต่อทีมขาย`;
-  if (p.monthly === 0) return `- ${p.name} (${p.subtitle}): ฟรี 30 วัน`;
-  return `- ${p.name} (${p.subtitle}): ${baht(p.monthly)}/เดือน หรือ ${baht(p.yearly)}/ปี (รวม VAT ${baht(withVat(p.yearly))}/ปี)`;
+  if (p.yearly == null) return `- ${p.name} (${p.subtitle}): ติดต่อทีมขาย`;
+  if (p.yearly === 0) return `- ${p.name} (${p.subtitle}): ฟรี 30 วัน`;
+  return `- ${p.name} (${p.subtitle}): ${baht(p.yearly)}/ปี (รวม VAT ${baht(withVat(p.yearly))}/ปี) · ชำระแบบรายปีเท่านั้น`;
 });
 
 const pages = () => [

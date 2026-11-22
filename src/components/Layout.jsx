@@ -126,7 +126,7 @@ function Footer({ pathname }) {
               <li><Link to="/features/">ฟีเจอร์ทั้งหมด</Link></li>
               <li><Link to="/law-updates/">อัปเดตกฎหมายความปลอดภัย</Link></li>
               <li><Link to="/features/#action-plan">Action Plan รายปี</Link></li>
-              <li><Link to="/features/#training">Training Matrix</Link></li>
+              <li><Link to="/features/#hearing">โปรแกรมอนุรักษ์การได้ยิน</Link></li>
               <li><Link to="/features/#workflow">ระบบบริหารงานความปลอดภัย</Link></li>
               <li><Link to="/features/#ai">AI ผู้ช่วยกฎหมาย</Link></li>
               <li><Link to="/ai/">AI SafeAct ต่างกับ AI ทั่วไป</Link></li>
