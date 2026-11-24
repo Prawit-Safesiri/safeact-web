@@ -232,7 +232,7 @@ export const ROUTES = {
   '/': {
     title: 'SafeAct — อัปเดตกฎหมายความปลอดภัย ระบบงาน จป. ครบในที่เดียว',
     description: 'SafeAct แพลตฟอร์มสำหรับ จป. ติดตาม สรุป และแจ้งเตือนกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบบริหารงานความปลอดภัย ทดลองใช้ฟรี 30 วัน',
-    lastmod: withLaws('2026-11-21'),
+    lastmod: withLaws('2026-11-24'),
     page: { about: ID.org, mainEntity: ID.service, image: ['/assets/laws-macbook.webp', 1422, 1024] },
     nodes: () => [service(), webapp(), ...iosApp(), faqJsonLd(FAQ_GENERAL, `${SITE_URL}/#faq`)],
   },
@@ -263,7 +263,7 @@ export const ROUTES = {
   '/pricing/': {
     title: `แผนและราคา — เริ่ม ${baht(fromPrice())}/ปี ทดลองฟรี 30 วัน | SafeAct`,
     description: 'เปรียบเทียบแผน SafeAct: Free ทดลอง 30 วัน, Basic, Business และ Enterprise ชำระแบบรายปี ราคายังไม่รวม VAT 7% คืนเงินได้ภายใน 7 วัน',
-    lastmod: '2026-11-21',
+    lastmod: '2026-11-24',
     crumb: 'แผนและราคา',
     page: { mainEntity: ID.service },
     nodes: () => [service(true), faqJsonLd(FAQ_BILLING, `${SITE_URL}/pricing/#faq`)],

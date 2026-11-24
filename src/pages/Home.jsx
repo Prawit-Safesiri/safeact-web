@@ -213,7 +213,7 @@ export default function Home() {
         <div className="container--wide">
           <header className="section-head">
             <h2 id="who-title" className="t-h1">SafeAct เหมาะกับใคร</h2>
-            <p className="t-lead">สำหรับทุกคนที่รับผิดชอบงานความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงานของสถานประกอบการ</p>
+            <p className="t-lead">สำหรับองค์กรและสถานประกอบการที่ต้องดูแลงานความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน สมัครในนามบริษัทหรือหน่วยงาน</p>
           </header>
           <ul className="cards">
             <li className="card">
@@ -255,7 +255,7 @@ export default function Home() {
         <div className="container--wide">
           <header className="section-head">
             <h2 id="price-title" className="t-h1">แผนที่เหมาะกับทุกขนาด</h2>
-            <p className="t-lead">ตั้งแต่บุคคลและทีมเล็ก SME และโรงงาน ไปจนถึงองค์กรหลายสาขา</p>
+            <p className="t-lead">ตั้งแต่บริษัทขนาดเล็ก SME และโรงงาน ไปจนถึงองค์กรหลายสาขา · จำหน่ายให้นิติบุคคลและหน่วยงานเท่านั้น</p>
           </header>
           <PlansYearly />
           <p style={{ textAlign: 'center', marginTop: 40 }}>
