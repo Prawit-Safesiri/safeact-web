@@ -16,6 +16,7 @@
 // push = แสดงแบนเนอร์แจ้งเตือนจากแอป SafeAct Club บนจอล็อก
 //   เจ้าของยืนยัน 29 ก.ย. 2569 ว่าแอปส่ง Push ได้แล้ว แต่โค้ดแอปเว็บและ iOS ที่ตรวจพบมีแค่สวิตช์ตั้งค่า
 //   ถ้ายังส่งไม่ได้จริง ตั้งเป็น false → เหลือแบนเนอร์อีเมล (ของจริง) ชิ้นเดียว และข้อความอธิบายภาพไม่พูดถึง Push
-export const LAW_MOTION = { follow: 'custom-วัตถุอันตราย-y25a', push: true };
+//   25 พ.ย. 2569 ตรวจฟีเจอร์หลอก: ไม่มีระบบส่ง Push จริง (ไม่มี APNs, device_push_tokens 0 แถว) → ปิด
+export const LAW_MOTION = { follow: 'custom-วัตถุอันตราย-y25a', push: false };
 
 export const motionCategory = (cats) => cats.find((c) => c.slug === LAW_MOTION.follow) ?? null;

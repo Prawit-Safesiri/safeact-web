@@ -232,14 +232,14 @@ export const ROUTES = {
   '/': {
     title: 'SafeAct — อัปเดตกฎหมายความปลอดภัย ระบบงาน จป. ครบในที่เดียว',
     description: 'SafeAct แพลตฟอร์มสำหรับ จป. ติดตาม สรุป และแจ้งเตือนกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบบริหารงานความปลอดภัย ทดลองใช้ฟรี 30 วัน',
-    lastmod: withLaws('2026-11-24'),
+    lastmod: withLaws('2026-11-25'),
     page: { about: ID.org, mainEntity: ID.service, image: ['/assets/laws-macbook.webp', 1422, 1024] },
     nodes: () => [service(), webapp(), ...iosApp(), faqJsonLd(FAQ_GENERAL, `${SITE_URL}/#faq`)],
   },
   '/features/': {
     title: 'ฟีเจอร์ SafeAct — ระบบบริหารงานความปลอดภัยสำหรับ จป.',
     description: 'ติดตามกฎหมายทุกหมวดหมู่ กฎหมายที่ติดตามและการแจ้งเตือน Action Plan รายปี โปรแกรมอนุรักษ์การได้ยิน คลังเอกสารและสไลด์ และ AI ผู้ช่วยกฎหมาย ใช้ได้บนเว็บและ iPhone',
-    lastmod: withLaws('2026-11-21'),
+    lastmod: withLaws('2026-11-25'),
     crumb: 'ฟีเจอร์',
     page: { mainEntity: ID.webapp, image: ['/assets/features/hero.webp', 2880, 1234] },
     nodes: () => [webapp(true), ...iosApp()],
@@ -255,7 +255,7 @@ export const ROUTES = {
   '/law-updates/': {
     title: 'อัปเดตกฎหมายความปลอดภัยรายเดือน และหมวดกฎหมาย | SafeAct',
     description: `จำนวนกฎหมายความปลอดภัยที่ประกาศในแต่ละเดือนจากคลัง SafeAct แยกฉบับใหม่ แก้ไข และยกเลิก พร้อม ${CATEGORIES.length} หมวดกฎหมาย รวม ${LAWS.total.toLocaleString('en-US')} ฉบับ และมาตรฐานสากลที่เกี่ยวข้อง`,
-    lastmod: withLaws('2026-11-21'),
+    lastmod: withLaws('2026-11-25'),
     crumb: 'อัปเดตกฎหมาย',
     page: { type: 'CollectionPage', about: ID.service, mainEntity: ID.lawCats },
     nodes: () => [service(), lawCategoryList(), faqJsonLd(FAQ_LAWS, `${SITE_URL}/law-updates/#faq`)],
@@ -263,7 +263,7 @@ export const ROUTES = {
   '/pricing/': {
     title: `แผนและราคา — เริ่ม ${baht(fromPrice())}/ปี ทดลองฟรี 30 วัน | SafeAct`,
     description: 'เปรียบเทียบแผน SafeAct: Free ทดลอง 30 วัน, Basic, Business และ Enterprise ชำระแบบรายปี ราคายังไม่รวม VAT 7% คืนเงินได้ภายใน 7 วัน',
-    lastmod: '2026-11-24',
+    lastmod: '2026-11-25',
     crumb: 'แผนและราคา',
     page: { mainEntity: ID.service },
     nodes: () => [service(true), faqJsonLd(FAQ_BILLING, `${SITE_URL}/pricing/#faq`)],

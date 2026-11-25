@@ -142,7 +142,7 @@ export default function Home() {
               <div className="tile__body">
                 <IconBell className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
                 <h3 className="t-h4">กฎหมายที่ติดตามและการแจ้งเตือน</h3>
-                <p>กดติดตามกฎหมายที่ใช้กับสถานประกอบการ เลือกหมวดที่ต้องการรับข่าว แล้วรับแจ้งเตือนในระบบ ทางอีเมลสรุป และ Push Notification บน iPhone</p>
+                <p>กดติดตามกฎหมายที่ใช้กับสถานประกอบการ เลือกหมวดที่ต้องการรับข่าว แล้วรับแจ้งเตือนในระบบ (บนเว็บและในแอป iPhone) และทางอีเมลสรุป</p>
                 <Link className="more tile__more" to="/features/#notifications">ดูการติดตามและแจ้งเตือนกฎหมาย</Link>
               </div>
             </li>
@@ -185,7 +185,7 @@ export default function Home() {
           <h2 id="app-title" className="t-h1">ทำงานได้ทุกที่<br />ข้อมูลตรงกันทุกอุปกรณ์</h2>
           <p className="t-lead">ใช้บนคอมพิวเตอร์ที่สำนักงาน แล้วเปิดต่อบน iPhone ขณะเดินตรวจหน้างาน กฎหมายที่ติดตามและการแจ้งเตือนตรงกัน<span style={{ whiteSpace: 'nowrap' }}>ทุกอุปกรณ์</span></p>
           <ul className="checks app-checks">
-            <li>แจ้งเตือนกฎหมายที่ติดตามผ่าน Push Notification</li>
+            <li>ดูการแจ้งเตือนกฎหมายที่ติดตามได้ในแอป</li>
             <li>อ่านรายละเอียดกฎหมายและถาม AI ได้แม้อยู่หน้างาน</li>
             <li>บัญชีเดียวใช้ได้ทั้งเว็บและแอป {COMPANY.appName} บน iPhone</li>
           </ul>
