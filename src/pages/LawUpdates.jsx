@@ -6,7 +6,7 @@ import MonthSample from '../components/MonthSample.jsx';
 import LawUpdateMotion from '../components/LawUpdateMotion.jsx';
 import { IconHelmet, IconLeaf, IconFood } from '../components/Icons.jsx';
 import { COMPANY, checkoutLink } from '../data/company.js';
-import { planFrom } from '../data/plans.js';
+import { planFrom, APP_PLAN } from '../data/plans.js';
 import { coverSrc } from '../data/laws.js';
 import { useLiveLaws } from '../data/laws-live.js';
 import { STANDARD_GROUPS, STANDARD_COUNT } from '../data/standards.js';
@@ -239,7 +239,7 @@ export default function LawUpdates() {
             <li><h3>เลือกหมวดที่ติดตาม</h3><p>ติดตามเฉพาะหมวดกฎหมายที่เกี่ยวกับงานของคุณ มีฉบับใหม่ในหมวดนั้นเมื่อไรก็ได้รับแจ้งเตือน</p></li>
             <li><h3>ทีมงานเพิ่มฉบับใหม่</h3><p>ติดตามประกาศจากแหล่งทางการ เพิ่มเข้าคลังพร้อมวันประกาศ วันมีผลใช้บังคับ และระดับผลกระทบ</p></li>
             <li><h3>สรุปพร้อมลิงก์ต้นฉบับ</h3><p>อ่านสาระสำคัญเป็นภาษาที่เข้าใจง่าย แล้วเปิดตัวบทต้นฉบับเพื่อตรวจสอบได้ทันที</p></li>
-            <li><h3>แจ้งเตือนถึงคุณ</h3><p>ในระบบ (บนเว็บและในแอป iPhone) และทางอีเมลสรุป (ทันที รายวัน รายสัปดาห์ หรือรายเดือน)</p></li>
+            <li><h3>แจ้งเตือนถึงคุณ</h3><p>ในระบบบนเว็บ และทางอีเมลสรุป (ทันที รายวัน รายสัปดาห์ หรือรายเดือน) ลูกค้าแผน {APP_PLAN} ดูได้ในแอป iPhone ด้วย</p></li>
           </ol>
         </div>
       </section>

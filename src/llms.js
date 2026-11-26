@@ -2,7 +2,7 @@
 // สร้างตอน build (scripts/prerender.mjs) จากไฟล์ข้อมูลชุดเดียวกับหน้าเว็บ → ตัวเลข ราคา และลิงก์ตรงกับเว็บเสมอ
 // ⚠ ห้ามพิมพ์ตัวเลขหรือข้อความตายตัวที่นี่ ให้แก้ที่ไฟล์ข้อมูลใน src/data/
 import { SITE_URL, APP_URL, COMPANY, AI_DISCLAIMER, fullAddress } from './data/company.js';
-import { PLANS, baht, withVat } from './data/plans.js';
+import { PLANS, baht, withVat, APP_PLAN, WEB_ONLY_PLANS } from './data/plans.js';
 import { SERVICE, FEATURES, LAW_LIBRARY } from './data/service.js';
 import { FAQ_GENERAL, FAQ_BILLING, FAQ_LAWS } from './data/faq.js';
 import { LAWS, MONTHS12, SUM12, CATEGORY_GROUPS, CATEGORIES } from './data/laws.js';
@@ -20,7 +20,8 @@ const facts = () => [
   `- ติดต่อ: โทร ${COMPANY.phone.replace(/ /g, ' ')} · อีเมล ${COMPANY.email} · LINE ${COMPANY.line.url} · เวลาทำการ ${COMPANY.hours}`,
   `- กลุ่มผู้ใช้หลัก: ${SERVICE.audience} ทุกระดับ ผู้รับผิดชอบงานอาชีวอนามัยและสิ่งแวดล้อม ฝ่ายบุคคล SME โรงงาน และองค์กรหลายสาขา (บริการจำหน่ายให้นิติบุคคลและหน่วยงานเท่านั้น)`,
   `- คลังกฎหมาย: ${lawCount} ฉบับ (ข้อมูล ณ ${LAW_LIBRARY.asOfTh}) จัดเป็น ${CATEGORIES.length} หมวด พร้อมแหล่งอ้างอิงและวันมีผลใช้บังคับ แจ้งกฎหมายใหม่ประจำเดือน`,
-  `- ใช้งานได้บน: เว็บ (${APP_URL}) และแอป ${COMPANY.appName} บน iPhone ด้วยบัญชีเดียวกัน`,
+  // 26 พ.ย. 2569 เจ้าของ: แอปมือถือใช้ได้เฉพาะแผน Business ขึ้นไป
+  `- ใช้งานได้บน: เว็บ (${APP_URL}) ทุกแผน · แอป ${COMPANY.appName} บน iPhone (${COMPANY.appStoreUrl}) เฉพาะลูกค้าองค์กรแผน ${APP_PLAN} ใช้บัญชีเดียวกับเว็บ (แผน ${WEB_ONLY_PLANS} ใช้ได้เฉพาะเว็บ)`,
   `- ทดลองใช้ฟรี 30 วัน · ขอคืนเงินเต็มจำนวนได้ภายใน 7 วันนับจากวันชำระเงินครั้งแรก · ราคาเป็นเงินบาท ยังไม่รวม VAT 7%`,
   `- ภาษาที่ให้บริการ: ไทย · พื้นที่ให้บริการ: ประเทศไทย`,
 ];

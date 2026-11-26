@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { APP_PLAN } from '../data/plans.js';
 
 // โมชั่นพรีเซนต์ "AI ผู้ช่วยกฎหมาย" — ฉากวนซ้ำ 17 วินาที ทำด้วย CSS (ไม่ใช่ไฟล์วิดีโอ: คมทุกขนาด โหลดเร็ว)
 // 1) พิมพ์คำถาม → 2) ค้นในคลังกฎหมาย SafeAct → 3) เจอฉบับที่ตรง → 4) คำตอบพร้อมข้อกฎหมาย → 5) สโลแกน
@@ -7,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 // ⚠ ตัวอย่างคำตอบอ้างกฎหมายจริง — ถ้าแก้ข้อความ ต้องตรวจกับตัวบทก่อนเผยแพร่
 //   การฝึกซ้อมดับเพลิงและอพยพหนีไฟอย่างน้อยปีละ 1 ครั้ง = ข้อ 30 ของกฎกระทรวงฯ อัคคีภัย พ.ศ. 2555 (เจ้าของยืนยันกับราชกิจจานุเบกษาก่อนเปิดใช้จริง)
 // SEO: กล่องนี้เป็นภาพประกอบ (role="img") ใส่ data-nosnippet ไม่ให้ Google หยิบข้อความตัวอย่างไปเป็นคำอธิบายผลค้นหา
+// 26 พ.ย. 2569 เจ้าของ: แอปมือถือใช้ได้เฉพาะแผน Business ขึ้นไป → ฉากจบที่ชวนติดตั้งแอปต้องบอกแผน (แทนบรรทัด "ถามได้ทุกที่ แม้อยู่หน้างาน" ความยาวใกล้กัน)
 
 const LAWS = [
   'พ.ร.บ. ความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พ.ศ. 2554',
@@ -34,7 +36,7 @@ export default function AiMotion() {
 
   return (
     <div ref={ref} className="aim" data-play={play || undefined} data-nosnippet="" role="img"
-      aria-label="ภาพเคลื่อนไหว: ถาม AI ของ SafeAct ว่าต้องซ้อมดับเพลิงบ่อยแค่ไหน AI ค้นจากคลังกฎหมาย SafeAct แล้วตอบว่าอย่างน้อยปีละ 1 ครั้ง พร้อมอ้างอิงกฎกระทรวงการป้องกันและระงับอัคคีภัย พ.ศ. 2555 ข้อ 30 จากนั้นชวนติดตั้งแอป SafeAct Club บน iPhone: ทุกคำถามกฎหมาย มีคำตอบในมือคุณ">
+      aria-label={`ภาพเคลื่อนไหว: ถาม AI ของ SafeAct ว่าต้องซ้อมดับเพลิงบ่อยแค่ไหน AI ค้นจากคลังกฎหมาย SafeAct แล้วตอบว่าอย่างน้อยปีละ 1 ครั้ง พร้อมอ้างอิงกฎกระทรวงการป้องกันและระงับอัคคีภัย พ.ศ. 2555 ข้อ 30 จากนั้นชวนติดตั้งแอป SafeAct Club บน iPhone สำหรับแผน ${APP_PLAN}: ทุกคำถามกฎหมาย มีคำตอบในมือคุณ`}>
       <div className="aim__glow" aria-hidden="true" />
 
       <div className="aim__ask" aria-hidden="true">
@@ -74,7 +76,7 @@ export default function AiMotion() {
         <img className="aim__icon" src="/assets/app-icon-352.webp" width="352" height="352" alt="" loading="lazy" decoding="async" />
         <p className="aim__app">SafeAct Club <span>ผู้ช่วยกฎหมายความปลอดภัย</span></p>
         <p className="aim__head">ทุกคำถามกฎหมาย<br />มีคำตอบในมือคุณ</p>
-        <p className="aim__sub"><span>ติดตั้งแอป SafeAct Club บน iPhone</span> <span>ถามได้ทุกที่ แม้อยู่หน้างาน</span></p>
+        <p className="aim__sub"><span>ติดตั้งแอป SafeAct Club บน iPhone</span> <span>สำหรับแผน {APP_PLAN}</span></p>
         <span className="aim__get">
           <span className="aim__get-lbl">รับ</span>
           <svg className="aim__ring" viewBox="0 0 36 36">

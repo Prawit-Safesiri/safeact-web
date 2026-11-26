@@ -9,7 +9,7 @@ import { PlansYearly } from '../components/Plans.jsx';
 import { FAQ_GENERAL } from '../data/faq.js';
 import { checkoutLink, COMPANY, AI_DISCLAIMER } from '../data/company.js';
 import { LAW_CATEGORIES, LAW_LIBRARY, lawCountRounded } from '../data/service.js';
-import { baht, fromPrice } from '../data/plans.js';
+import { baht, fromPrice, APP_PLAN } from '../data/plans.js';
 import { PAY_METHODS } from '../data/payments.js';
 import { IconScale, IconBell, IconDoc, IconChart, IconUsers, IconShield, IconReceipt, IconLock, IconSparkAnim } from '../components/Icons.jsx';
 
@@ -74,7 +74,7 @@ export default function Home() {
             <li>
               <IconBell className="props__icon" />
               <h3 className="t-h4">แจ้งเตือนถึงมือ</h3>
-              <p>เลือกหมวดที่ต้องการติดตาม แล้วรับการแจ้งเตือนผ่านแอป iPhone อีเมล และเว็บทันทีที่มีกฎหมายใหม่</p>
+              <p>เลือกหมวดที่ต้องการติดตาม แล้วรับการแจ้งเตือนบนเว็บและทางอีเมลทันทีที่มีกฎหมายใหม่ ลูกค้าแผน {APP_PLAN} ดูได้ในแอป iPhone ด้วย</p>
             </li>
           </ul>
         </div>
@@ -142,7 +142,7 @@ export default function Home() {
               <div className="tile__body">
                 <IconBell className="props__icon" style={{ margin: '0 0 16px', width: 40, height: 40 }} />
                 <h3 className="t-h4">กฎหมายที่ติดตามและการแจ้งเตือน</h3>
-                <p>กดติดตามกฎหมายที่ใช้กับสถานประกอบการ เลือกหมวดที่ต้องการรับข่าว แล้วรับแจ้งเตือนในระบบ (บนเว็บและในแอป iPhone) และทางอีเมลสรุป</p>
+                <p>กดติดตามกฎหมายที่ใช้กับสถานประกอบการ เลือกหมวดที่ต้องการรับข่าว แล้วรับแจ้งเตือนในระบบบนเว็บและทางอีเมลสรุป (ลูกค้าแผน {APP_PLAN} ดูได้ในแอป iPhone ด้วย)</p>
                 <Link className="more tile__more" to="/features/#notifications">ดูการติดตามและแจ้งเตือนกฎหมาย</Link>
               </div>
             </li>
@@ -179,11 +179,12 @@ export default function Home() {
       {/* ─── ANYWHERE ─── */}
       {/* เดิมมีวิดีโอจอ iPhone (app-screen-720.mp4) แต่เป็นขั้นตอน "เทมเพลตตามกิจการ → ทะเบียนกฎหมาย / ประเมินความสอดคล้อง"
           ที่แอป iOS ลบออกแล้ว (เป็นข้อมูลตัวอย่าง) และเว็บสมาชิกไม่มี — เอาออก 21 พ.ย. 2569 รอคลิปใหม่จากแอปจริง */}
+      {/* 26 พ.ย. 2569 เจ้าของ: แอปมือถือใช้ได้เฉพาะแผน Business ขึ้นไป → บอกในย่อหน้าและใต้ป้าย App Store (StoreBadges) */}
       <section className="section section--alt" aria-labelledby="app-title">
         <div className="container cta-band">
           <p className="t-eyebrow" style={{ marginBottom: 8 }}>เว็บ + iPhone</p>
           <h2 id="app-title" className="t-h1">ทำงานได้ทุกที่<br />ข้อมูลตรงกันทุกอุปกรณ์</h2>
-          <p className="t-lead">ใช้บนคอมพิวเตอร์ที่สำนักงาน แล้วเปิดต่อบน iPhone ขณะเดินตรวจหน้างาน กฎหมายที่ติดตามและการแจ้งเตือนตรงกัน<span style={{ whiteSpace: 'nowrap' }}>ทุกอุปกรณ์</span></p>
+          <p className="t-lead">ใช้บนคอมพิวเตอร์ที่สำนักงาน แล้วเปิดต่อในแอปบน iPhone ขณะเดินตรวจหน้างาน (แผน {APP_PLAN}) กฎหมายที่ติดตามและการแจ้งเตือนตรงกัน<span style={{ whiteSpace: 'nowrap' }}>ทุกอุปกรณ์</span></p>
           <ul className="checks app-checks">
             <li>ดูการแจ้งเตือนกฎหมายที่ติดตามได้ในแอป</li>
             <li>อ่านรายละเอียดกฎหมายและถาม AI ได้แม้อยู่หน้างาน</li>

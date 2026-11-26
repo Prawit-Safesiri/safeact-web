@@ -8,7 +8,7 @@
 //   คำถามที่พบบ่อย → FAQPage (หน้าแรก/ราคา) — Google ไม่แสดงผลพิเศษแล้ว แต่ Bing และระบบค้นหาของ AI ยังอ่าน
 // หมายเหตุ: ไม่ใส่คะแนนรีวิวจนกว่าจะมีรีวิวจริงบนหน้าเว็บ
 import { SITE_URL, APP_URL, COMPANY, LEGAL_DATES } from './data/company.js';
-import { PLANS, baht, fromPrice } from './data/plans.js';
+import { PLANS, baht, fromPrice, APP_PLAN } from './data/plans.js';
 import { SERVICE, FEATURES, LAW_CATEGORIES } from './data/service.js';
 import { FAQ_GENERAL, FAQ_BILLING, FAQ_LAWS, faqJsonLd } from './data/faq.js';
 import { LAWS, CATEGORIES } from './data/laws.js';
@@ -168,10 +168,12 @@ const webapp = (full = false) => clean({
 });
 
 // แอปมือถือ (iPhone / Android) — ส่งออกเฉพาะร้านที่มีลิงก์ใน company.js
+// 26 พ.ย. 2569 เจ้าของ: แอปใช้ได้เฉพาะลูกค้าองค์กรแผน Business ขึ้นไป → description ตรงกับคำใต้ป้าย App Store และคำถามที่พบบ่อย
 const mobileApp = (id, os, url) => clean({
   '@type': 'MobileApplication',
   '@id': id,
   name: COMPANY.appName,
+  description: `แอป ${COMPANY.appName} ของ SafeAct สำหรับลูกค้าองค์กรแผน ${APP_PLAN} ใช้บัญชีเดียวกับเว็บ ข้อมูลตรงกันทุกอุปกรณ์`,
   operatingSystem: os,
   applicationCategory: 'BusinessApplication',
   url,
@@ -232,14 +234,14 @@ export const ROUTES = {
   '/': {
     title: 'SafeAct — อัปเดตกฎหมายความปลอดภัย ระบบงาน จป. ครบในที่เดียว',
     description: 'SafeAct แพลตฟอร์มสำหรับ จป. ติดตาม สรุป และแจ้งเตือนกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบบริหารงานความปลอดภัย ทดลองใช้ฟรี 30 วัน',
-    lastmod: withLaws('2026-11-25'),
+    lastmod: withLaws('2026-11-26'),
     page: { about: ID.org, mainEntity: ID.service, image: ['/assets/laws-macbook.webp', 1422, 1024] },
     nodes: () => [service(), webapp(), ...iosApp(), faqJsonLd(FAQ_GENERAL, `${SITE_URL}/#faq`)],
   },
   '/features/': {
     title: 'ฟีเจอร์ SafeAct — ระบบบริหารงานความปลอดภัยสำหรับ จป.',
-    description: 'ติดตามกฎหมายทุกหมวดหมู่ กฎหมายที่ติดตามและการแจ้งเตือน Action Plan รายปี โปรแกรมอนุรักษ์การได้ยิน คลังเอกสารและสไลด์ และ AI ผู้ช่วยกฎหมาย ใช้ได้บนเว็บและ iPhone',
-    lastmod: withLaws('2026-11-25'),
+    description: `ติดตามกฎหมายและการแจ้งเตือน Action Plan รายปี โปรแกรมอนุรักษ์การได้ยิน คลังเอกสารและสไลด์ และ AI ผู้ช่วยกฎหมาย บนเว็บ และแอป iPhone สำหรับแผน ${APP_PLAN}`,
+    lastmod: withLaws('2026-11-26'),
     crumb: 'ฟีเจอร์',
     page: { mainEntity: ID.webapp, image: ['/assets/features/hero.webp', 2880, 1234] },
     nodes: () => [webapp(true), ...iosApp()],
@@ -255,7 +257,7 @@ export const ROUTES = {
   '/law-updates/': {
     title: 'อัปเดตกฎหมายความปลอดภัยรายเดือน และหมวดกฎหมาย | SafeAct',
     description: `จำนวนกฎหมายความปลอดภัยที่ประกาศในแต่ละเดือนจากคลัง SafeAct แยกฉบับใหม่ แก้ไข และยกเลิก พร้อม ${CATEGORIES.length} หมวดกฎหมาย รวม ${LAWS.total.toLocaleString('en-US')} ฉบับ และมาตรฐานสากลที่เกี่ยวข้อง`,
-    lastmod: withLaws('2026-11-25'),
+    lastmod: withLaws('2026-11-26'),
     crumb: 'อัปเดตกฎหมาย',
     page: { type: 'CollectionPage', about: ID.service, mainEntity: ID.lawCats },
     nodes: () => [service(), lawCategoryList(), faqJsonLd(FAQ_LAWS, `${SITE_URL}/law-updates/#faq`)],
@@ -263,7 +265,7 @@ export const ROUTES = {
   '/pricing/': {
     title: `แผนและราคา — เริ่ม ${baht(fromPrice())}/ปี ทดลองฟรี 30 วัน | SafeAct`,
     description: 'เปรียบเทียบแผน SafeAct: Free ทดลอง 30 วัน, Basic, Business และ Enterprise ชำระแบบรายปี ราคายังไม่รวม VAT 7% คืนเงินได้ภายใน 7 วัน',
-    lastmod: '2026-11-25',
+    lastmod: '2026-11-26',
     crumb: 'แผนและราคา',
     page: { mainEntity: ID.service },
     nodes: () => [service(true), faqJsonLd(FAQ_BILLING, `${SITE_URL}/pricing/#faq`)],
@@ -292,7 +294,7 @@ export const ROUTES = {
   '/about/': {
     title: 'เกี่ยวกับเรา — บริษัท เซฟแอ็กต์ จำกัด | SafeAct',
     description: 'บริษัท เซฟแอ็กต์ จำกัด ผู้พัฒนาและให้บริการ SafeAct แพลตฟอร์มออนไลน์ติดตามกฎหมายความปลอดภัย อาชีวอนามัย และสภาพแวดล้อมในการทำงาน พร้อมระบบงานสำหรับ จป.',
-    lastmod: withLaws('2026-11-21'),
+    lastmod: withLaws('2026-11-26'),
     crumb: 'เกี่ยวกับเรา',
     page: { type: 'AboutPage', mainEntity: ID.org, image: ['/assets/about-team.webp', 2000, 883] },
   },

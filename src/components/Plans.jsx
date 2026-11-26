@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
-import { PLANS, COMPARE, hasFeature, baht, withVat } from '../data/plans.js';
-import { checkoutLink } from '../data/company.js';
+import { PLANS, COMPARE, hasFeature, baht, withVat, APP_PLAN, WEB_ONLY_PLANS } from '../data/plans.js';
+import { checkoutLink, COMPANY } from '../data/company.js';
 import { Tick, Dash } from './Icons.jsx';
 
 // ขายแบบรายปีอย่างเดียว (เจ้าของสั่งปิดแผนรายเดือน 22 พ.ย. 2569)
+// 26 พ.ย. 2569 เจ้าของ: แอปมือถือใช้ได้เฉพาะแผน Business ขึ้นไป → บอกเหนือการ์ดแผน (หน้าแรกและหน้าราคา) ตรงที่ลูกค้าตัดสินใจ
 export function PlanTerms() {
   return (
     <div className="billing">
       <p>ราคารายปี ยังไม่รวม VAT 7% · ไม่ต่ออายุอัตโนมัติ · คืนเงินได้ภายใน 7 วัน · จำหน่ายให้นิติบุคคลและหน่วยงานเท่านั้น</p>
+      <p>แอป {COMPANY.appName} บน iPhone รวมอยู่ในแผน {APP_PLAN} · แผน {WEB_ONLY_PLANS} ใช้งานผ่านเว็บ</p>
     </div>
   );
 }

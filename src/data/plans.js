@@ -1,6 +1,8 @@
 // แผนบริการ — ซิงก์จากตาราง plans ใน Supabase ของระบบสมาชิกจริง (แหล่งข้อมูลที่หน้าราคา/ชำระเงินของแอปใช้ผ่าน usePlans)
 // ⚠ safeact-connect-hub/src/lib/plans.ts เป็นแค่ค่าสำรอง (fallback) ไม่ใช่ราคาจริง — ราคาจริงแก้ได้ที่ /admin/plans ในแอป
-// ซิงก์ล่าสุด: 21 พ.ย. 2569 (เลิกขาย Student · Business เหลือฟีเจอร์ที่มีจริง · AI ตามโควตาแต่ละแผน) · ราคาเป็นเงินบาท ยังไม่รวม VAT 7%
+// ซิงก์ล่าสุด: 26 พ.ย. 2569 (Basic: "ดูการแจ้งเตือนกฎหมายในแอปมือถือ" → "แจ้งเตือนกฎหมายทางเว็บและอีเมล" · Business: เพิ่ม "ใช้งานแอปมือถือ SafeAct Club บน iPhone" เป็นข้อสุดท้าย)
+//   ก่อนหน้า 21 พ.ย. 2569 (เลิกขาย Student · Business เหลือฟีเจอร์ที่มีจริง · AI ตามโควตาแต่ละแผน) · ราคาเป็นเงินบาท ยังไม่รวม VAT 7%
+// 26 พ.ย. 2569 เจ้าของ: แอปมือถือใช้ได้เฉพาะแผน Business ขึ้นไป — แผน Free (ทดลอง 30 วัน) และ Basic ใช้งานผ่านเว็บอย่างเดียว
 // ขายแบบรายปีอย่างเดียว (เจ้าของสั่งปิดแผนรายเดือน 22 พ.ย. 2569) — ไม่มีราคารายเดือนบนเว็บ แม้ตาราง plans ยังเก็บคอลัมน์ monthly ไว้
 export const VAT_RATE = 0.07;
 
@@ -22,7 +24,7 @@ export const PLANS = [
     name: 'Basic',
     subtitle: 'สำหรับบริษัทและทีมขนาดเล็ก',
     yearly: 2500,
-    features: ['อัปเดตกฎหมาย', 'อัปเดตมาตรฐานสากล', 'คลังดาวน์โหลดเอกสาร', 'ดูการแจ้งเตือนกฎหมายในแอปมือถือ', `AI ผู้ช่วยกฎหมาย ${AI_QUOTA.basic} ข้อความ/เดือน`],
+    features: ['อัปเดตกฎหมาย', 'อัปเดตมาตรฐานสากล', 'คลังดาวน์โหลดเอกสาร', 'แจ้งเตือนกฎหมายทางเว็บและอีเมล', `AI ผู้ช่วยกฎหมาย ${AI_QUOTA.basic} ข้อความ/เดือน`],
     // เจ้าของสั่ง 21 พ.ย. 2569: ลบ "ส่วนลด ร้านค้าที่ร่วมรายการบนแพลตฟอร์ม" (ไม่มีระบบจริง)
     //   และย้าย Report record / Action plan / การตั้งค่าขั้นสูง ไปเริ่มที่แผน Business (ขีดฆ่าช่อง Basic ในตารางเปรียบเทียบ)
     cta: 'เลือกแผนนี้',
@@ -32,7 +34,7 @@ export const PLANS = [
     name: 'Business',
     subtitle: 'สำหรับ SME และ โรงงานอุตสาหกรรม',
     yearly: 4000,
-    features: ['ทุกอย่างใน Basic', 'ระบบ Report record', 'ระบบ Action plan', 'การตั้งค่าขั้นสูง', `AI ผู้ช่วยกฎหมาย ${AI_QUOTA.business} ข้อความ/เดือน`],
+    features: ['ทุกอย่างใน Basic', 'ระบบ Report record', 'ระบบ Action plan', 'การตั้งค่าขั้นสูง', `AI ผู้ช่วยกฎหมาย ${AI_QUOTA.business} ข้อความ/เดือน`, 'ใช้งานแอปมือถือ SafeAct Club บน iPhone'],
     featured: true,
     badge: 'ได้รับความนิยม',
     cta: 'เลือกแผนนี้',
@@ -56,7 +58,7 @@ export const COMPARE = [
     ['อัปเดตกฎหมาย', 'free'],
     ['อัปเดตมาตรฐานสากล', 'free'],
     ['รายการกฎหมายที่ติดตาม', 'free'],
-    ['ดูการแจ้งเตือนกฎหมายในแอปมือถือ', 'basic'],
+    ['แจ้งเตือนกฎหมายทางเว็บและอีเมล', 'basic'],
     ['AI ผู้ช่วยกฎหมาย', 'basic', aiQuotaText],
   ]},
   { group: 'เอกสาร', rows: [
@@ -66,6 +68,7 @@ export const COMPARE = [
     ['ระบบ Report record', 'business'],
     ['ระบบ Action plan', 'business'],
     ['การตั้งค่าขั้นสูง', 'business'],
+    ['แอปมือถือ SafeAct Club (iPhone)', 'business'],
   ]},
   { group: 'องค์กร', rows: [
     ['รองรับหลายสาขา', 'enterprise'],
@@ -95,3 +98,9 @@ export const planFrom = (label) => {
   if (!plan) throw new Error(`planFrom: ไม่พบฟีเจอร์ "${label}" ในตารางเปรียบเทียบ`);
   return `${plan.name} ขึ้นไป`;
 };
+
+// แอปมือถือ — แผนแรกที่ได้ใช้แอป (อ่านจาก COMPARE) · ป้าย App Store, คำถามที่พบบ่อย, หน้าราคา และ llms.txt ใช้ค่านี้ จะได้ตรงกับตารางเสมอ
+export const APP_PLAN = planFrom('แอปมือถือ SafeAct Club (iPhone)');   // "Business ขึ้นไป"
+const appFrom = COMPARE.flatMap((g) => g.rows).find(([l]) => l === 'แอปมือถือ SafeAct Club (iPhone)')[1];
+// แผนที่ยังไม่ได้ใช้แอป (ใช้งานผ่านเว็บอย่างเดียว) เช่น "Free และ Basic"
+export const WEB_ONLY_PLANS = PLANS.filter((p) => !hasFeature(p.key, appFrom)).map((p) => p.name).join(' และ ');

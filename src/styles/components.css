@@ -1291,6 +1291,10 @@
 .stores--foot{margin:0;padding-block:4px 20px;justify-content:flex-start}
 .stores--foot img{height:40px}
 .stores--center{justify-content:center}
+/* คำบอกต่อท้ายป้าย "สำหรับลูกค้าองค์กรแผน Business ขึ้นไป" (26 พ.ย. 2569) — ส่วนท้าย: อยู่ข้างป้าย ตัวอักษรเท่าส่วนท้าย · กลางหน้า: ขึ้นบรรทัดใหม่ใต้ป้าย */
+.stores__note{align-self:center;font-size:var(--t-small);line-height:var(--lh-small);color:var(--ink-2)}
+.stores--foot .stores__note{font-size:inherit;line-height:inherit;color:inherit}
+.stores--center .stores__note{flex-basis:100%;text-align:center}
 /* รายการจุดเด่นแอปในบล็อกกลางหน้า (หน้าแรก "ทำงานได้ทุกที่"): กล่องอยู่กลาง ข้อความชิดซ้าย */
 .app-checks{width:fit-content;max-width:100%;margin:32px auto 0;text-align:start}
 

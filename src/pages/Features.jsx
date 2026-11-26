@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AiMotion from '../components/AiMotion.jsx';
 import { checkoutLink, COMPANY, AI_DISCLAIMER } from '../data/company.js';
 import { LAW_CATEGORIES, LAW_LIBRARY, FEATURES } from '../data/service.js';
-import { planFrom, AI_QUOTA } from '../data/plans.js';
+import { planFrom, AI_QUOTA, APP_PLAN } from '../data/plans.js';
 
 // ภาพหน้าจอจริงจากแอป SafeAct (safeact-connect-hub) · เรนเดอร์ 2x · public/assets/features/
 // srcset: เบราว์เซอร์เลือกขนาดที่พอดีกับช่องแสดงผล (ครึ่งคอลัมน์ 458px บนจอใหญ่ · เต็มความกว้างบนมือถือ)
@@ -75,10 +75,11 @@ export default function Features() {
           <div style={{ height: 120 }} />
           <Row flip id="notifications"
             eyebrow="กฎหมายที่ติดตามและการแจ้งเตือน" title="เลือกเฉพาะที่เกี่ยวข้อง แล้วให้ระบบเตือนคุณ"
-            body="กดติดตามกฎหมายที่ใช้กับสถานประกอบการ ตั้งค่าหมวดที่ต้องการรับข่าว และรับการแจ้งเตือนผ่านเว็บและแอป iPhone"
-            points={['รายการกฎหมายที่ติดตามของฉัน', 'ตั้งค่าการแจ้งเตือนรายหมวด', 'ดูการแจ้งเตือนในแอป iPhone']}
+            // 26 พ.ย. 2569 เจ้าของ: Basic = แจ้งเตือนทางเว็บและอีเมล · แอปมือถือใช้ได้เฉพาะแผน Business ขึ้นไป
+            body={`กดติดตามกฎหมายที่ใช้กับสถานประกอบการ ตั้งค่าหมวดที่ต้องการรับข่าว และรับการแจ้งเตือนทางเว็บและอีเมล ลูกค้าแผน ${APP_PLAN} ดูการแจ้งเตือนในแอป iPhone ได้ด้วย`}
+            points={['รายการกฎหมายที่ติดตามของฉัน', 'ตั้งค่าการแจ้งเตือนรายหมวด', 'แจ้งเตือนทางเว็บและอีเมลสรุป']}
             media={<Shot name="notify" alt="หน้าตั้งค่าการแจ้งเตือนกฎหมาย เลือกหมวดและกฎหมายที่ต้องการติดตาม" />}
-            plan={`${planFrom('ดูการแจ้งเตือนกฎหมายในแอปมือถือ')}`}
+            plan={planFrom('แจ้งเตือนกฎหมายทางเว็บและอีเมล')}
           />
         </div>
       </section>
