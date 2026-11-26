@@ -4,8 +4,11 @@ import { PlansYearly, CompareTable } from '../components/Plans.jsx';
 import { FAQ_BILLING } from '../data/faq.js';
 import { COMPANY } from '../data/company.js';
 import { PAY_METHODS } from '../data/payments.js';
+import { useLivePlans } from '../data/plans-live.js';
 
 export default function Pricing() {
+  // 26 พ.ย. 2569 เจ้าของ: ตารางเปรียบเทียบตามระบบสมาชิกจริง — บอกว่า "สะสมขึ้นไป" เฉพาะเมื่อข้อมูลเป็นแบบนั้นจริง
+  const { CUMULATIVE } = useLivePlans();
   return (
     <main id="main">
       <section className="hero" aria-labelledby="p-title" style={{ paddingBottom: 72 }}>
@@ -32,7 +35,7 @@ export default function Pricing() {
         <div className="container--wide">
           <header className="section-head">
             <h2 id="cmp-title" className="t-h1">เปรียบเทียบแผน</h2>
-            <p className="t-lead">สิทธิ์ของแต่ละแผนสะสมขึ้นไป แผนที่สูงกว่าได้ทุกอย่างของแผนก่อนหน้า</p>
+            <p className="t-lead">{CUMULATIVE ? 'สิทธิ์ของแต่ละแผนสะสมขึ้นไป แผนที่สูงกว่าได้ทุกอย่างของแผนก่อนหน้า' : 'สิทธิ์การใช้งานของแต่ละแผน ตามระบบสมาชิก'}</p>
           </header>
           <CompareTable />
         </div>

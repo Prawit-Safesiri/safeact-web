@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AiMotion from '../components/AiMotion.jsx';
 import { checkoutLink, COMPANY, AI_DISCLAIMER } from '../data/company.js';
 import { LAW_CATEGORIES, LAW_LIBRARY, FEATURES } from '../data/service.js';
-import { planFrom, AI_QUOTA, APP_PLAN } from '../data/plans.js';
+import { useLivePlans } from '../data/plans-live.js';
 
 // ภาพหน้าจอจริงจากแอป SafeAct (safeact-connect-hub) · เรนเดอร์ 2x · public/assets/features/
 // srcset: เบราว์เซอร์เลือกขนาดที่พอดีกับช่องแสดงผล (ครึ่งคอลัมน์ 458px บนจอใหญ่ · เต็มความกว้างบนมือถือ)
@@ -33,6 +33,11 @@ function Row({ id, also, eyebrow, title, body, detail, points, media, flip, plan
 }
 
 export default function Features() {
+  // 26 พ.ย. 2569 เจ้าของ: "มีในแผน …" ทุกบรรทัดตามสิทธิ์จริงในระบบสมาชิก (item_key ของ plan_feature_matrix) — การตั้งค่าเปลี่ยน ข้อความเปลี่ยนตาม
+  const { planFrom, planWhere, AI_QUOTA_TEXT, APP_PLAN } = useLivePlans();
+  // คลังเอกสาร: ดาวน์โหลดสไลด์ได้เฉพาะบางแผน (Basic ดูรายการสไลด์ได้อย่างเดียว) → บอกต่อท้ายเมื่อแผนที่ดาวน์โหลดได้ต่างจากแผนที่มีคลังเอกสาร
+  const docsFrom = planFrom('documents');
+  const slidesDl = planWhere('presentations', /ดาวน์โหลด/);
   return (
     <main id="main">
       <section className="hero" aria-labelledby="f-title">
@@ -70,7 +75,7 @@ export default function Features() {
             body="ทีมงานติดตามพระราชบัญญัติ กฎกระทรวง ประกาศกรม และมาตรฐานที่เกี่ยวข้อง จากราชกิจจานุเบกษาและเว็บไซต์หน่วยงานรัฐ สรุปสาระสำคัญเป็นภาษาที่อ่านง่าย ตรวจทานก่อนเผยแพร่ และแนบลิงก์ต้นฉบับทุกฉบับ"
             points={['จัดหมวด: ' + LAW_CATEGORIES.join(' · '), 'ดูรายการตามเดือนที่ประกาศ', 'แสดงวันประกาศและวันมีผลใช้บังคับ']}
             media={<Shot name="laws" alt="รายการกฎหมายอัปเดตประจำเดือน พร้อมหน่วยงาน วันประกาศ วันมีผล ไฟล์สรุป Word Excel PowerPoint และฉบับเต็ม PDF" />}
-            plan={planFrom('อัปเดตกฎหมาย')}
+            plan={planFrom('laws')}
           />
           <div style={{ height: 120 }} />
           <Row flip id="notifications"
@@ -79,7 +84,7 @@ export default function Features() {
             body={`กดติดตามกฎหมายที่ใช้กับสถานประกอบการ ตั้งค่าหมวดที่ต้องการรับข่าว และรับการแจ้งเตือนทางเว็บและอีเมล ลูกค้าแผน ${APP_PLAN} ดูการแจ้งเตือนในแอป iPhone ได้ด้วย`}
             points={['รายการกฎหมายที่ติดตามของฉัน', 'ตั้งค่าการแจ้งเตือนรายหมวด', 'แจ้งเตือนทางเว็บและอีเมลสรุป']}
             media={<Shot name="notify" alt="หน้าตั้งค่าการแจ้งเตือนกฎหมาย เลือกหมวดและกฎหมายที่ต้องการติดตาม" />}
-            plan={planFrom('แจ้งเตือนกฎหมายทางเว็บและอีเมล')}
+            plan={planFrom('notifications')}
           />
         </div>
       </section>
@@ -94,7 +99,7 @@ export default function Features() {
             eyebrow="Action Plan รายปี" title="แผนงานทั้งปี ผูกกับกฎหมายทุกกิจกรรม"
             body="สร้างแผนจากเทมเพลต กำหนดผู้รับผิดชอบและสัปดาห์ดำเนินการ แนบหลักฐานและบันทึก พร้อมอ้างอิงกฎหมายรายแถว บันทึกอัตโนมัติและซิงก์แบบเรียลไทม์ทุกอุปกรณ์"
             points={['เทมเพลตแผนงาน', 'แนบหลักฐานและบันทึกย่อ', 'ส่งออก CSV']}
-            plan={planFrom('ระบบ Action plan')}
+            plan={planFrom('action_plan')}
             media={<Shot name="actionplan" alt="แผนงานความปลอดภัยรายปี สรุปจำนวนแผน ความคืบหน้า งานเกินกำหนด และตาราง 12 เดือนรายสัปดาห์" />}
           />
           <div style={{ height: 120 }} />
@@ -103,6 +108,7 @@ export default function Features() {
             body="อัปโหลดแผนผังพื้นที่ วางจุดตรวจวัดระดับเสียง ผูกพนักงานกับพื้นที่ ติดตามผลทบทวน และสรุปเป็นรายงาน"
             points={['แผนที่จุดตรวจวัดเสียง', 'ข้อมูลพนักงานและหน้าที่', 'รายงานและการติดตามผล']}
             media={<Shot name="hearing" alt="แผนผังระดับเสียง (Noise Contour Map) แสดงจุดตรวจวัดและระดับ dB(A) ในอาคารผลิต" />}
+            plan={planFrom('hearing')}
           />
         </div>
       </section>
@@ -115,7 +121,7 @@ export default function Features() {
             body="แบบฟอร์ม คู่มือ Checklist และเอกสาร WI/SDS ด้านความปลอดภัย อาชีวอนามัย และสิ่งแวดล้อม รวมถึงสไลด์พรีเซนเทชั่นสำหรับการอบรมและสื่อสารภายใน ดาวน์โหลดไปใช้ได้ทันที"
             points={['แบบฟอร์ม คู่มือ และ Checklist', 'เอกสาร WI/SDS', 'สไลด์พรีเซนเทชั่น']}
             media={<Shot name="documents" alt="คลังเอกสารความปลอดภัย แบบฟอร์ม Checklist SOP JSA คู่มือ และ Template จัดตามหมวดหมู่ประเภทงาน" />}
-            plan={planFrom('คลังดาวน์โหลดเอกสาร')}
+            plan={slidesDl && slidesDl !== docsFrom ? `${docsFrom} · ดาวน์โหลดสไลด์ได้ในแผน ${slidesDl}` : docsFrom}
           />
         </div>
       </section>
@@ -134,7 +140,7 @@ export default function Features() {
           </ul>
           <p style={{ textAlign: 'center', marginTop: 40 }}><Link className="more" to="/ai/">ดูว่า AI SafeAct ต่างจาก AI ทั่วไปอย่างไร</Link></p>
           <p className="t-small" style={{ textAlign: 'center', marginTop: 24, color: '#a1a1a6' }}>
-            มีในแผน {planFrom('AI ผู้ช่วยกฎหมาย')} (Basic {AI_QUOTA.basic} · Business {AI_QUOTA.business} · Enterprise {AI_QUOTA.enterprise} ข้อความ/เดือน) · {AI_DISCLAIMER}
+            มีในแผน {planFrom('ai')}{AI_QUOTA_TEXT && ` (${AI_QUOTA_TEXT} ข้อความ/เดือน)`} · {AI_DISCLAIMER}
           </p>
         </div>
       </section>

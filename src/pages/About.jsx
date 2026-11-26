@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import PadMotion from '../components/PadMotion.jsx';
-import { COMPANY, fullAddress } from '../data/company.js';
+import { COMPANY, fullAddress, aboutServiceText } from '../data/company.js';
+import { useLivePlans } from '../data/plans-live.js';
 
 export default function About() {
+  const { APP_PLAN } = useLivePlans();   // 26 พ.ย. 2569 เจ้าของ: แผนที่ใช้แอปได้ตามระบบสมาชิกจริง
   return (
     <main id="main">
       <section className="hero" aria-labelledby="a-title">
@@ -23,7 +25,7 @@ export default function About() {
             <div className="frow__text">
               <h2 id="who" className="t-h3">เราคือใคร</h2>
               <p>{COMPANY.aboutEntity}</p>
-              <p style={{ marginTop: 14 }}>{COMPANY.aboutService}</p>
+              <p style={{ marginTop: 14 }}>{aboutServiceText(APP_PLAN)}</p>
               <Link className="more" to="/features/">ดูฟีเจอร์ทั้งหมดของ SafeAct</Link>
             </div>
             <div className="frow__media about-icon"><img src="/assets/app-icon-600.webp" srcSet="/assets/app-icon-352.webp 352w, /assets/app-icon-600.webp 600w, /assets/app-icon-lg.webp 1024w"

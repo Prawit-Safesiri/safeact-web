@@ -7,7 +7,7 @@
 //   • ส่งต่อ URL ของเว็บเดิมตาม dist/_redirects (มาจาก public/_redirects)
 //   • URL ที่ไม่มีอยู่ตอบสถานะ 404 ด้วย 404.html
 //   • แคช: /build/* ถาวร (ชื่อไฟล์มี hash) · /assets/* 30 วัน · HTML ตรวจกับเซิร์ฟเวอร์ทุกครั้ง
-// และ /api/laws.json = ตัวเลขกฎหมายล่าสุดจากระบบสมาชิก (ดูด้านล่าง)
+// และ /api/laws.json = ตัวเลขกฎหมายล่าสุด · /api/plans.json = แผนบริการล่าสุด จากระบบสมาชิก (ดูด้านล่าง)
 const http=require('http'),fs=require('fs'),path=require('path');
 const ROOT=path.join(__dirname,'dist'), PORT=Number(process.env.PORT)||8125;
 const TYPES={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.json':'application/json','.xml':'application/xml; charset=utf-8','.txt':'text/plain; charset=utf-8','.webmanifest':'application/manifest+json','.webp':'image/webp','.mp4':'video/mp4','.ico':'image/x-icon','.woff2':'font/woff2'};
@@ -22,25 +22,56 @@ const REDIRECTS=new Map(read('_redirects').split('\n').map((l)=>l.trim().split(/
 const SECURE={'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin'};
 const moved=(res,to,code=301)=>{res.writeHead(code,{Location:to,'Cache-Control':'no-cache'});res.end();};
 
-// ── ตัวเลขกฎหมายล่าสุด /api/laws.json ──
-// หน้า /law-updates/ และจอแอปบนภาพทีมงานดึงไปแทนชุดที่ build ไว้ → การ์ด "ล่าสุด" กราฟ และจำนวนต่อหมวดเลื่อนเป็นเดือนล่าสุดเอง
-// ดึงจากระบบสมาชิกทุก 30 นาทีด้วย scripts/laws-source.mjs (publishable key ใน .env ของเว็บ — ดู README) · ภาพหน้าปกหมวดใหม่ดาวน์โหลดลง dist/assets/laws/
-// ยังไม่ตั้งคีย์ / ดึงไม่สำเร็จ → ตอบ 503 หน้าเว็บใช้ชุดที่ build ไว้ต่อ (มีวันที่ "ข้อมูล ณ" กำกับ) · ข้อมูลที่ส่งออกไม่มีคีย์หรือที่อยู่ระบบ
-const LAWS_EVERY=30*60*1000;
-let lawsBody=null,lawsJob=null,lawsTried=0;
-function loadLaws(){
-  if(lawsJob)return lawsJob;
-  lawsTried=Date.now();
-  lawsJob=import('./scripts/laws-source.mjs').then((m)=>m.liveLaws(__dirname))
-    .then(({data,fetched,warnings})=>{
-      lawsBody=JSON.stringify(data);
-      for(const w of warnings)console.warn('[laws] '+w);
-      console.log('[laws] ข้อมูล ณ '+data.syncedIso+' · '+data.total+' ฉบับ'+(fetched?' · ภาพหน้าปกใหม่ '+fetched+' ไฟล์':''));
-    })
-    .catch((e)=>console.warn('[laws] ดึงตัวเลขล่าสุดไม่ได้ — หน้าเว็บใช้ชุดที่ build ไว้: '+e.message))
-    .finally(()=>{lawsJob=null;});
-  return lawsJob;
+// ── ข้อมูลล่าสุดจากระบบสมาชิก ──
+// ดึงเป็นรอบ ๆ เก็บชุดล่าสุดที่ดึงสำเร็จไว้ในหน่วยความจำ — ระบบสมาชิกล่ม / ดึงไม่สำเร็จ = ตอบชุดเดิมต่อ
+// ยังไม่ตั้งคีย์ / ยังไม่เคยดึงสำเร็จ → ตอบ 503 หน้าเว็บใช้ชุดที่ build ไว้ต่อ · ข้อมูลที่ส่งออกไม่มีคีย์หรือที่อยู่ระบบ
+// quiet = เขียน log เฉพาะเมื่อข้อมูลเปลี่ยน (รอบถี่) · ข้อความผิดพลาดซ้ำเดิมไม่เขียนซ้ำ
+function feed(name, fetcher, { quiet = false } = {}) {
+  const f = { body: null, job: null, tried: 0, lastError: '' };
+  f.load = () => {
+    if (f.job) return f.job;
+    f.tried = Date.now();
+    f.job = fetcher()
+      .then(({ data, note = '', warnings = [] }) => {
+        const body = JSON.stringify(data);
+        const changed = body !== f.body;
+        f.body = body;
+        f.lastError = '';
+        for (const w of warnings) console.warn(`[${name}] ${w}`);
+        if (!quiet || changed) console.log(`[${name}] ${note}`);
+      })
+      .catch((e) => {
+        if (e.message !== f.lastError) console.warn(`[${name}] ดึงข้อมูลล่าสุดไม่ได้ — หน้าเว็บใช้${f.body ? 'ชุดที่ดึงได้ครั้งก่อน' : 'ชุดที่ build ไว้'}: ${e.message}`);
+        f.lastError = e.message;
+      })
+      .finally(() => { f.job = null; });
+    return f.job;
+  };
+  return f;
 }
+function serveFeed(f, res, live, maxAge) {
+  const send = () => {
+    const h = { 'Content-Type': 'application/json; charset=utf-8', 'X-Robots-Tag': 'noindex', ...SECURE };
+    if (!f.body) { res.writeHead(503, { ...h, 'Cache-Control': 'no-store' }); return res.end('{"error":"unavailable"}'); }
+    res.writeHead(200, { ...h, 'Cache-Control': live ? `public, max-age=${maxAge}` : 'no-store' }); res.end(f.body);
+  };
+  // ยังไม่มีข้อมูล (เพิ่งเปิดเซิร์ฟเวอร์): รอรอบที่กำลังดึง หรือเริ่มรอบใหม่ถ้าลองครั้งล่าสุดเกิน 1 นาที — รอไม่เกิน 8 วินาที
+  if (!f.body && (f.job || Date.now() - f.tried > 60000)) return void Promise.race([f.load(), new Promise((r) => setTimeout(r, 8000))]).then(send);
+  return send();
+}
+
+// /api/laws.json — หน้า /law-updates/ และจอแอปบนภาพทีมงานดึงไปแทนชุดที่ build ไว้ → การ์ด "ล่าสุด" กราฟ และจำนวนต่อหมวดเลื่อนเป็นเดือนล่าสุดเอง
+// ดึงจากระบบสมาชิกทุก 30 นาทีด้วย scripts/laws-source.mjs (publishable key ใน .env ของเว็บ — ดู README) · ภาพหน้าปกหมวดใหม่ดาวน์โหลดลง dist/assets/laws/
+const LAWS_EVERY = 30 * 60 * 1000;
+const LAWS = feed('laws', () => import('./scripts/laws-source.mjs').then((m) => m.liveLaws(__dirname))
+  .then(({ data, fetched, warnings }) => ({ data, warnings, note: `ข้อมูล ณ ${data.syncedIso} · ${data.total} ฉบับ${fetched ? ` · ภาพหน้าปกใหม่ ${fetched} ไฟล์` : ''}` })));
+
+// /api/plans.json — 26 พ.ย. 2569 เจ้าของ: รายการฟีเจอร์ของแผนต้องตรงกับระบบสมาชิก และเปลี่ยนตามเองเมื่อการตั้งค่าเปลี่ยน
+// การ์ดแผน ตารางเปรียบเทียบ คำถามที่พบบ่อย ป้าย App Store และ "มีในแผน …" ดึงไปแทนชุดที่ build ไว้ (src/data/plans-live.js)
+// ดึงทุก 5 นาทีด้วย scripts/plans-source.mjs (ตาราง plans + RPC plan_feature_matrix · คีย์ชุดเดียวกับข้อมูลกฎหมาย) · เบราว์เซอร์แคช 1 นาที
+const PLANS_EVERY = 5 * 60 * 1000;
+const PLANS = feed('plans', () => import('./scripts/plans-source.mjs').then((m) => m.livePlans(__dirname))
+  .then((data) => ({ data, note: `แผน ณ ${data.syncedIso} · ${data.plans.map((p) => `${p.name} ${p.features.length} ข้อ`).join(' · ')}` })), { quiet: true });
 
 http.createServer((req,res)=>{
   let p;
@@ -55,16 +86,8 @@ http.createServer((req,res)=>{
   const viaHttp=/"scheme"\s*:\s*"http"/.test(String(req.headers['cf-visitor']||''));
   if(live&&(host==='www.'+HOST||viaHttp))return moved(res,SITE+req.url);
 
-  if(p==='/api/laws.json'){
-    const send=()=>{
-      const h={'Content-Type':'application/json; charset=utf-8','X-Robots-Tag':'noindex',...SECURE};
-      if(!lawsBody){res.writeHead(503,{...h,'Cache-Control':'no-store'});return res.end('{"error":"unavailable"}');}
-      res.writeHead(200,{...h,'Cache-Control':live?'public, max-age=300':'no-store'});res.end(lawsBody);
-    };
-    // ยังไม่มีข้อมูล (เพิ่งเปิดเซิร์ฟเวอร์): รอรอบที่กำลังดึง หรือเริ่มรอบใหม่ถ้าลองครั้งล่าสุดเกิน 1 นาที — รอไม่เกิน 8 วินาที
-    if(!lawsBody&&(lawsJob||Date.now()-lawsTried>60000))return void Promise.race([loadLaws(),new Promise((r)=>setTimeout(r,8000))]).then(send);
-    return send();
-  }
+  if(p==='/api/laws.json')return serveFeed(LAWS,res,live,300);
+  if(p==='/api/plans.json')return serveFeed(PLANS,res,live,60);
 
   const old=REDIRECTS.get(p);
   if(old)return moved(res,old[0],old[1]);
@@ -104,6 +127,8 @@ http.createServer((req,res)=>{
   });
 }).listen(PORT,()=>{
   console.log('serving '+ROOT+' on http://localhost:'+PORT+(SITE?' · โดเมนหลัก '+SITE+' · ส่งต่อ '+REDIRECTS.size+' รายการ':''));
-  loadLaws();
-  setInterval(loadLaws,LAWS_EVERY);
+  LAWS.load();
+  setInterval(LAWS.load,LAWS_EVERY);
+  PLANS.load();
+  setInterval(PLANS.load,PLANS_EVERY);
 });

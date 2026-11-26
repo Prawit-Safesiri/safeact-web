@@ -6,10 +6,11 @@ import AiDetail from '../components/AiDetail.jsx';
 import StoreBadges from '../components/StoreBadges.jsx';
 import Faq from '../components/Faq.jsx';
 import { PlansYearly } from '../components/Plans.jsx';
-import { FAQ_GENERAL } from '../data/faq.js';
+import { faqGeneral } from '../data/faq.js';
 import { checkoutLink, COMPANY, AI_DISCLAIMER } from '../data/company.js';
 import { LAW_CATEGORIES, LAW_LIBRARY, lawCountRounded } from '../data/service.js';
-import { baht, fromPrice, APP_PLAN } from '../data/plans.js';
+import { baht } from '../data/plans.js';
+import { useLivePlans } from '../data/plans-live.js';
 import { PAY_METHODS } from '../data/payments.js';
 import { IconScale, IconBell, IconDoc, IconChart, IconUsers, IconShield, IconReceipt, IconLock, IconSparkAnim } from '../components/Icons.jsx';
 
@@ -19,6 +20,9 @@ const SIZES_HALF = '(min-width: 1069px) 458px, (min-width: 735px) 326px, 88vw';
 const SIZES_TILE = '(min-width: 1305px) 620px, (min-width: 735px) 48vw, 92vw';
 
 export default function Home() {
+  // 26 พ.ย. 2569 เจ้าของ: ราคาเริ่มต้น แผนที่ใช้แอปได้ และคำถามที่พบบ่อย ตามระบบสมาชิกจริง (เริ่มจากชุดที่ build แล้วเปลี่ยนเป็นข้อมูลล่าสุด)
+  const P = useLivePlans();
+  const { APP_PLAN } = P;
   return (
     <main id="main">
       {/* ─── HERO ─── */}
@@ -44,7 +48,7 @@ export default function Home() {
             <Link className="more" to="/pricing/">ดูแผนและราคา</Link>
           </div>
           <p className="hero__note">
-            เริ่มต้น {baht(fromPrice())} ต่อปี · ยกเลิกได้ทุกเมื่อ · คืนเงินได้ภายใน 7 วัน
+            เริ่มต้น {baht(P.fromPrice())} ต่อปี · ยกเลิกได้ทุกเมื่อ · คืนเงินได้ภายใน 7 วัน
             <br />ให้บริการโดย <Link to="/about/">{COMPANY.nameTh}</Link>
           </p>
         </div>
@@ -297,7 +301,7 @@ export default function Home() {
           <header className="section-head">
             <h2 id="faq-title" className="t-h1">คำถามที่พบบ่อย</h2>
           </header>
-          <Faq items={FAQ_GENERAL} />
+          <Faq items={faqGeneral(P)} />
         </div>
       </section>
 

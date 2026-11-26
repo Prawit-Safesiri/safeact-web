@@ -1,0 +1,281 @@
+{
+  "syncedIso": "2026-11-26",
+  "plans": [
+    {
+      "key": "free",
+      "name": "Free",
+      "subtitle": "ครบ 30 วันบัญชีจะถูกระงับ",
+      "yearly": 0,
+      "features": [
+        "อัปเดตกฎหมาย",
+        "อัปเดตมาตรฐานสากล",
+        "รายการกฎหมายที่ติดตาม"
+      ],
+      "extra_features": [],
+      "badge": "ทดลองฟรี",
+      "featured": false
+    },
+    {
+      "key": "basic",
+      "name": "Basic",
+      "subtitle": "สำหรับบริษัทและทีมขนาดเล็ก",
+      "yearly": 2500,
+      "features": [
+        "อัปเดตกฎหมาย",
+        "อัปเดตมาตรฐานสากล",
+        "รายการกฎหมายที่ติดตาม",
+        "หน้าภาพรวมองค์กร (Dashboard)",
+        "แจ้งเตือนกฎหมายทางเว็บและอีเมล",
+        "คลังไฟล์เอกสาร WI/SDS",
+        "คลังสไลด์พรีเซนเทชั่น (ดูรายการ)",
+        "AI ผู้ช่วยกฎหมาย 30 ข้อความ/เดือน"
+      ],
+      "extra_features": [],
+      "badge": null,
+      "featured": false
+    },
+    {
+      "key": "business",
+      "name": "Business",
+      "subtitle": "สำหรับ SME และ โรงงานอุตสาหกรรม",
+      "yearly": 4000,
+      "features": [
+        "ทุกอย่างใน Basic",
+        "ดาวน์โหลดสไลด์พรีเซนเทชั่น",
+        "Action Plan รายปี",
+        "โปรแกรมอนุรักษ์การได้ยิน",
+        "AI ผู้ช่วยกฎหมาย 200 ข้อความ/เดือน",
+        "ใช้งานแอปมือถือ SafeAct Club บน iPhone"
+      ],
+      "extra_features": [],
+      "badge": "ได้รับความนิยม",
+      "featured": true
+    },
+    {
+      "key": "enterprise",
+      "name": "Enterprise",
+      "subtitle": "สำหรับองค์กรหลายสาขา",
+      "yearly": null,
+      "features": [
+        "ทุกอย่างใน Business",
+        "AI ผู้ช่วยกฎหมาย 500 ข้อความ/เดือน",
+        "รองรับหลายสาขา",
+        "รองรับการทำงานแบบทีม",
+        "เชื่อมต่อ HR / LMS",
+        "ที่ปรึกษาเฉพาะองค์กร",
+        "เชื่อมต่อ API",
+        "ฝ่าย Support ส่วนตัว"
+      ],
+      "extra_features": [
+        "รองรับหลายสาขา",
+        "รองรับการทำงานแบบทีม",
+        "เชื่อมต่อ HR / LMS",
+        "ที่ปรึกษาเฉพาะองค์กร",
+        "เชื่อมต่อ API",
+        "ฝ่าย Support ส่วนตัว"
+      ],
+      "badge": null,
+      "featured": false
+    }
+  ],
+  "matrix": [
+    {
+      "plan": "free",
+      "ord": 10,
+      "item_key": "laws",
+      "label": "อัปเดตกฎหมาย"
+    },
+    {
+      "plan": "free",
+      "ord": 11,
+      "item_key": "standards",
+      "label": "อัปเดตมาตรฐานสากล"
+    },
+    {
+      "plan": "free",
+      "ord": 20,
+      "item_key": "laws_followed",
+      "label": "รายการกฎหมายที่ติดตาม"
+    },
+    {
+      "plan": "basic",
+      "ord": 10,
+      "item_key": "laws",
+      "label": "อัปเดตกฎหมาย"
+    },
+    {
+      "plan": "basic",
+      "ord": 11,
+      "item_key": "standards",
+      "label": "อัปเดตมาตรฐานสากล"
+    },
+    {
+      "plan": "basic",
+      "ord": 20,
+      "item_key": "laws_followed",
+      "label": "รายการกฎหมายที่ติดตาม"
+    },
+    {
+      "plan": "basic",
+      "ord": 30,
+      "item_key": "dashboard",
+      "label": "หน้าภาพรวมองค์กร (Dashboard)"
+    },
+    {
+      "plan": "basic",
+      "ord": 40,
+      "item_key": "notifications",
+      "label": "แจ้งเตือนกฎหมายทางเว็บและอีเมล"
+    },
+    {
+      "plan": "basic",
+      "ord": 50,
+      "item_key": "documents",
+      "label": "คลังไฟล์เอกสาร WI/SDS"
+    },
+    {
+      "plan": "basic",
+      "ord": 60,
+      "item_key": "presentations",
+      "label": "คลังสไลด์พรีเซนเทชั่น (ดูรายการ)"
+    },
+    {
+      "plan": "basic",
+      "ord": 90,
+      "item_key": "ai",
+      "label": "AI ผู้ช่วยกฎหมาย 30 ข้อความ/เดือน"
+    },
+    {
+      "plan": "business",
+      "ord": 10,
+      "item_key": "laws",
+      "label": "อัปเดตกฎหมาย"
+    },
+    {
+      "plan": "business",
+      "ord": 11,
+      "item_key": "standards",
+      "label": "อัปเดตมาตรฐานสากล"
+    },
+    {
+      "plan": "business",
+      "ord": 20,
+      "item_key": "laws_followed",
+      "label": "รายการกฎหมายที่ติดตาม"
+    },
+    {
+      "plan": "business",
+      "ord": 30,
+      "item_key": "dashboard",
+      "label": "หน้าภาพรวมองค์กร (Dashboard)"
+    },
+    {
+      "plan": "business",
+      "ord": 40,
+      "item_key": "notifications",
+      "label": "แจ้งเตือนกฎหมายทางเว็บและอีเมล"
+    },
+    {
+      "plan": "business",
+      "ord": 50,
+      "item_key": "documents",
+      "label": "คลังไฟล์เอกสาร WI/SDS"
+    },
+    {
+      "plan": "business",
+      "ord": 60,
+      "item_key": "presentations",
+      "label": "ดาวน์โหลดสไลด์พรีเซนเทชั่น"
+    },
+    {
+      "plan": "business",
+      "ord": 70,
+      "item_key": "action_plan",
+      "label": "Action Plan รายปี"
+    },
+    {
+      "plan": "business",
+      "ord": 80,
+      "item_key": "hearing",
+      "label": "โปรแกรมอนุรักษ์การได้ยิน"
+    },
+    {
+      "plan": "business",
+      "ord": 90,
+      "item_key": "ai",
+      "label": "AI ผู้ช่วยกฎหมาย 200 ข้อความ/เดือน"
+    },
+    {
+      "plan": "business",
+      "ord": 100,
+      "item_key": "mobile_app",
+      "label": "ใช้งานแอปมือถือ SafeAct Club บน iPhone"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 10,
+      "item_key": "laws",
+      "label": "อัปเดตกฎหมาย"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 11,
+      "item_key": "standards",
+      "label": "อัปเดตมาตรฐานสากล"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 20,
+      "item_key": "laws_followed",
+      "label": "รายการกฎหมายที่ติดตาม"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 30,
+      "item_key": "dashboard",
+      "label": "หน้าภาพรวมองค์กร (Dashboard)"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 40,
+      "item_key": "notifications",
+      "label": "แจ้งเตือนกฎหมายทางเว็บและอีเมล"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 50,
+      "item_key": "documents",
+      "label": "คลังไฟล์เอกสาร WI/SDS"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 60,
+      "item_key": "presentations",
+      "label": "ดาวน์โหลดสไลด์พรีเซนเทชั่น"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 70,
+      "item_key": "action_plan",
+      "label": "Action Plan รายปี"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 80,
+      "item_key": "hearing",
+      "label": "โปรแกรมอนุรักษ์การได้ยิน"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 90,
+      "item_key": "ai",
+      "label": "AI ผู้ช่วยกฎหมาย 500 ข้อความ/เดือน"
+    },
+    {
+      "plan": "enterprise",
+      "ord": 100,
+      "item_key": "mobile_app",
+      "label": "ใช้งานแอปมือถือ SafeAct Club บน iPhone"
+    }
+  ]
+}

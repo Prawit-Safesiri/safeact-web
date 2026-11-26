@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { APP_PLAN } from '../data/plans.js';
+import { useLivePlans } from '../data/plans-live.js';
 
 // โมชั่นพรีเซนต์ "AI ผู้ช่วยกฎหมาย" — ฉากวนซ้ำ 17 วินาที ทำด้วย CSS (ไม่ใช่ไฟล์วิดีโอ: คมทุกขนาด โหลดเร็ว)
 // 1) พิมพ์คำถาม → 2) ค้นในคลังกฎหมาย SafeAct → 3) เจอฉบับที่ตรง → 4) คำตอบพร้อมข้อกฎหมาย → 5) สโลแกน
@@ -26,6 +26,7 @@ const HIT = 7;
 export default function AiMotion() {
   const ref = useRef(null);
   const [play, setPlay] = useState(false);
+  const { APP_PLAN } = useLivePlans();
 
   useEffect(() => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;

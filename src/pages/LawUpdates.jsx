@@ -6,15 +6,16 @@ import MonthSample from '../components/MonthSample.jsx';
 import LawUpdateMotion from '../components/LawUpdateMotion.jsx';
 import { IconHelmet, IconLeaf, IconFood } from '../components/Icons.jsx';
 import { COMPANY, checkoutLink } from '../data/company.js';
-import { planFrom, APP_PLAN } from '../data/plans.js';
+import { useLivePlans } from '../data/plans-live.js';
 import { coverSrc } from '../data/laws.js';
 import { useLiveLaws } from '../data/laws-live.js';
 import { STANDARD_GROUPS, STANDARD_COUNT } from '../data/standards.js';
-import { FAQ_LAWS } from '../data/faq.js';
+import { faqLaws } from '../data/faq.js';
 
 // หน้าอัปเดตกฎหมาย — ข้อมูลชุดเดียวกับหน้า "อัปเดตกฎหมาย" ในระบบสมาชิก
 // ตัวเลขเริ่มจากชุดที่ build ไว้ (src/data/laws.json) แล้วเปลี่ยนเป็นชุดล่าสุดจากเซิร์ฟเวอร์ (useLiveLaws)
-// → การ์ด "ล่าสุด" กราฟ 12 เดือน และจำนวนต่อหมวด เลื่อนเป็นเดือนล่าสุดเองทุกเดือน · FAQ ใช้ชุดที่ build (ตรงกับ JSON-LD)
+// → การ์ด "ล่าสุด" กราฟ 12 เดือน และจำนวนต่อหมวด เลื่อนเป็นเดือนล่าสุดเองทุกเดือน · ตัวเลขกฎหมายใน FAQ ใช้ชุดที่ build (ตรงกับ JSON-LD)
+// 26 พ.ย. 2569 เจ้าของ: "มีในแผน …" และชื่อแผนใน FAQ ตามระบบสมาชิกจริง (useLivePlans)
 // ดีไซน์เป็นของเว็บนี้เอง ไม่ลอกการ์ด/สไลด์ของแอป · บนสุดเป็นภาพเคลื่อนไหวจำลอง Hub กฎหมาย + การแจ้งเตือน (LawUpdateMotion)
 // ภาพหน้าปกหมวดเป็นภาพเดียวกับในแอป (law_categories.cover) · หมวดที่ยังไม่มีภาพในแอปแสดงกรอบภาพเปล่า (Media)
 // การ์ดหมวดกฎหมายคลิกไม่ได้ (เจ้าของกำหนด) — มีปุ่มทดลองใช้ฟรีท้ายส่วน
@@ -95,6 +96,8 @@ function MonthlyChart({ laws: { LAWS, MONTHS12, SUM12, PEAK } }) {
 
 export default function LawUpdates() {
   const laws = useLiveLaws();
+  const P = useLivePlans();
+  const { APP_PLAN } = P;
   const { LAWS, MONTHS12, SUM12, LATEST, PREV, CATEGORY_GROUPS, CATEGORIES } = laws;
   const cur = MONTHS12.at(-1);
   return (
@@ -114,7 +117,7 @@ export default function LawUpdates() {
             <a className="btn" href={checkoutLink('free')}>ทดลองใช้ฟรี 30 วัน</a>{' '}
             <Link className="more" to="/pricing/">ดูแผนและราคา</Link>
           </div>
-          <p className="hero__note">มีในแผน {planFrom('อัปเดตกฎหมาย')} · ข้อมูล ณ {LAWS.syncedTh}</p>
+          <p className="hero__note">มีในแผน {P.planFrom('laws')} · ข้อมูล ณ {LAWS.syncedTh}</p>
         </div>
         <div className="container--wide hero__media">
           <LawUpdateMotion />
@@ -203,7 +206,7 @@ export default function LawUpdates() {
         <div className="container">
           <header className="section-head">
             <h2 id="lu-std" className="t-h1">มาตรฐานระบบการจัดการ</h2>
-            <p className="t-lead t-lines"><span>มาตรฐาน ISO และมาตรฐานด้านความปลอดภัย สิ่งแวดล้อม และอาหาร</span>{' '}<span>รวมรายชื่อไว้ใน Hub กฎหมาย · มีในแผน {planFrom('อัปเดตมาตรฐานสากล')}</span></p>
+            <p className="t-lead t-lines"><span>มาตรฐาน ISO และมาตรฐานด้านความปลอดภัย สิ่งแวดล้อม และอาหาร</span>{' '}<span>รวมรายชื่อไว้ใน Hub กฎหมาย · มีในแผน {P.planFrom('standards')}</span></p>
           </header>
           <ul className="lstd">
             {STANDARD_GROUPS.map((g) => {
@@ -250,7 +253,7 @@ export default function LawUpdates() {
           <header className="section-head">
             <h2 id="lu-faq" className="t-h1">คำถามที่พบบ่อย</h2>
           </header>
-          <Faq items={FAQ_LAWS} />
+          <Faq items={faqLaws(P)} />
         </div>
       </section>
 

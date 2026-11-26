@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom';
-import { PLANS, COMPARE, hasFeature, baht, withVat, APP_PLAN, WEB_ONLY_PLANS } from '../data/plans.js';
+import { baht, withVat } from '../data/plans.js';
+import { useLivePlans } from '../data/plans-live.js';
 import { checkoutLink, COMPANY } from '../data/company.js';
 import { Tick, Dash } from './Icons.jsx';
 
 // ขายแบบรายปีอย่างเดียว (เจ้าของสั่งปิดแผนรายเดือน 22 พ.ย. 2569)
 // 26 พ.ย. 2569 เจ้าของ: แอปมือถือใช้ได้เฉพาะแผน Business ขึ้นไป → บอกเหนือการ์ดแผน (หน้าแรกและหน้าราคา) ตรงที่ลูกค้าตัดสินใจ
+// 26 พ.ย. 2569 เจ้าของ: การ์ดแผนและตารางเปรียบเทียบใช้ข้อมูลจริงจากระบบสมาชิก (useLivePlans) — การตั้งค่าเปลี่ยน หน้าเว็บเปลี่ยนตามเอง
 export function PlanTerms() {
+  const { APP_PLAN, WEB_ONLY_PLANS } = useLivePlans();
   return (
     <div className="billing">
       <p>ราคารายปี ยังไม่รวม VAT 7% · ไม่ต่ออายุอัตโนมัติ · คืนเงินได้ภายใน 7 วัน · จำหน่ายให้นิติบุคคลและหน่วยงานเท่านั้น</p>
-      <p>แอป {COMPANY.appName} บน iPhone รวมอยู่ในแผน {APP_PLAN} · แผน {WEB_ONLY_PLANS} ใช้งานผ่านเว็บ</p>
+      <p>แอป {COMPANY.appName} บน iPhone รวมอยู่ในแผน {APP_PLAN}{WEB_ONLY_PLANS && <> · แผน {WEB_ONLY_PLANS} ใช้งานผ่านเว็บ</>}</p>
     </div>
   );
 }
@@ -53,6 +56,7 @@ function PlanCard({ plan, headingLevel: H = 'h3' }) {
 }
 
 export function PlanGrid({ headingLevel }) {
+  const { PLANS } = useLivePlans();
   return (
     <ul className="plans">
       {PLANS.map((p) => <PlanCard key={p.key} plan={p} headingLevel={headingLevel} />)}
@@ -69,7 +73,9 @@ export function PlansYearly({ headingLevel }) {
   );
 }
 
+// แถว = ฟีเจอร์ที่แต่ละแผนมีจริงในระบบสมาชิก (plan_feature_matrix) · ช่องที่เป็นข้อความ = แผนนั้นได้ต่างกัน เช่น โควตา AI
 export function CompareTable() {
+  const { PLANS, COMPARE } = useLivePlans();
   return (
     <div className="compare-wrap" tabIndex={0} role="region" aria-label="ตารางเปรียบเทียบแผน (เลื่อนแนวนอนได้)">
       <table className="compare">
@@ -91,16 +97,15 @@ export function CompareTable() {
           </tr>
           {COMPARE.map((g) => [
             <tr className="grp" key={g.group}><th colSpan={PLANS.length + 1} scope="colgroup">{g.group}</th></tr>,
-            ...g.rows.map(([label, from, text]) => (
-              <tr key={label}>
+            ...g.rows.map(({ key, label, cells }) => (
+              <tr key={key}>
                 <th scope="row">{label}</th>
                 {PLANS.map((p) => {
-                  const ok = hasFeature(p.key, from);
-                  const value = ok && text?.[p.key];
+                  const v = cells[p.key];
                   return (
-                    <td key={p.key} className={`${ok ? 'yes' : 'no'}${p.featured ? ' col-featured' : ''}`}>
-                      {value ? <span className="compare__val">{value}</span> : ok ? <Tick /> : <Dash />}
-                      {!value && <span className="visually-hidden">{ok ? 'มี' : 'ไม่มี'}</span>}
+                    <td key={p.key} className={`${v ? 'yes' : 'no'}${p.featured ? ' col-featured' : ''}`}>
+                      {typeof v === 'string' ? <span className="compare__val">{v}</span> : v ? <Tick /> : <Dash />}
+                      {typeof v !== 'string' && <span className="visually-hidden">{v ? 'มี' : 'ไม่มี'}</span>}
                     </td>
                   );
                 })}
