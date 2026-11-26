@@ -25,7 +25,7 @@ export const COMPANY = {
   },
   phone: '(065)\u00a0961\u00a04745',   // แสดงเป็น (065) 961 4745 · เว้นวรรคแบบไม่ตัดบรรทัด เลขจึงไม่ถูกแยกคนละบรรทัด · ลิงก์โทรใช้ phoneE164
   phoneE164: '+66659614745',
-  email: 'sale@safesiri.com',   // เจ้าของสั่ง 21 พ.ย. 2569 (ตรงกับระบบสมาชิกและแอป iOS) — ข้อยกเว้นของกฎ "ไม่กล่าวถึงเซฟสิริบนเว็บ" เฉพาะอีเมลนี้
+  email: 'sale@safeact.com',   // เจ้าของสั่ง 26 พ.ย. 2569 (เดิม sale@safesiri.com) — ตรงกับระบบสมาชิก แอป iOS และอีเมลระบบ · โดเมน safeact.com รับเมลผ่าน Google Workspace
   hours: 'จันทร์–ศุกร์ 09:00–18:00 น. (เว้นวันหยุดนักขัตฤกษ์)',
   hoursSpec: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '18:00' },
   supportLanguages: ['th'],
